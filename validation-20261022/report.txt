@@ -1,0 +1,1048 @@
+公开电视源扩充报告（2026-10-22）
+候选地址：1106；通过地址：269
+合并同台线路后：193个频道
+地区数量：大陆171；香港8；澳门0；台湾14
+电脑端验证：HTTP可访问、有效视频轨道、至少3帧实际解码。
+只证明检查当时能解码，未验证节目内容身份、音画同步或长期稳定性。
+
+已添加频道：
+大陆 | 央视一套·综合 | 1920x1080 | previous-bundle
+大陆 | 央视二套·财经 | 1280x720 | previous-bundle
+大陆 | 央视三套·综艺 | 1280x720 | previous-bundle
+大陆 | 央视四套·中文国际 | 1280x720 | free-tv
+大陆 | 央视五套·体育 | 1280x720 | guovin
+大陆 | 央视体育赛事 | 1280x720 | guovin
+大陆 | 央视六套·电影 | 1280x720 | previous-bundle
+大陆 | 央视七套·国防军事 | 1280x720 | previous-bundle
+大陆 | 央视八套·电视剧 | 1280x720 | previous-bundle
+大陆 | 央视九套·纪录 | 1920x1080 | guovin
+大陆 | 央视十套·科教 | 1280x720 | previous-bundle
+大陆 | 央视十一套·戏曲 | 1280x720 | previous-bundle
+大陆 | 央视十二套·社会与法 | 1280x720 | previous-bundle
+大陆 | 央视十三套·新闻 | 1280x720 | previous-bundle
+大陆 | 央视十四套·少儿 | 1280x720 | previous-bundle
+大陆 | 央视十五套·音乐 | 1280x720 | previous-bundle
+大陆 | 央视十六套·奥林匹克 | 1280x720 | guovin
+大陆 | 央视十七套·农业农村 | 1920x1080 | previous-bundle
+大陆 | 三沙卫视 | 720x576 | guovin
+大陆 | 云南卫视 | 1920x1080 | guovin
+大陆 | 内蒙古卫视 | 1920x1080 | guovin
+大陆 | 北京卫视 | 1920x1080 | guovin
+大陆 | 厦门卫视 | 1280x720 | guovin
+大陆 | 四川卫视 | 1920x1080 | guovin
+大陆 | 大湾区卫视 | 1920x1080 | guovin
+大陆 | 天津卫视 | 1920x1080 | guovin
+大陆 | 宁夏卫视 | 1920x1080 | guovin
+大陆 | 安徽卫视 | 1920x1080 | previous-bundle
+大陆 | 山东卫视 | 1920x1080 | guovin
+大陆 | 广东卫视 | 1280x720 | previous-bundle
+大陆 | 广西卫视 | 1920x1080 | guovin
+大陆 | 康巴卫视 | 1920x1080 | previous-bundle
+大陆 | 新疆卫视 | 1920x1080 | guovin
+大陆 | 江苏卫视 | 1920x1080 | guovin
+大陆 | 江西卫视 | 1920x1080 | guovin
+大陆 | 河北卫视 | 1920x1080 | guovin
+大陆 | 河南卫视 | 1920x1080 | guovin
+大陆 | 浙江卫视 | 1920x1080 | guovin
+大陆 | 深圳卫视 | 1280x720 | guovin
+大陆 | 湖北卫视 | 1920x1080 | guovin
+大陆 | 湖南卫视 | 1280x720 | guovin
+大陆 | 甘肃卫视 | 1920x1080 | guovin
+大陆 | 西藏卫视 | 1920x1080 | guovin
+大陆 | 贵州卫视 | 1920x1080 | guovin
+大陆 | 辽宁卫视 | 1920x1080 | guovin
+大陆 | 陕西卫视 | 1920x1080 | guovin
+大陆 | 青海卫视 | 1280x720 | guovin
+大陆 | 黑龙江卫视 | 1920x1080 | guovin
+香港 | 亞洲劇台 | 1920x1080 | iptv-hk
+香港 | 凤凰中文 | 1280x720 | guovin
+香港 | 凤凰资讯 | 1280x720 | guovin
+香港 | 宠物俱乐部电视台 | 1280x720 | iptv-hk
+香港 | 无线新闻 | 1280x720 | guovin
+香港 | 港台電視31 | 1920x1080 | iptv-hk
+香港 | 美亞電影台 | 1920x1080 | iptv-hk
+香港 | 黃金翡翠台 | 1920x1080 | iptv-hk
+台湾 | AXN台湾台 | 1280x720 | iptv-tw
+台湾 | CGN中文台 | 1920x1080 | iptv-tw
+台湾 | HBO台湾台 | 1280x720 | iptv-tw
+台湾 | TVBS亚洲台 | 1920x1080 | iptv-tw
+台湾 | 东森洋片台 | 1920x1080 | iptv-tw
+台湾 | 东森超视 | 1920x1080 | guovin
+台湾 | 人间卫视 | 1280x720 | iptv-tw
+台湾 | 公视第三台 | 1920x1080 | iptv-tw
+台湾 | 原住民族电视台 | 1280x720 | iptv-tw
+台湾 | 唯心电视台 | 854x480 | iptv-tw
+台湾 | 大立电视台 | 1280x720 | iptv-tw
+台湾 | 探索亚洲台湾台 | 1280x720 | iptv-tw
+台湾 | 无上师电视台 | 1280x720 | iptv-tw
+台湾 | 生命电视台 | 1920x1080 | iptv-tw
+大陆 | ABN中文台 | 640x360 | previous-bundle
+大陆 | CCTV-女性时尚 | 1920x1080 | iptv-cn
+大陆 | CCTV-风云音乐 | 1920x1080 | iptv-cn
+大陆 | CGTN英语 | 1280x720 | fmm-ipv6
+大陆 | CGTN西语 | 1920x1080 | fmm-ipv6
+大陆 | CGTN记录 | 1280x720 | fmm-ipv6
+大陆 | CGTN阿语 | 1920x1080 | fmm-ipv6
+大陆 | FZTV-3 Lifestyle Channel 生活频道 | 1920x1080 | free-tv
+大陆 | FZTV-4 Children 少儿频道 | 1920x1080 | free-tv
+大陆 | 七台河新闻综合 | 1280x720 | guovin
+大陆 | 东莞新闻综合 | 1280x720 | previous-bundle
+大陆 | 中国教育电视台 | 1920x1080 | guovin
+大陆 | 中国蓝新闻 | 1920x1080 | guovin
+大陆 | 之江纪录 | 1920x1080 | fmm-ipv6
+大陆 | 乐至综合 | 1920x1080 | guovin
+大陆 | 云霄综合 | 1920x1080 | guovin
+大陆 | 亳州农村 | 1920x1080 | guovin
+大陆 | 任丘综合 | 1920x1080 | guovin
+大陆 | 兰州文化旅游 | 1920x1080 | previous-bundle
+大陆 | 兰州新闻综合 | 1920x1080 | previous-bundle
+大陆 | 兰溪新闻综合 | 1280x720 | guovin
+大陆 | 兴隆综合 | 1920x1080 | guovin
+大陆 | 剑阁综合 | 960x528 | guovin
+大陆 | 北京科教 | 1920x1080 | guovin
+大陆 | 哈尔滨影视 | 640x480 | previous-bundle
+大陆 | 哈尔滨新闻综合 | 640x480 | previous-bundle
+大陆 | 嘉峪关综合 | 1920x1080 | guovin
+大陆 | 四平电视台 | 720x576 | previous-bundle
+大陆 | 天祝综合 | 1920x1080 | guovin
+大陆 | 央视世界地理 | 1920x1080 | previous-bundle
+大陆 | 央视兵器科技 | 1920x1080 | previous-bundle
+大陆 | 央视卫生健康 | 1920x1080 | previous-bundle
+大陆 | 央视台球 | 1920x1080 | previous-bundle
+大陆 | 央视国际视频通讯一台 | 1066x600 | previous-bundle
+大陆 | 央视国际视频通讯二台 | 1066x600 | previous-bundle
+大陆 | 央视怀旧剧场 | 1920x1080 | previous-bundle
+大陆 | 央视文化精品 | 1920x1080 | previous-bundle
+大陆 | 央视第一剧场 | 1920x1080 | previous-bundle
+大陆 | 央视超高清 | 1920x1080 | previous-bundle
+大陆 | 央视风云剧场 | 1920x1080 | previous-bundle
+大陆 | 央视风云足球 | 1920x1080 | previous-bundle
+大陆 | 央视高尔夫·网球 | 1920x1080 | previous-bundle
+大陆 | 平泉综合 | 1280x720 | guovin
+大陆 | 广东新闻 | 1280x720 | guovin
+大陆 | 广元公共 | 1280x720 | guovin
+大陆 | 广安公共 | 720x576 | guovin
+大陆 | 广州综合 | 1280x720 | previous-bundle
+大陆 | 广西国际 | 1920x1080 | guovin
+大陆 | 广西新闻 | 1920x1080 | guovin
+大陆 | 广西综艺旅游 | 720x576 | previous-bundle
+大陆 | 开化国家公园 | 1280x720 | guovin
+大陆 | 开化新闻综合 | 1280x720 | guovin
+大陆 | 张掖新闻综合 | 1920x1080 | guovin
+大陆 | 新昌生活 | 1920x1080 | guovin
+大陆 | 新沂生活 | 1280x720 | guovin
+大陆 | 新疆二套 | 1920x1080 | previous-bundle
+大陆 | 新疆五套 | 1920x1080 | previous-bundle
+大陆 | 新疆八套 | 1920x1080 | previous-bundle
+大陆 | 新闻综合 | 1920x1080 | guovin
+大陆 | 昌黎综合 | 1280x720 | guovin
+大陆 | 朝阳新闻综合 | 1920x1080 | guovin
+大陆 | 松潘新闻综合 | 1920x1080 | guovin
+大陆 | 松阳综合 | 1920x1080 | guovin
+大陆 | 楚雄新闻综合 | 1280x720 | previous-bundle
+大陆 | 欢笑剧场 | 1920x1080 | guovin
+大陆 | 汶川新闻综合 | 1280x720 | guovin
+大陆 | 沐川综合 | 1280x720 | guovin
+大陆 | 河北农民 | 1280x720 | guovin
+大陆 | 浙江休闲台 | 1280x720 | guovin
+大陆 | 浙江公共新闻 | 1920x1080 | guovin
+大陆 | 浙江国际 | 1920x1080 | fmm-ipv6
+大陆 | 浙江国际频道 | 1920x1080 | previous-bundle
+大陆 | 浙江少儿 | 1920x1080 | fmm-ipv6
+大陆 | 浙江教科 | 1920x1080 | guovin
+大陆 | 浙江教科影视 | 1920x1080 | guovin
+大陆 | 浙江教育 | 1280x720 | guovin
+大陆 | 浙江数码时代 | 1280x720 | guovin
+大陆 | 浙江新闻 | 1920x1080 | fmm-ipv6
+大陆 | 浙江民生 | 1920x1080 | guovin
+大陆 | 浙江经济 | 1920x1080 | guovin
+大陆 | 浙江经济生活 | 1920x1080 | guovin
+大陆 | 浙江经视 | 1280x720 | guovin
+大陆 | 浙江遂昌 | 1920x1080 | guovin
+大陆 | 浙江钱江 | 1920x1080 | fmm-ipv6
+大陆 | 浙江钱江都市 | 1920x1080 | guovin
+大陆 | 海宁新闻综合 | 1280x720 | guovin
+大陆 | 清河经济综艺 | 1920x1080 | guovin
+大陆 | 渭源新闻 | 1920x1080 | guovin
+大陆 | 湖南经视 | 1920x1080 | previous-bundle
+大陆 | 湖州公共民生 | 1280x720 | guovin
+大陆 | 湖州文化娱乐 | 1280x720 | guovin
+大陆 | 湖州新闻综合 | 1280x720 | guovin
+大陆 | 滦平新闻 | 1920x1080 | guovin
+大陆 | 白城电视台 | 720x576 | previous-bundle
+大陆 | 祁门综合 | 1920x1080 | guovin
+大陆 | 福州生活 | 1920x1080 | guovin
+大陆 | 美国之音中文台 | 1920x1080 | previous-bundle
+大陆 | 苏州文化生活 | 1280x720 | guovin
+大陆 | 苏州生活资讯 | 1280x720 | guovin
+大陆 | 苏州社会经济 | 1920x1080 | guovin
+大陆 | 荥经综合 | 1920x1080 | guovin
+大陆 | 营山电视台 | 1280x720 | guovin
+大陆 | 萧山生活 | 1280x720 | guovin
+大陆 | 西峰综合 | 1280x720 | guovin
+大陆 | 西藏汉语频道 | 1920x1080 | previous-bundle
+大陆 | 象山综合 | 1920x1080 | guovin
+大陆 | 赤峰新闻综合 | 1920x1080 | previous-bundle
+大陆 | 辽宁教育青少 | 1920x1080 | guovin
+大陆 | 辽宁生活 | 1920x1080 | guovin
+大陆 | 辽宁经济 | 1920x1080 | guovin
+大陆 | 通海电视台 | 1920x1080 | guovin
+大陆 | 邢台综合 | 1280x720 | guovin
+大陆 | 邯郸公共 | 1920x1080 | guovin
+大陆 | 邯郸新闻 | 1920x1080 | guovin
+大陆 | 邯郸科技教育 | 1920x1080 | guovin
+大陆 | 都市剧场 | 1920x1080 | guovin
+大陆 | 重庆新闻 | 1920x1080 | guovin
+大陆 | 金川新闻综合 | 1920x1080 | guovin
+大陆 | 青川综合 | 1920x1080 | guovin
+大陆 | 青田电视台 | 1920x1080 | guovin
+大陆 | 面包电视台 | 1920x1080 | previous-bundle
+大陆 | 龙泉新闻综合 | 1920x1080 | guovin
+大陆 | 龙游新闻综合 | 1280x720 | guovin
+
+可解码但未收录的条目（格式不兼容或非电视频道）：
+新沂新闻 | URL syntax rejected by Android playlist parser
+七龙珠 | programme loop rather than a TV channel
+七龙珠 | programme loop rather than a TV channel
+海绵宝宝 | programme loop rather than a TV channel
+中华小当家 | programme loop rather than a TV channel
+猫和老鼠 | programme loop rather than a TV channel
+
+未通过地址及原因：
+Ando TV (1080p) | probe | [http @ 00000289c829ff40] Error reading HTTP response: Error number -138 occurred http://v4-f19c39863acf2b2ee2e9fcab372e578c.livehwc4.com/play.kankanlive.com/live/1711956137852982
+Angel TV Chinese (720p) | probe | probe timeout
+Anshun Comprehensive News Channel | probe | [tls @ 000002962f128d80] Error in the pull function. [tls @ 000002962f128d80] IO error: Error number -138 occurred [https @ 000002962f1c5a00] Error reading HTTP response: Error n
+Beijing Satellite TV [Not 24/7] | http | curl: (28) Operation timed out after 10007 milliseconds with 0 bytes received 
+Beijing Satellite TV HD (1080p) | http | HTTP 403
+Bingtuan Satellite TV (540p) [Not 24/7] | http | curl: (28) Operation timed out after 10006 milliseconds with 0 bytes received 
+BRTV Kaku Childrens Channel | http | curl: (28) Operation timed out after 10014 milliseconds with 0 bytes received 
+CCTV-1 HD (1080p) | probe | http://69.30.245.50/live/cctv1.m3u8: I/O error 
+CCTV-4K HD (1080p) | probe | http://69.30.245.50/live/cctv4k.m3u8?app=wh18-403: I/O error 
+CCTV-5+ | http | HTTP 500
+CCTV-6 [Geo-blocked] | http | HTTP 500
+CCTV-13 HD (1080p) | http | HTTP 403
+CCTV-16 HD (1080p) | probe | http://74.91.26.218:82/live/cctv16hd.m3u8: I/O error 
+CETV-1 (576p) | http | curl: (28) Operation timed out after 10013 milliseconds with 0 bytes received 
+CETV-2 (576p) | http | curl: (28) Operation timed out after 10005 milliseconds with 0 bytes received 
+Chaozhou Public Channel | probe | probe timeout
+CHC Action (1080p) | http | curl: (28) Operation timed out after 10012 milliseconds with 0 bytes received 
+CHC Home Theater (1080p) | http | curl: (28) Operation timed out after 10010 milliseconds with 0 bytes received 
+China Weather Channel (576p) [Not 24/7] | http | curl: (28) Operation timed out after 10014 milliseconds with 0 bytes received 
+Chuzhou News Channel (1080p) | http | curl: (28) Operation timed out after 10005 milliseconds with 0 bytes received 
+Chuzhou Public Channel (400p) | http | curl: (28) Operation timed out after 10014 milliseconds with 0 bytes received 
+Chuzhou Science & Education Channel (400p) | http | curl: (28) Operation timed out after 10004 milliseconds with 0 bytes received 
+CND Film Discovery Channel (576p) | http | curl: (28) Operation timed out after 10005 milliseconds with 0 bytes received 
+CND Film Middle School Channel | http | HTTP 403
+Documentary Humanities Channel (1080p) | http | curl: (28) Operation timed out after 10014 milliseconds with 0 bytes received 
+Dragon TV International | http | HTTP 404
+Dunhuang TV (1080p) | http | curl: (28) Operation timed out after 10010 milliseconds with 0 bytes received 
+Fengshang Shopping Channel (1080p) | http | HTTP 302
+Fujian Comprehensive Channel | http | curl: (28) Operation timed out after 10012 milliseconds with 0 bytes received 
+Golden Eagle Cartoon (576p) | http | curl: (28) Operation timed out after 10003 milliseconds with 0 bytes received 
+Guizhou TV (576p) | http | curl: (52) Empty reply from server 
+Hebi News Channel (480p) [Not 24/7] | probe | [http @ 000001650cd6f140] Error reading HTTP response: Error number -138 occurred http://3748626874.cloudvdn.com/a.m3u8?domain=pili-live-hls.hebitv.com&player=1ZUAAN84ypAwl-AY&sec
+Heilongjiang TV (1080p) | http | curl: (28) Operation timed out after 10003 milliseconds with 0 bytes received 
+Hezheng TV | http | curl: (28) Operation timed out after 10006 milliseconds with 0 bytes received 
+High Channel TV (1080p) | http | curl: (28) Operation timed out after 10002 milliseconds with 0 bytes received 
+HomePlus | http | HTTP 404
+Hunan News Channel [Geo-blocked] | http | HTTP 403
+Hunan Politics & Law Channel [Geo-blocked] | http | HTTP 403
+Hunan Womens Channel [Geo-blocked] | http | HTTP 403
+Jiangsu City Channel (576p) | http | HTTP 302
+Jiangsu Educational Channel (576p) | http | curl: (28) Operation timed out after 10008 milliseconds with 0 bytes received 
+Jiangsu Movie Channel (576p) | http | curl: (28) Operation timed out after 10014 milliseconds with 0 bytes received 
+Jiangsu Public & News Channel (576p) | http | HTTP 302
+Jiangsu Satellite TV (1080p) | http | curl: (28) Operation timed out after 10016 milliseconds with 0 bytes received 
+Jiangsu Sports & Leisure Channel (576p) | http | HTTP 302
+Jiangsu Variety Channel (576p) [Not 24/7] | http | HTTP 302
+Jiangxi Children's Channel | http | HTTP 403
+Jiangxi City Channel | http | HTTP 403
+Jiangxi Economy & Life Channel | http | curl: (28) Connection timed out after 5016 milliseconds 
+Jiangxi Movie Channel | http | HTTP 403
+Jiangxi Public & Agriculture Channel | http | HTTP 403
+Jiangxi TV (1080p) | http | curl: (28) Operation timed out after 10009 milliseconds with 0 bytes received 
+Jilin City Channel | http | HTTP 567
+Jilin Lifestyle Channel | http | HTTP 567
+Jilin Movie Channel | http | HTTP 567
+Jilin Rural Channel | http | curl: (28) Connection timed out after 5015 milliseconds 
+Jiuquan TV News Comprehensive Channel (576p) | http | curl: (28) Operation timed out after 10016 milliseconds with 0 bytes received 
+Liangshan TV [Not 24/7] | http | curl: (28) Operation timed out after 10007 milliseconds with 0 bytes received 
+Liaoning TV (1080p) | http | curl: (28) Operation timed out after 10004 milliseconds with 0 bytes received 
+Nanchang News & Generalist Channel | http | HTTP 403
+Nei Monggol TV 2 Mongolian Culture Channel | http | curl: (28) Operation timed out after 10006 milliseconds with 0 bytes received 
+Nei Monggol TV (960p) | probe | https://cdn4.skygo.mn/live/disk1/NeigMGL/HLSv3-FTA/NeigMGL-avc1_2000000=669-mp4a_256000=194.m3u8: Server returned 403 Forbidden (access denied) 
+Ningxia Satellite Channel (576p) | http | curl: (28) Operation timed out after 10002 milliseconds with 0 bytes received 
+Pingxiang TV News Channel (576p) [Not 24/7] | http | curl: (52) Empty reply from server 
+Qinghai TV (576p) | http | curl: (28) Operation timed out after 10010 milliseconds with 0 bytes received 
+QTV-1 | probe | probe timeout
+QTV-2 | probe | [hls @ 000001e9f6af5540] Error when loading first segment 'http://video10.qtv.com.cn/drm/qtv2at/1750537/1792550361.ts' http://video10.qtv.com.cn/drm/qtv2at/manifest.m3u8: Invalid 
+QTV-3 | probe | [hls @ 00000145c22f6800] Error when loading first segment 'http://video10.qtv.com.cn/drm/qtv3at/1750537/1792550359.ts' http://video10.qtv.com.cn/drm/qtv3at/manifest.m3u8: Invalid 
+QTV-4 | probe | [http @ 0000019ca56a9200] Error reading HTTP response: Error number -138 occurred [http @ 0000019ca56a8780] Error reading HTTP response: Error number -138 occurred [hls @ 0000019
+QTV-5 | probe | [hls @ 000001b3fcc83040] Error when loading first segment 'http://video10.qtv.com.cn/drm/qtv5at/1750537/1792550362.ts' http://video10.qtv.com.cn/drm/qtv5at/manifest.m3u8: Invalid 
+QTV-6 | probe | [hls @ 000002c9f44630c0] Error when loading first segment 'http://video10.qtv.com.cn/drm/qtv6at/1750527/1792540645.ts' http://video10.qtv.com.cn/drm/qtv6at/manifest.m3u8: Invalid 
+Shandong Satellite TV (720p) | http | curl: (28) Operation timed out after 10015 milliseconds with 0 bytes received 
+Shandong TV (1080p) | http | curl: (28) Operation timed out after 10009 milliseconds with 0 bytes received 
+Shandong TV Agricultural Science Channel (406p) [Geo-blocked] | http | HTTP 403
+Shandong TV Children's Channel (406p) [Geo-blocked] | http | HTTP 403
+Shandong TV Life Channel (1080p) [Geo-blocked] | http | curl: (52) Empty reply from server 
+Shandong TV Qilu Channel (1080p) [Geo-blocked] | http | HTTP 403
+Shandong TV Sports Channel (1080p) [Geo-blocked] | http | HTTP 403
+Shandong TV Variety Channel (406p) [Geo-blocked] | http | HTTP 403
+Shenzhen Satellite TV (2160p) | http | HTTP 403
+Sichuan Satellite TV (576p) | http | curl: (28) Operation timed out after 10008 milliseconds with 0 bytes received 
+Sichuan TV Women and Children Channel (720p) [Not 24/7] | http | curl: (52) Empty reply from server 
+Tianjin TV (1080p) | http | curl: (28) Operation timed out after 10004 milliseconds with 0 bytes received 
+Tonghua TV (1080p) | http | HTTP 567
+TV BRICS Chinese (1080p) | http | curl: (28) Connection timed out after 8749 milliseconds 
+Xi'an Business Information Channel (180p) [Not 24/7] | http | curl: (52) Empty reply from server 
+Xi'an Silk Road Channel (404p) [Not 24/7] | http | curl: (52) Empty reply from server 
+Xinjiang TV 1 | http | curl: (28) Connection timed out after 5010 milliseconds 
+Xinjiang TV 3 | probe | probe timeout
+Xizang TV Tibetan (720p) [Not 24/7] | http | HTTP 302
+Xuzhou Economic Life Channel (1080p) | http | curl: (28) Operation timed out after 10010 milliseconds with 0 bytes received 
+Yanbian Satellite TV (576p) | http | curl: (28) Operation timed out after 10004 milliseconds with 0 bytes received 
+You Man Cartoon Channel (576p) | http | curl: (28) Operation timed out after 10010 milliseconds with 0 bytes received 
+Yunnan Satellite TV (1080p) | http | curl: (28) Operation timed out after 10003 milliseconds with 0 bytes received 
+Zhejiang Satellite TV (1080p) | http | curl: (28) Operation timed out after 10004 milliseconds with 0 bytes received 
+BSTV (Hong Kong) (576p) | http | curl: (28) Operation timed out after 10002 milliseconds with 0 bytes received 
+Celestial Movies (576i) | http | HTTP 401
+Hong Kong International Business Channel (1080p) [Geo-blocked] | http | HTTP 403
+HOY Infotainment (1080p) [Geo-blocked] | http | HTTP 403
+HOY TV (1080p) [Geo-blocked] | http | HTTP 403
+Jade (1080p) | http | curl: (52) Empty reply from server 
+Phoenix Chinese Channel (720p) | http | curl: (28) Operation timed out after 10003 milliseconds with 0 bytes received 
+Phoenix InfoNews Channel (720p) | http | curl: (28) Operation timed out after 10012 milliseconds with 0 bytes received 
+RTHK TV 32 (1080p) [Geo-blocked] | http | HTTP 403
+RTHK TV 33 (1080p) [Geo-blocked] | http | HTTP 403
+RTHK TV 34 (1080p) [Geo-blocked] | http | HTTP 403
+RTHK TV 35 (1080p) [Geo-blocked] | http | HTTP 403
+Canal Macau (720p) [Not 24/7] | http | curl: (28) Connection timed out after 5008 milliseconds 
+Lotus TV (720p) | probe | https://cdn4.skygo.mn/live/disk1/Lotus/HLSv3-FTA/Lotus-avc1_2089200=14641-mp4a_256000_eng=343.m3u8: Server returned 403 Forbidden (access denied) 
+TDM Entertainment (720p) | http | curl: (28) Connection timed out after 5004 milliseconds 
+TDM Information (720p) [Not 24/7] | http | curl: (28) Connection timed out after 5012 milliseconds 
+TDM Ou Mun (720p) | http | curl: (28) Operation timed out after 10006 milliseconds with 0 bytes received 
+TDM Sports (720p) | http | curl: (28) Connection timed out after 5003 milliseconds 
+TDM-Macau Satellite (720p) | http | curl: (28) Connection timed out after 5011 milliseconds 
+CTi Variety (720p) | http | curl: (28) Operation timed out after 10006 milliseconds with 0 bytes received 
+CTS News [Geo-blocked] | http | curl: (52) Empty reply from server 
+DaAi 1 (720p) | http | HTTP 403
+DaAi 2 (1080p) | http | curl: (52) Empty reply from server 
+EBC Financial News (1080p) [Not 24/7] | http | curl: (52) Empty reply from server 
+EBC News (1080p) [Not 24/7] | http | curl: (52) Empty reply from server 
+FTV (Taiwan) (720p) [Not 24/7] | http | curl: (52) Empty reply from server 
+FTV One (720p) [Not 24/7] | http | curl: (52) Empty reply from server 
+Good 2 (720p) | probe | [tls @ 0000027d25c434c0] Error in the pull function. [tls @ 0000027d25c434c0] IO error: Error number -138 occurred https://live.streamingfast.net/hls-live/goodtv/_definst_/liveev
+Good TV (Taiwan) (720p) [Not 24/7] | probe | [tls @ 0000019130d44980] Error in the pull function. [tls @ 0000019130d44980] IO error: Error number -138 occurred https://live.streamingfast.net/hls-live/goodtv/_definst_/liveev
+Hakka TV | http | HTTP 404
+Indigenous TV (720p) | http | HTTP 403
+MOMO TV (1080p) | http | curl: (52) Empty reply from server 
+NTD TV Asia-Pacific | http | curl: (28) Connection timed out after 5006 milliseconds 
+SET News (1080p) [Geo-blocked] | http | curl: (52) Empty reply from server 
+TTV (720p) | http | curl: (28) Operation timed out after 10011 milliseconds with 0 bytes received 
+TVBS News [Geo-blocked] | http | curl: (52) Empty reply from server 
+CCTV-1综合 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+CCTV-2财经 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+CCTV-3综艺 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+CCTV-4中文国际 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+CCTV-5体育 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+CCTV-5+体育赛事 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+CCTV-6电影 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+CCTV-7国防军事 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+CCTV-8电视剧 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+CCTV-9纪录 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+CCTV-10科教 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+CCTV-11戏曲 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+CCTV-12社会与法 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+CCTV-13新闻 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+CCTV-14少儿 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+CCTV-15音乐 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+CCTV-16奥林匹克 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+CCTV-17农业农村 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+北京卫视 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+东方卫视 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+浙江卫视 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+江苏卫视 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+广东卫视 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+湖南卫视 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+深圳卫视 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+四川卫视 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+天津卫视 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+辽宁卫视 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+黑龙江卫视 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+吉林卫视 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+海南卫视 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+广西卫视 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+河北卫视 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+山东卫视 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+山西卫视 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+湖北卫视 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+江西卫视 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+重庆卫视 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+东南卫视 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+陕西卫视 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+青海卫视 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+安徽卫视 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+云南卫视 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+贵州卫视 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+宁夏卫视 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+甘肃卫视 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+内蒙古卫视 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+新疆卫视 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+西藏卫视 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+延边卫视 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+康巴卫视 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+中国教育1台 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+中国教育2台 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+中国教育3台 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+中国教育4台 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+浙江教科 | decode | [tls @ 000001d9c9107c00] Error in the pull function. [tls @ 000001d9c9107c00] IO error: End of file [in#0 @ 000001d9c9063e80] Error opening input: End of file Error opening inpu
+浙江民生 | probe | [tls @ 000001d405ba4540] Error in the pull function. [tls @ 000001d405ba4540] IO error: End of file https://ali-m-l.cztv.com/channels/lantian/channel006/1080p.m3u8: End of file 
+浙江经济 | http | curl: (28) Connection timed out after 5008 milliseconds 
+内蒙新闻 | http | curl: (28) Connection timed out after 5010 milliseconds 
+内蒙经济 | http | curl: (28) Operation timed out after 7961 milliseconds with 0 bytes received 
+内蒙少儿 | http | HTTP 403
+内蒙文体 | http | HTTP 403
+内蒙农牧 | http | HTTP 403
+蒙语卫视 | http | curl: (28) Connection timed out after 5007 milliseconds 
+蒙语文化 | http | HTTP 403
+呼市新闻综合 | http | curl: (28) Connection timed out after 5013 milliseconds 
+包头新闻综合 | http | HTTP 403
+鄂尔多斯新闻 | http | HTTP 403
+巴彦淖尔新闻 | http | HTTP 403
+赤峰新闻综合 | http | HTTP 403
+乌兰察布新闻 | http | HTTP 403
+CGTN俄语 | probe | https://russian-livews.cgtn.com/hls/LSvexABhNipibK5KRuUkvHZ7220802LSTeze9o8tdFXMHsb1VosgoT220802cd/playlist.m3u8: Server returned 404 Not Found 
+CGTN法语 | probe | [tls @ 000002abd7c38a00] Error in the pull function. [tls @ 000002abd7c38a00] IO error: Error number -138 occurred [https @ 000002abd7b9bec0] Error reading HTTP response: Error n
+CCTV-3 | http | curl: (52) Empty reply from server 
+CCTV-5 | http | HTTP 302
+CCTV-5 | http | curl: (52) Empty reply from server 
+CCTV-5+ | probe | [http @ 0000024602154bc0] Error reading HTTP response: Error number -138 occurred http://223.78.65.165:9901/tsfile/live/0006_1.m3u8?key=txiptv&playlive=1&authid=0: Error number -1
+CCTV-6 | http | HTTP 302
+CCTV-7 | http | HTTP 302
+CCTV-7 | http | HTTP 302
+CCTV-8 | http | HTTP 302
+CCTV-8 | http | HTTP 302
+CCTV-10 | http | HTTP 302
+CCTV-10 | http | HTTP 302
+CCTV-11 | http | HTTP 302
+CCTV-11 | http | HTTP 302
+CCTV-12 | http | HTTP 302
+CCTV-13 | probe | probe timeout
+CCTV-14 | http | HTTP 302
+CCTV-15 | http | HTTP 302
+CCTV-16 | http | HTTP 302
+CCTV-16 | http | curl: (35) schannel: next InitializeSecurityContext failed: SEC_E_ILLEGAL_MESSAGE (0x80090326) - This error usually occurs when a fatal SSL/TLS alert is received (e.g. handshake fa
+CCTV-17 | http | curl: (63) Maximum file size exceeded 
+CETV-1 | decode | [http @ 0000022de6ae3ac0] Error reading HTTP response: End of file [in#0 @ 0000022de6b4f400] Error opening input: End of file Error opening input file http://69.197.146.146:82/li
+CETV-2 | http | HTTP 660
+CETV-2 | http | curl: (28) Operation timed out after 10002 milliseconds with 0 bytes received 
+CETV-2 | http | curl: (7) Failed to connect to 2409:8087:1:20:20::2c:80 after 0 ms: Could not connect to server 
+CETV-3 | http | HTTP 404
+CETV-3 | http | HTTP 404
+CETV-3 | http | curl: (28) Operation timed out after 10015 milliseconds with 0 bytes received 
+CETV-4 | http | curl: (28) Operation timed out after 10013 milliseconds with 0 bytes received 
+CETV-4 | http | curl: (35) schannel: next InitializeSecurityContext failed: SEC_E_ILLEGAL_MESSAGE (0x80090326) - This error usually occurs when a fatal SSL/TLS alert is received (e.g. handshake fa
+CETV-4 | http | HTTP 660
+广东卫视 | http | curl: (28) Connection timed out after 5006 milliseconds 
+香港卫视 | http | HTTP 403
+香港卫视 | http | curl: (28) Operation timed out after 5408 milliseconds with 0 bytes received 
+浙江卫视 | http | HTTP 302
+湖南卫视 | decode | decode timeout
+湖北卫视 | decode | [http @ 000002134dac32c0] Error reading HTTP response: End of file [in#0 @ 000002134dac3040] Error opening input: End of file Error opening input file http://120.76.248.139/live/
+黑龙江卫视 | http | HTTP 301
+黑龙江卫视 | http | curl: (52) Empty reply from server 
+安徽卫视 | http | HTTP 302
+安徽卫视 | http | HTTP 302
+安徽卫视 | http | HTTP 302
+重庆卫视 | http | HTTP 302
+重庆卫视 | http | curl: (52) Empty reply from server 
+重庆卫视 | http | curl: (52) Empty reply from server 
+东方卫视 | http | curl: (52) Empty reply from server 
+东方卫视 | http | curl: (52) Empty reply from server 
+东方卫视 | probe | no readable video track/dimensions
+东南卫视 | http | curl: (52) Empty reply from server 
+东南卫视 | http | curl: (52) Empty reply from server 
+东南卫视 | http | curl: (28) Operation timed out after 10012 milliseconds with 0 bytes received 
+广西卫视 | decode | [http @ 000001cb435a3e80] Error reading HTTP response: End of file [in#0 @ 000001cb435a3d00] Error opening input: End of file Error opening input file http://69.30.196.146:82/liv
+广西卫视 | probe | probe timeout
+贵州卫视 | http | curl: (63) Maximum file size exceeded 
+贵州卫视 | http | curl: (52) Empty reply from server 
+海南卫视 | probe | probe timeout
+海南卫视 | http | curl: (35) schannel: next InitializeSecurityContext failed: SEC_E_ILLEGAL_MESSAGE (0x80090326) - This error usually occurs when a fatal SSL/TLS alert is received (e.g. handshake fa
+河北卫视 | probe | probe timeout
+河南卫视 | http | HTTP 302
+河南卫视 | http | HTTP 302
+吉林卫视 | probe | [http @ 000002b226cf3080] Error reading HTTP response: End of file http://69.197.135.170:82/live/jlws.m3u8?jsbt=1792598973&jsbk=d4a0457ac802854e4901931e964f61c5&from=zbdq5: End of
+吉林卫视 | http | curl: (52) Empty reply from server 
+吉林卫视 | http | curl: (52) Empty reply from server 
+江西卫视 | http | curl: (63) Maximum file size exceeded 
+内蒙古卫视 | http | curl: (63) Maximum file size exceeded 
+宁夏卫视 | http | curl: (63) Maximum file size exceeded 
+青海卫视 | decode | decode timeout
+山东卫视 | probe | [http @ 0000016f692b4540] Error reading HTTP response: End of file http://173.208.208.10:82/live/sdws.m3u8?jsbt=1792599005&jsbk=b570a02d42da3a8112abc47d09f82b6b&from=zbdq5: End of
+山东卫视 | probe | [http @ 000002ac5d2858c0] Error reading HTTP response: End of file http://204.12.242.162:82/live/sdws.m3u8?jsbt=1792599002&jsbk=18e2a444485f3ad5969907633918b741&from=zbdq4: End of
+山西卫视 | http | HTTP 302
+山西卫视 | http | HTTP 302
+山西卫视 | http | curl: (52) Empty reply from server 
+陕西卫视 | http | curl: (28) Connection timed out after 5014 milliseconds 
+陕西卫视 | http | HTTP 302
+四川卫视 | http | curl: (63) Maximum file size exceeded 
+深圳卫视 | http | HTTP 404
+深圳卫视 | decode | [http @ 000001b8f68551c0] Error reading HTTP response: End of file [in#0 @ 000001b8f6854980] Error opening input: End of file Error opening input file http://208.110.86.66:82/liv
+三沙卫视 | probe | [http @ 0000024c0be93c40] Error reading HTTP response: End of file http://69.30.196.146:82/live/ssws.m3u8?jsbt=1792599013&jsbk=54f4b7f12752a5ce2d0e6fbfe6294c82&from=zbdq6: End of 
+天津卫视 | probe | [http @ 000001dfcdb0bd00] Error reading HTTP response: End of file http://173.208.208.10:82/live/tjws.m3u8?jsbt=1792599020&jsbk=6220d0ddc753fd871b1793114d0cad20&from=zbdq5: End of
+天津卫视 | http | HTTP 302
+西藏卫视 | http | curl: (63) Maximum file size exceeded 
+西藏卫视 | probe | [http @ 000001fd75927500] Error reading HTTP response: End of file http://69.30.196.146:82/live/xzws.m3u8?jsbt=1792599026&jsbk=4c19628dc3596f9f5be902ed3636bd80&from=zbdq5: End of 
+新疆卫视 | http | curl: (63) Maximum file size exceeded 
+新疆卫视 | http | curl: (52) Empty reply from server 
+云南卫视 | probe | [http @ 0000024d777bb700] Error reading HTTP response: End of file http://173.208.211.242:82/live/ynws.m3u8?jsbt=1792599031&jsbk=388a85f778ff16fb5800ea1bb8c6789a&from=zbdq7: End o
+云南卫视 | probe | [http @ 00000184b9a6af00] Error reading HTTP response: End of file http://173.208.211.242:82/live/ynws.m3u8?jsbt=1792599030&jsbk=1a90f06ff4f993d2b6052565f4b6744d&from=zbdq6: End o
+广东珠江 | http | HTTP 302
+广东珠江 | http | HTTP 302
+广东珠江 | http | HTTP 307
+广东体育 | http | HTTP 302
+广东新闻 | http | HTTP 403
+广东民生 | http | HTTP 404
+大湾区卫视 | http | HTTP 302
+大湾区卫视 | http | HTTP 302
+广州综合 | http | curl: (28) Connection timed out after 5015 milliseconds 
+广州综合 | decode | decode timeout
+广州影视 | http | curl: (28) Operation timed out after 10006 milliseconds with 0 bytes received 
+广州竞赛 | http | curl: (28) Connection timed out after 5009 milliseconds 
+江门综合 | http | curl: (28) Operation timed out after 10017 milliseconds with 0 bytes received 
+佛山综合 | http | curl: (28) Operation timed out after 10012 milliseconds with 0 bytes received 
+汕头综合 | http | curl: (28) Operation timed out after 10010 milliseconds with 0 bytes received 
+汕头经济 | http | curl: (28) Operation timed out after 10012 milliseconds with 0 bytes received 
+浙江钱江 | http | curl: (28) Connection timed out after 5014 milliseconds 
+浙江钱江都市 | http | curl: (28) Operation timed out after 10006 milliseconds with 0 bytes received 
+浙江生活 | probe | no readable video track/dimensions
+杭州综合 | http | curl: (28) Operation timed out after 10015 milliseconds with 0 bytes received 
+杭州明珠 | http | curl: (28) Operation timed out after 10008 milliseconds with 0 bytes received 
+杭州生活 | http | curl: (28) Operation timed out after 10002 milliseconds with 0 bytes received 
+杭州影视 | http | curl: (28) Operation timed out after 10003 milliseconds with 0 bytes received 
+FZTV-1 News 新闻综合频道 | http | curl: (52) Empty reply from server 
+湖州公共 | http | curl: (28) Operation timed out after 10007 milliseconds with 0 bytes received 
+湖州公共 | http | curl: (28) Operation timed out after 10005 milliseconds with 0 bytes received 
+浙江民生休闲 | http | curl: (28) Operation timed out after 10011 milliseconds with 0 bytes received 
+诸暨新闻综合 | http | curl: (28) Connection timed out after 5649 milliseconds 
+龙游生活娱乐 | probe | probe timeout
+遂昌综合 | probe | [http @ 000001e7a8dd4a80] Error reading HTTP response: Error number -138 occurred http://l.cztvcloud.com/channels/lantian/SXsuichang1/720p.m3u8?zzhed: Error number -138 occurred 
+衢江新闻综合 | http | curl: (28) Operation timed out after 10011 milliseconds with 0 bytes received 
+衢江新闻综合 | http | curl: (28) Operation timed out after 10014 milliseconds with 0 bytes received 
+萧山新闻综合 | http | curl: (28) Operation timed out after 10014 milliseconds with 0 bytes received 
+苍南新闻综合 | http | curl: (28) Operation timed out after 10013 milliseconds with 0 bytes received 
+苍南新闻综合 | http | curl: (28) Operation timed out after 10011 milliseconds with 0 bytes received 
+缙云综合 | probe | probe timeout
+缙云新闻综合 | decode | decode timeout
+绍兴电视台公共 | http | curl: (3) bad range specification in position 123: http://live.shaoxing.com.cn/video/s10001-sxtv2/index.m3u8?%E5%85%B3%E6%B3%A8%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7[%E6%99
+绍兴新闻综合 | http | curl: (28) Operation timed out after 10013 milliseconds with 0 bytes received 
+绍兴新闻综合 | http | curl: (28) Operation timed out after 10014 milliseconds with 0 bytes received 
+绍兴文化影院 | http | curl: (28) Operation timed out after 10016 milliseconds with 0 bytes received 
+绍兴文化影院 | http | curl: (28) Operation timed out after 10011 milliseconds with 0 bytes received 
+绍兴文化影视 | http | curl: (28) Operation timed out after 10011 milliseconds with 0 bytes received 
+绍兴文化影视 | http | curl: (28) Operation timed out after 10004 milliseconds with 0 bytes received 
+绍兴公共 | http | curl: (28) Operation timed out after 10007 milliseconds with 0 bytes received 
+洞头综合 | probe | probe timeout
+永嘉新闻综合 | http | curl: (28) Operation timed out after 10010 milliseconds with 0 bytes received 
+永嘉新闻综合 | http | curl: (28) Operation timed out after 10001 milliseconds with 0 bytes received 
+武义新闻综合 | http | curl: (28) Operation timed out after 10003 milliseconds with 0 bytes received 
+武义新闻综合 | decode | decode timeout
+普陀电视台 | decode | decode timeout
+新昌新闻综合 | http | curl: (28) Operation timed out after 10008 milliseconds with 0 bytes received 
+新昌新闻综合 | http | curl: (28) Operation timed out after 10010 milliseconds with 0 bytes received 
+新昌新闻综合 | decode | decode timeout
+文成综合 | decode | decode timeout
+文成新闻综合 | decode | [http @ 0000023bc7b5d3c0] Error reading HTTP response: Error number -138 occurred [in#0 @ 0000023bc7be2140] Error opening input: Error number -138 occurred Error opening input fi
+开化新闻综合 | http | curl: (28) Operation timed out after 10007 milliseconds with 0 bytes received 
+庆元综合 | probe | probe timeout
+庆元新闻综合 | decode | [http @ 0000021d89edd340] Error reading HTTP response: Error number -138 occurred [in#0 @ 0000021d89e43300] Error opening input: Error number -138 occurred Error opening input fi
+平湖民生休闲 | decode | [http @ 000001d5a58a7e80] Error reading HTTP response: Error number -138 occurred [in#0 @ 000001d5a58a5a40] Error opening input: Error number -138 occurred Error opening input fi
+平湖新闻综合 | http | curl: (28) Operation timed out after 10012 milliseconds with 0 bytes received 
+平湖新闻综合 | http | curl: (28) Operation timed out after 10009 milliseconds with 0 bytes received 
+嵊泗综合 | http | curl: (28) Connection timed out after 5015 milliseconds 
+嵊泗综合 | probe | [http @ 00000191d4e195c0] Error reading HTTP response: Error number -138 occurred http://l.cztvcloud.com/channels/lantian/SXshengsi1/720p.m3u8: Error number -138 occurred 
+嵊州新闻综合 | decode | [http @ 000001b31fccca80] Error reading HTTP response: Error number -138 occurred [in#0 @ 000001b31fcc4240] Error opening input: Error number -138 occurred Error opening input fi
+兰溪新闻综合 | http | curl: (28) Operation timed out after 10005 milliseconds with 0 bytes received 
+兰溪新闻综合 | http | curl: (28) Operation timed out after 10004 milliseconds with 0 bytes received 
+余杭综合 | probe | [http @ 0000012e9171f300] Error reading HTTP response: Error number -138 occurred http://l.cztvcloud.com/channels/lantian/SXyuhang1/720p.m3u8?zzhed: Error number -138 occurred 
+余杭未来E | decode | decode timeout
+余姚综合 | probe | probe timeout
+余姚新闻综合 | decode | [http @ 00000165bb9da740] Error reading HTTP response: Error number -138 occurred [in#0 @ 00000165bb9d3d80] Error opening input: Error number -138 occurred Error opening input fi
+余姚姚江文化 | http | curl: (28) Connection timed out after 5005 milliseconds 
+云和新闻综合 | decode | decode timeout
+东阳影视生活 | probe | probe timeout
+上虞新闻综合 | decode | [http @ 000001aaa7a540c0] Error reading HTTP response: Error number -138 occurred [in#0 @ 000001aaa7a53f40] Error opening input: Error number -138 occurred Error opening input fi
+上虞新商都 | http | curl: (28) Operation timed out after 10002 milliseconds with 0 bytes received 
+上虞文化影院 | http | curl: (28) Operation timed out after 10003 milliseconds with 0 bytes received 
+上虞文化影院 | http | curl: (28) Operation timed out after 10015 milliseconds with 0 bytes received 
+北京卡酷少儿 | http | curl: (35) schannel: next InitializeSecurityContext failed: SEC_E_ILLEGAL_MESSAGE (0x80090326) - This error usually occurs when a fatal SSL/TLS alert is received (e.g. handshake fa
+北京卡酷少儿 | http | curl: (7) Failed to connect to 2409:8087:1a15:10d1::33:80 after 0 ms: Could not connect to server 
+北京卡酷少儿 | http | curl: (7) Failed to connect to 2409:8087:5e08:25::16:6610 after 1 ms: Could not connect to server 
+北京新闻 | http | curl: (28) Operation timed out after 6213 milliseconds with 0 bytes received 
+北京新闻 | http | curl: (28) Operation timed out after 10004 milliseconds with 0 bytes received 
+北京新闻 | http | curl: (7) Failed to connect to 2409:8087:1:20:20::2a:80 after 0 ms: Could not connect to server 
+北京生活 | http | curl: (28) Connection timed out after 5002 milliseconds 
+北京财经 | http | curl: (35) schannel: failed to receive handshake, SSL/TLS connection failed 
+七彩戏剧 | http | HTTP 403
+上海外语 | http | HTTP 403
+上海新闻综合 | http | HTTP 403
+上海第一财经 | probe | no readable video track/dimensions
+上海纪实 | http | curl: (28) Operation timed out after 10009 milliseconds with 0 bytes received 
+上海纪实 | http | curl: (28) Operation timed out after 10008 milliseconds with 0 bytes received 
+上海都市 | http | curl: (35) schannel: next InitializeSecurityContext failed: SEC_E_ILLEGAL_MESSAGE (0x80090326) - This error usually occurs when a fatal SSL/TLS alert is received (e.g. handshake fa
+上海都市 | http | curl: (28) Connection timed out after 5007 milliseconds 
+上海都市 | http | curl: (28) Operation timed out after 10014 milliseconds with 0 bytes received 
+东方影视 | http | curl: (35) schannel: next InitializeSecurityContext failed: SEC_E_ILLEGAL_MESSAGE (0x80090326) - This error usually occurs when a fatal SSL/TLS alert is received (e.g. handshake fa
+东方影视 | http | curl: (28) Operation timed out after 10016 milliseconds with 0 bytes received 
+东方财经 | http | curl: (35) schannel: next InitializeSecurityContext failed: SEC_E_ILLEGAL_MESSAGE (0x80090326) - This error usually occurs when a fatal SSL/TLS alert is received (e.g. handshake fa
+动漫秀场 | http | curl: (35) schannel: next InitializeSecurityContext failed: SEC_E_ILLEGAL_MESSAGE (0x80090326) - This error usually occurs when a fatal SSL/TLS alert is received (e.g. handshake fa
+动漫秀场 | http | HTTP 403
+动漫秀场 | http | curl: (28) Operation timed out after 10016 milliseconds with 0 bytes received 
+哈哈炫动 | http | curl: (35) schannel: next InitializeSecurityContext failed: SEC_E_ILLEGAL_MESSAGE (0x80090326) - This error usually occurs when a fatal SSL/TLS alert is received (e.g. handshake fa
+哈哈炫动 | http | HTTP 302
+哈哈炫动 | http | curl: (7) Failed to connect to 2409:8087:8:21::18:6610 after 0 ms: Could not connect to server 
+崇明电视台 | http | HTTP 404
+欢笑剧场 | http | curl: (35) schannel: next InitializeSecurityContext failed: SEC_E_ILLEGAL_MESSAGE (0x80090326) - This error usually occurs when a fatal SSL/TLS alert is received (e.g. handshake fa
+欢笑剧场 | http | curl: (28) Operation timed out after 10007 milliseconds with 0 bytes received 
+法治天地 | http | curl: (35) schannel: next InitializeSecurityContext failed: SEC_E_ILLEGAL_MESSAGE (0x80090326) - This error usually occurs when a fatal SSL/TLS alert is received (e.g. handshake fa
+法治天地 | http | curl: (7) Failed to connect to 2409:8087:5e01:24::16:6610 after 0 ms: Could not connect to server 
+生活时尚 | http | curl: (35) schannel: next InitializeSecurityContext failed: SEC_E_ILLEGAL_MESSAGE (0x80090326) - This error usually occurs when a fatal SSL/TLS alert is received (e.g. handshake fa
+生活时尚 | http | curl: (28) Operation timed out after 10011 milliseconds with 0 bytes received 
+第一财经 | probe | no readable video track/dimensions
+第一财经 | http | curl: (35) schannel: next InitializeSecurityContext failed: SEC_E_ILLEGAL_MESSAGE (0x80090326) - This error usually occurs when a fatal SSL/TLS alert is received (e.g. handshake fa
+纪实人文 | http | curl: (28) Operation timed out after 10012 milliseconds with 0 bytes received 
+纪实人文 | http | curl: (28) Operation timed out after 10014 milliseconds with 0 bytes received 
+都市剧场 | probe | no readable video track/dimensions
+都市剧场 | http | curl: (35) schannel: next InitializeSecurityContext failed: SEC_E_ILLEGAL_MESSAGE (0x80090326) - This error usually occurs when a fatal SSL/TLS alert is received (e.g. handshake fa
+万源新闻综合 | http | HTTP 304
+万州综合 | http | HTTP 400
+万州三峡移民 | http | curl: (28) Operation timed out after 10008 milliseconds with 0 bytes received 
+东海新闻 | http | curl: (52) Empty reply from server 
+优漫卡通 | http | HTTP 403
+六合新闻综合 | http | HTTP 404
+南京十八 | http | HTTP 404
+南京十八 | http | HTTP 660
+南京少儿 | http | HTTP 403
+南京教科 | http | HTTP 404
+南京教科 | http | HTTP 660
+南京教科 | http | HTTP 403
+南京新闻综合 | http | HTTP 404
+南京新闻综合 | http | HTTP 660
+南京新闻综合 | http | HTTP 403
+南通新闻综合 | http | HTTP 404
+南通新闻综合 | http | HTTP 660
+宜兴新闻 | http | curl: (28) Operation timed out after 10013 milliseconds with 0 bytes received 
+宜兴新闻 | http | curl: (28) Operation timed out after 10013 milliseconds with 0 bytes received 
+宿迁公共 | http | curl: (52) Empty reply from server 
+常州公共 | http | curl: (52) Empty reply from server 
+常州生活 | http | curl: (52) Empty reply from server 
+常州都市 | http | curl: (52) Empty reply from server 
+徐州公共 | http | curl: (52) Empty reply from server 
+徐州新聞綜合 | http | curl: (28) Operation timed out after 10004 milliseconds with 0 bytes received 
+无锡娱乐 | http | HTTP 403
+无锡新闻综合 | http | HTTP 403
+无锡生活 | http | HTTP 403
+无锡经济 | http | HTTP 403
+无锡都市资讯 | http | HTTP 403
+武进生活 | http | curl: (28) Operation timed out after 10004 milliseconds with 0 bytes received 
+江宁新闻 | http | curl: (35) schannel: failed to receive handshake, SSL/TLS connection failed 
+江苏体育 | http | curl: (28) Operation timed out after 10010 milliseconds with 0 bytes received 
+江苏体育 | http | curl: (28) Operation timed out after 10002 milliseconds with 0 bytes received 
+江苏公共 | http | curl: (28) Operation timed out after 10013 milliseconds with 0 bytes received 
+江苏城市 | http | curl: (28) Operation timed out after 10015 milliseconds with 0 bytes received 
+江苏影视 | http | curl: (28) Operation timed out after 10016 milliseconds with 0 bytes received 
+江苏教育 | http | curl: (28) Operation timed out after 10009 milliseconds with 0 bytes received 
+江苏教育 | http | curl: (28) Operation timed out after 10015 milliseconds with 0 bytes received 
+江苏教育 | http | curl: (28) Operation timed out after 10003 milliseconds with 0 bytes received 
+沭阳综合 | probe | http://2586402072.cloudvdn.com:80/shuyang-tv/shuyangzh.m3u8?connectId=vRV0PuEYUxB6l-AY&domain=shuyang-tv-hls.cm.jstv.com&player=AQAAAOlbjRB6l-AY&streamid=shuyang-tv%2Fshuyangzh&v3=
+泗洪新闻综合 | http | curl: (28) Operation timed out after 10006 milliseconds with 0 bytes received 
+泗阳资讯 | http | curl: (28) Operation timed out after 10005 milliseconds with 0 bytes received 
+泰州一套新闻综合 | http | curl: (28) Operation timed out after 10009 milliseconds with 0 bytes received 
+涟水电视台综合 | probe | https://2586402071.cloudvdn.com:443/lianshui-tv/lsxw.m3u8?connectId=GZ4NxPdAN9B7l-AY&domain=lianshui-tv-hls.cm.jstv.com&player=AQAAAE1xbdB7l-AY&streamid=lianshui-tv%2Flsxw&v3=1: Se
+涟水电视台综合 | http | curl: (28) Operation timed out after 10009 milliseconds with 0 bytes received 
+涟水综合 | probe | http://2586402072.cloudvdn.com:80/lianshui-tv/lsxw.m3u8?connectId=XbnMh_wHZx57l-AY&domain=lianshui-tv-hls.cm.jstv.com&player=AQAAABHiph57l-AY&streamid=lianshui-tv%2Flsxw&v3=1: Serv
+淮安影院娱乐 | http | curl: (28) Operation timed out after 10003 milliseconds with 0 bytes received 
+淮安新闻综合 | http | HTTP 404
+淮安新闻综合 | http | HTTP 660
+淮阴综合 | http | HTTP 500
+溧水新闻综合 | http | HTTP 404
+溧水新闻综合 | http | HTTP 660
+滨海新闻综合 | http | HTTP 502
+睢宁三农 | http | curl: (52) Empty reply from server 
+睢宁综合 | http | curl: (52) Empty reply from server 
+睢宁资讯 | http | curl: (52) Empty reply from server 
+苏州4k | http | curl: (28) Operation timed out after 5555 milliseconds with 0 bytes received 
+连云港公共 | http | curl: (52) Empty reply from server 
+连云港新闻综合 | http | curl: (28) Operation timed out after 10008 milliseconds with 0 bytes received 
+镇江二套社会民生 | probe | probe timeout
+镇江新闻综合 | http | curl: (28) Operation timed out after 10013 milliseconds with 0 bytes received 
+靖江新闻综合 | probe | no readable video track/dimensions
+靖江新闻综合 | http | curl: (28) Operation timed out after 10005 milliseconds with 0 bytes received 
+辽宁北方 | http | curl: (28) Operation timed out after 10007 milliseconds with 0 bytes received 
+辽宁影视剧 | decode | [http @ 0000015a9db3f880] Error reading HTTP response: End of file [in#0 @ 0000015a9daa42c0] Error opening input: End of file Error opening input file http://120.76.248.139/live/
+辽宁都市 | probe | no readable video track/dimensions
+湖南都市 | http | curl: (28) Connection timed out after 5008 milliseconds 
+湖南经视 | http | curl: (28) Connection timed out after 5014 milliseconds 
+湖南电视剧 | http | curl: (28) Operation timed out after 10013 milliseconds with 0 bytes received 
+湖南电影 | probe | Not detecting m3u8/hls with non standard extension and non standard mime type     Last message repeated 1 times https://168.sryze.cc/163189/cctv1: Invalid data found when process
+湖南电影 | http | curl: (28) Operation timed out after 10002 milliseconds with 0 bytes received 
+湖南爱晚 | http | HTTP 302
+湖南教育 | http | curl: (28) Operation timed out after 10002 milliseconds with 0 bytes received 
+湖南娱乐 | http | curl: (28) Operation timed out after 10005 milliseconds with 0 bytes received 
+湖南国际 | http | curl: (28) Operation timed out after 10010 milliseconds with 0 bytes received 
+湖南公共 | http | curl: (28) Operation timed out after 10002 milliseconds with 0 bytes received 
+金鹰纪实 | http | curl: (28) Operation timed out after 10015 milliseconds with 0 bytes received 
+金鹰纪实 | http | curl: (28) Operation timed out after 10014 milliseconds with 0 bytes received 
+金鹰纪实 | http | HTTP 403
+长沙新闻综合 | probe | no readable video track/dimensions
+娄底综合 | http | curl: (52) Empty reply from server 
+湖北综合 | http | curl: (7) Failed to connect to 2409:8087:4c0a:22:1::11:6410 after 0 ms: Could not connect to server 
+湖北综合 | http | curl: (28) Operation timed out after 10006 milliseconds with 0 bytes received 
+湖北经视 | http | curl: (28) Operation timed out after 10007 milliseconds with 0 bytes received 
+湖北经视 | http | curl: (28) Operation timed out after 10012 milliseconds with 0 bytes received 
+湖北生活 | http | curl: (7) Failed to connect to 2409:8087:4c0a:22:1::11:6410 after 1 ms: Could not connect to server 
+湖北生活 | http | curl: (28) Operation timed out after 10005 milliseconds with 0 bytes received 
+湖北生活 | http | curl: (28) Operation timed out after 10009 milliseconds with 0 bytes received 
+湖北教育 | http | curl: (7) Failed to connect to 2409:8087:4c0a:22:1::11:6410 after 0 ms: Could not connect to server 
+湖北教育 | http | curl: (28) Operation timed out after 10006 milliseconds with 0 bytes received 
+湖北教育 | http | curl: (28) Operation timed out after 10010 milliseconds with 0 bytes received 
+湖北影视 | http | curl: (28) Operation timed out after 10004 milliseconds with 0 bytes received 
+湖北公共 | http | curl: (28) Operation timed out after 10013 milliseconds with 0 bytes received 
+湖北垄上 | http | curl: (7) Failed to connect to 2409:8087:4c0a:22:1::11:6410 after 0 ms: Could not connect to server 
+湖北垄上 | http | curl: (28) Operation timed out after 10002 milliseconds with 0 bytes received 
+湖北垄上 | http | curl: (28) Operation timed out after 10016 milliseconds with 0 bytes received 
+武汉一台新闻综合 | probe | no readable video track/dimensions
+武汉一台新闻综合 | http | curl: (28) Operation timed out after 10013 milliseconds with 0 bytes received 
+武汉二台电视剧 | http | curl: (28) Operation timed out after 10011 milliseconds with 0 bytes received 
+武汉四台经济 | http | curl: (28) Operation timed out after 10003 milliseconds with 0 bytes received 
+武汉教育 | http | curl: (28) Operation timed out after 10015 milliseconds with 0 bytes received 
+武汉文体 | probe | http://www.hiliu.myds.me:18088/rtp/239.69.1.147:10518: Error number -138 occurred 
+十堰新闻 | http | curl: (28) Operation timed out after 10010 milliseconds with 0 bytes received 
+荆门新闻综合 | probe | [http @ 0000019cb78a56c0] Error reading HTTP response: Error number -138 occurred http://stream.jmtv.com.cn/xwzh/sd/live.m3u8: Error number -138 occurred 
+荆门新闻综合 | http | curl: (28) Operation timed out after 10014 milliseconds with 0 bytes received 
+南宁公共 | http | curl: (28) Operation timed out after 10002 milliseconds with 0 bytes received 
+南宁新闻综合 | http | curl: (28) Operation timed out after 10006 milliseconds with 0 bytes received 
+南宁都市生活 | probe | probe timeout
+南宁都市生活 | http | curl: (28) Operation timed out after 10007 milliseconds with 0 bytes received 
+南宁都市生活 | http | curl: (28) Operation timed out after 10005 milliseconds with 0 bytes received 
+宾阳综合 | probe | [http @ 000001f9c7ec3300] Error reading HTTP response: Error number -138 occurred http://49c1f938208318cdf8288bc36b62472a.livehwc4.com/pulls.myun.tv/live/0dkp33j5.m3u8?sub_m3u8=tr
+灌阳新闻综合 | probe | no readable video track/dimensions
+南宁影视娱乐 | probe | [http @ 0000016663767700] Error reading HTTP response: Error number -138 occurred http://cb31e2526da6f06f5ceb3048d5a98912.livehwc4.com/hls.nntv.cn/nnlive/YSYL_244.m3u8?sub_m3u8=tr
+武清综合 | http | HTTP 403
+乐山新闻综合 | http | curl: (28) Operation timed out after 10007 milliseconds with 0 bytes received 
+井研综合 | http | HTTP 301
+叙州新闻综合 | http | curl: (28) Operation timed out after 10010 milliseconds with 0 bytes received 
+名山综合 | http | curl: (28) Connection timed out after 5013 milliseconds 
+四川科教 | http | curl: (28) Operation timed out after 10009 milliseconds with 0 bytes received 
+广元综合 | http | curl: (28) Operation timed out after 10010 milliseconds with 0 bytes received 
+德阳新闻综合 | http | curl: (28) Operation timed out after 10010 milliseconds with 0 bytes received 
+旺苍新闻综合 | http | curl: (28) Operation timed out after 10014 milliseconds with 0 bytes received 
+旺苍新闻综合 | http | curl: (3) bad range specification in position 108: http://live.spccmc.com:90/live/spxwzh.m3u8?%E5%85%B3%E6%B3%A8%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7[%E6%99%B4%E5%9B%AD] 
+汉源综合 | http | curl: (28) Operation timed out after 10016 milliseconds with 0 bytes received 
+泸县新闻综合 | http | curl: (28) Operation timed out after 10014 milliseconds with 0 bytes received 
+泸县新闻综合 | http | curl: (28) Operation timed out after 7841 milliseconds with 0 bytes received 
+绵阳科技 | http | curl: (28) Operation timed out after 10012 milliseconds with 0 bytes received 
+蓬安新闻综合 | http | curl: (28) Operation timed out after 10005 milliseconds with 0 bytes received 
+雅安新闻综合 | http | curl: (28) Connection timed out after 5008 milliseconds 
+陕西农林卫视 | http | curl: (28) Operation timed out after 10014 milliseconds with 0 bytes received 
+陕西新闻资讯 | http | HTTP 404
+陕西新闻资讯 | http | HTTP 660
+陕西都市青春 | http | HTTP 404
+陕西都市青春 | http | HTTP 660
+陕西公共 | probe | no readable video track/dimensions
+陕西体育休闲 | http | HTTP 404
+陕西体育休闲 | http | HTTP 660
+三明新闻综合 | probe | no readable video track/dimensions
+漳州新闻综合 | http | curl: (28) Operation timed out after 10005 milliseconds with 0 bytes received 
+福建新闻 | probe | no readable video track/dimensions
+福建电视剧 | http | HTTP 403
+福建经济 | probe | no readable video track/dimensions
+福建综合 | http | curl: (28) Operation timed out after 10001 milliseconds with 0 bytes received 
+福建公共 | http | curl: (63) Maximum file size exceeded 
+福建旅游 | http | curl: (63) Maximum file size exceeded 
+福建经视 | http | curl: (28) Operation timed out after 10007 milliseconds with 0 bytes received 
+福建少儿 | http | curl: (28) Operation timed out after 10001 milliseconds with 0 bytes received 
+福建海峡卫视 | http | HTTP 404
+福建海峡卫视 | http | curl: (28) Connection timed out after 5009 milliseconds 
+福建海峡卫视 | http | HTTP 302
+海南新闻 | http | curl: (28) Connection timed out after 5014 milliseconds 
+海南新闻 | probe | no readable video track/dimensions
+海南新闻 | http | curl: (28) Operation timed out after 10010 milliseconds with 0 bytes received 
+海南自贸 | http | curl: (28) Connection timed out after 5012 milliseconds 
+海南文旅 | http | curl: (28) Connection timed out after 5012 milliseconds 
+海南文旅 | http | curl: (28) Operation timed out after 10015 milliseconds with 0 bytes received 
+海南少儿 | http | curl: (28) Connection timed out after 5002 milliseconds 
+海南公共 | http | curl: (28) Connection timed out after 5014 milliseconds 
+海南公共 | http | curl: (28) Operation timed out after 10014 milliseconds with 0 bytes received 
+梨园 | http | curl: (28) Connection timed out after 5016 milliseconds 
+临颍综合 | http | curl: (3) bad range specification in position 109: http://tvpull.dxhmt.cn:9081/tv/11122-1.m3u8?%E5%85%B3%E6%B3%A8%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7[%E6%99%B4%E5%9B%AD]
+义马新闻综合 | http | curl: (3) bad range specification in position 109: http://tvpull.dxhmt.cn:9081/tv/11281-1.m3u8?%E5%85%B3%E6%B3%A8%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7[%E6%99%B4%E5%9B%AD]
+光山综合 | http | curl: (3) bad range specification in position 109: http://tvpull.dxhmt.cn:9081/tv/11522-1.m3u8?%E5%85%B3%E6%B3%A8%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7[%E6%99%B4%E5%9B%AD]
+兰考新闻 | http | curl: (3) bad range specification in position 109: http://tvpull.dxhmt.cn:9081/tv/10225-1.m3u8?%E5%85%B3%E6%B3%A8%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7[%E6%99%B4%E5%9B%AD]
+卫辉综合 | http | curl: (3) bad range specification in position 109: http://tvpull.dxhmt.cn:9081/tv/10781-1.m3u8?%E5%85%B3%E6%B3%A8%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7[%E6%99%B4%E5%9B%AD]
+卫辉综合 | http | curl: (28) Operation timed out after 10008 milliseconds with 0 bytes received 
+叶县 | http | HTTP 403
+唐河一套 | http | HTTP 403
+固始综合 | http | curl: (3) bad range specification in position 109: http://tvpull.dxhmt.cn:9081/tv/11525-1.m3u8?%E5%85%B3%E6%B3%A8%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7[%E6%99%B4%E5%9B%AD]
+宝丰综合 | http | curl: (3) bad range specification in position 109: http://tvpull.dxhmt.cn:9081/tv/10421-1.m3u8?%E5%85%B3%E6%B3%A8%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7[%E6%99%B4%E5%9B%AD]
+巩义新闻综合 | http | HTTP 403
+扶沟综合 | http | curl: (3) bad range specification in position 109: http://tvpull.dxhmt.cn:9081/tv/11621-1.m3u8?%E5%85%B3%E6%B3%A8%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7[%E6%99%B4%E5%9B%AD]
+新乡县电视台 | http | curl: (3) bad range specification in position 109: http://tvpull.dxhmt.cn:9081/tv/10721-1.m3u8?%E5%85%B3%E6%B3%A8%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7[%E6%99%B4%E5%9B%AD]
+新县综合 | http | curl: (3) bad range specification in position 109: http://tvpull.dxhmt.cn:9081/tv/11523-1.m3u8?%E5%85%B3%E6%B3%A8%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7[%E6%99%B4%E5%9B%AD]
+新蔡综合 | http | curl: (3) bad range specification in position 109: http://tvpull.dxhmt.cn:9081/tv/11729-1.m3u8?%E5%85%B3%E6%B3%A8%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7[%E6%99%B4%E5%9B%AD]
+桐柏新闻综合 | http | HTTP 403
+泌阳新闻综合 | http | curl: (3) bad range specification in position 109: http://tvpull.dxhmt.cn:9081/tv/11726-1.m3u8?%E5%85%B3%E6%B3%A8%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7[%E6%99%B4%E5%9B%AD]
+泌阳新闻综合 | http | curl: (28) Connection timed out after 5007 milliseconds 
+淅川电视 | http | curl: (28) Operation timed out after 10016 milliseconds with 0 bytes received 
+渑池新闻综合 | http | curl: (3) bad range specification in position 109: http://tvpull.dxhmt.cn:9081/tv/11221-1.m3u8?%E5%85%B3%E6%B3%A8%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7[%E6%99%B4%E5%9B%AD]
+温县综合 | http | HTTP 403
+潢川综合 | http | curl: (3) bad range specification in position 109: http://tvpull.dxhmt.cn:9081/tv/11526-1.m3u8?%E5%85%B3%E6%B3%A8%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7[%E6%99%B4%E5%9B%AD]
+焦作综合 | http | curl: (28) Operation timed out after 10004 milliseconds with 0 bytes received 
+登封综合 | http | curl: (3) bad range specification in position 109: http://tvpull.dxhmt.cn:9081/tv/10185-1.m3u8?%E5%85%B3%E6%B3%A8%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7[%E6%99%B4%E5%9B%AD]
+登封综合 | http | curl: (28) Operation timed out after 10015 milliseconds with 0 bytes received 
+禹州综合 | http | curl: (3) bad range specification in position 109: http://tvpull.dxhmt.cn:9081/tv/11081-1.m3u8?%E5%85%B3%E6%B3%A8%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7[%E6%99%B4%E5%9B%AD]
+西华综合 | http | curl: (3) bad range specification in position 109: http://tvpull.dxhmt.cn:9081/tv/11622-1.m3u8?%E5%85%B3%E6%B3%A8%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7[%E6%99%B4%E5%9B%AD]
+郏县综合 | http | curl: (3) bad range specification in position 109: http://tvpull.dxhmt.cn:9081/tv/10425-1.m3u8?%E5%85%B3%E6%B3%A8%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7[%E6%99%B4%E5%9B%AD]
+郸城新闻综合 | http | HTTP 403
+郸城新闻综合 | http | curl: (28) Operation timed out after 10011 milliseconds with 0 bytes received 
+郸城新闻综合 | http | curl: (28) Operation timed out after 10005 milliseconds with 0 bytes received 
+鄢陵综合 | http | curl: (3) bad range specification in position 109: http://tvpull.dxhmt.cn:9081/tv/11024-1.m3u8?%E5%85%B3%E6%B3%A8%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7[%E6%99%B4%E5%9B%AD]
+项城新闻 | http | HTTP 403
+鹤壁综合 | http | curl: (28) Operation timed out after 10013 milliseconds with 0 bytes received 
+邓州新闻 | http | curl: (3) bad range specification in position 109: http://tvpull.dxhmt.cn:9081/tv/11381-1.m3u8?%E5%85%B3%E6%B3%A8%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7[%E6%99%B4%E5%9B%AD]
+许昌公共 | http | curl: (28) Operation timed out after 10003 milliseconds with 0 bytes received 
+荥阳综合 | http | HTTP 403
+焦作教育 | http | curl: (28) Operation timed out after 10015 milliseconds with 0 bytes received 
+焦作公共 | http | curl: (28) Operation timed out after 10002 milliseconds with 0 bytes received 
+灵宝新闻综合 | http | HTTP 403
+濮阳公共 | http | curl: (28) Operation timed out after 10009 milliseconds with 0 bytes received 
+滑县新闻 | http | curl: (3) bad range specification in position 109: http://tvpull.dxhmt.cn:9081/tv/10526-1.m3u8?%E5%85%B3%E6%B3%A8%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7[%E6%99%B4%E5%9B%AD]
+济源电视一套 | http | HTTP 403
+洛阳综合 | http | curl: (28) Operation timed out after 5421 milliseconds with 0 bytes received 
+洛阳综合 | http | curl: (28) Operation timed out after 10008 milliseconds with 0 bytes received 
+洛阳科教 | http | curl: (28) Operation timed out after 10012 milliseconds with 0 bytes received 
+洛阳科教 | http | curl: (28) Operation timed out after 10002 milliseconds with 0 bytes received 
+洛阳科教 | http | curl: (28) Operation timed out after 10011 milliseconds with 0 bytes received 
+洛阳文旅 | http | curl: (28) Connection timed out after 5009 milliseconds 
+洛阳文旅 | http | curl: (28) Operation timed out after 10005 milliseconds with 0 bytes received 
+河南都市 | http | HTTP 302
+河南民生 | http | curl: (28) Connection timed out after 5012 milliseconds 
+沁阳新闻综合 | http | curl: (28) Operation timed out after 10012 milliseconds with 0 bytes received 
+沁阳新闻综合 | http | curl: (52) Empty reply from server 
+永城综合 | http | HTTP 403
+方城一套 | http | HTTP 403
+新野综合 | http | HTTP 403
+新安新闻综合 | http | HTTP 403
+开封新闻综合 | http | curl: (28) Operation timed out after 10013 milliseconds with 0 bytes received 
+开封新闻综合 | http | HTTP 403
+开封文化旅游 | http | HTTP 403
+嵩县综合新闻 | http | curl: (52) Empty reply from server 
+宜阳综合 | http | HTTP 403
+宜阳综合 | http | curl: (28) Operation timed out after 10002 milliseconds with 0 bytes received 
+周口新闻综合 | http | curl: (28) Operation timed out after 10005 milliseconds with 0 bytes received 
+内黄综合 | http | HTTP 403
+内乡综合 | http | curl: (3) bad range specification in position 109: http://tvpull.dxhmt.cn:9081/tv/11325-1.m3u8?%E5%85%B3%E6%B3%A8%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7[%E6%99%B4%E5%9B%AD]
+偃师新闻 | http | HTTP 403
+鹿泉一套 | http | HTTP 404
+邯郸公共 | http | HTTP 404
+邯郸新闻 | http | HTTP 404
+邯郸科教 | http | HTTP 404
+邢台综合 | http | curl: (28) Operation timed out after 10011 milliseconds with 0 bytes received 
+衡水公共 | probe | no readable video track/dimensions
+石家庄都市 | http | curl: (28) Operation timed out after 10004 milliseconds with 0 bytes received 
+石家庄生活 | http | curl: (28) Operation timed out after 10010 milliseconds with 0 bytes received 
+石家庄新闻综合 | http | curl: (28) Operation timed out after 10007 milliseconds with 0 bytes received 
+石家庄娱乐 | http | curl: (28) Operation timed out after 10013 milliseconds with 0 bytes received 
+河北都市 | http | curl: (28) Operation timed out after 10015 milliseconds with 0 bytes received 
+河北农民 | probe | no readable video track/dimensions
+河北农民 | http | curl: (28) Operation timed out after 10008 milliseconds with 0 bytes received 
+任丘文娱 | http | HTTP 404
+平泉影视 | http | HTTP 404
+清河新闻综合 | http | HTTP 404
+甘肃经济 | probe | [tls @ 0000025a1cbc4980] Error in the pull function. [tls @ 0000025a1cbc4980] IO error: End of file https://tg0b3gr4dymttgwanhcjqghh14h5bqt1sa5djqt1zy7mcpozgg5u1f3tsh.100ycdn.com
+甘肃公共 | http | curl: (28) Connection timed out after 5002 milliseconds 
+甘肃都市 | probe | no readable video track/dimensions
+甘肃都市 | http | curl: (28) Connection timed out after 5013 milliseconds 
+永昌综合 | decode | decode timeout
+甘肃少儿 | http | curl: (28) Connection timed out after 5013 milliseconds 
+白银综合 | probe | [http @ 000002848159f680] Error reading HTTP response: Error number -138 occurred http://v4-8f4aa12f6cd9a7dbf594514f1bff724a.livehwc4.com/play.kankanlive.com/live/1720408089419110
+秦安综合 | probe | [tls @ 00000207815490c0] Error in the pull function. [tls @ 00000207815490c0] IO error: Error number -138 occurred [https @ 00000207815ce8c0] Error reading HTTP response: Error n
+酒泉综合 | http | curl: (28) Connection timed out after 5013 milliseconds 
+哈密二套 | http | curl: (28) Connection timed out after 5009 milliseconds 
+哈密三套 | http | curl: (28) Connection timed out after 5005 milliseconds 
+伊犁哈萨克 | probe | probe timeout
+伊犁经济法制 | probe | probe timeout
+山东新闻 | http | HTTP 403
+山东教育 | http | curl: (28) Connection timed out after 5015 milliseconds 
+山东教育 | http | curl: (28) Operation timed out after 10002 milliseconds with 0 bytes received 
+山东体育 | http | curl: (28) Operation timed out after 10012 milliseconds with 0 bytes received 
+济南综合 | http | curl: (28) Operation timed out after 10009 milliseconds with 0 bytes received 
+济南新闻综合 | http | curl: (28) Operation timed out after 10006 milliseconds with 0 bytes received 
+济南教育 | http | curl: (28) Operation timed out after 10015 milliseconds with 0 bytes received 
+潍坊新闻综合 | http | curl: (28) Operation timed out after 10002 milliseconds with 0 bytes received 
+太谷新闻综合 | http | curl: (28) Connection timed out after 5006 milliseconds 
+定襄综合 | http | curl: (28) Operation timed out after 10015 milliseconds with 0 bytes received 
+武乡新闻综合 | http | curl: (28) Operation timed out after 10012 milliseconds with 0 bytes received 
+汾西综合 | probe | [tls @ 0000017e9057a5c0] Error in the pull function. [tls @ 0000017e9057a5c0] IO error: Error number -138 occurred https://qmmqvzoz.live.sxmty.com/live/hls/f24f8a390c084386a56407
+运城科技教育 | http | curl: (28) Operation timed out after 10005 milliseconds with 0 bytes received 
+黎城综合 | http | curl: (3) bad range specification in position 108: http://111.53.96.67:8081/live/1/index.m3u8?%E5%85%B3%E6%B3%A8%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7[%E6%99%B4%E5%9B%AD] 
+安徽国际 | content | HTML/XML instead of a video stream
+安徽影视 | http | curl: (28) Operation timed out after 10013 milliseconds with 0 bytes received 
+安徽影视 | http | curl: (28) Connection timed out after 5012 milliseconds 
+安徽影视 | http | curl: (28) Operation timed out after 10005 milliseconds with 0 bytes received 
+安徽经济生活 | http | curl: (28) Operation timed out after 10006 milliseconds with 0 bytes received 
+安徽综艺体育 | http | HTTP 403
+安徽综艺体育 | http | curl: (28) Operation timed out after 10008 milliseconds with 0 bytes received 
+安徽导视 | http | curl: (28) Connection timed out after 5006 milliseconds 
+固镇新闻 | http | curl: (3) bad range specification in position 110: http://www.guzhenm.com:7001/hls/hd-live.m3u8?%E5%85%B3%E6%B3%A8%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7[%E6%99%B4%E5%9B%AD]
+黄山新闻综合 | http | curl: (52) Empty reply from server 
+黄山公共生活 | http | curl: (52) Empty reply from server 
+铜陵新闻综合 | probe | no readable video track/dimensions
+滁州科教 | http | curl: (28) Operation timed out after 10015 milliseconds with 0 bytes received 
+滁州新闻综合 | http | curl: (28) Operation timed out after 10008 milliseconds with 0 bytes received 
+滁州公共 | http | curl: (28) Operation timed out after 10011 milliseconds with 0 bytes received 
+广德生活 | http | curl: (28) Operation timed out after 8116 milliseconds with 0 bytes received 
+宿州科教 | http | curl: (28) Operation timed out after 10006 milliseconds with 0 bytes received 
+宿州新闻综合 | probe | [http @ 000001495e5e31c0] Error reading HTTP response: Error number -138 occurred http://live.ahsz.tv/video/s10001-szzh/index.m3u8: Error number -138 occurred 
+宿州新闻综合 | http | curl: (28) Operation timed out after 10013 milliseconds with 0 bytes received 
+宿州公共 | probe | [http @ 0000024e59a63440] Error reading HTTP response: Error number -138 occurred http://live.ahsz.tv/video/s10001-ggpd/index.m3u8: Error number -138 occurred 
+六安新闻综合 | probe | no readable video track/dimensions
+六安公共 | probe | no readable video track/dimensions
+宁夏经济 | http | HTTP 404
+延边卫视 | http | curl: (28) Operation timed out after 6550 milliseconds with 0 bytes received 
+吉林乡村 | probe | no readable video track/dimensions
+长白朝语 | http | curl: (52) Empty reply from server 
+珲春新闻综合 | http | curl: (28) Operation timed out after 10013 milliseconds with 0 bytes received 
+内蒙经济 | http | curl: (28) Connection timed out after 5004 milliseconds 
+内蒙农牧 | http | HTTP 404
+内蒙古少儿 | http | HTTP 404
+内蒙古文体娱乐 | http | HTTP 404
+内蒙古蒙语文化 | http | HTTP 404
+文山州公共 | http | curl: (28) Operation timed out after 10003 milliseconds with 0 bytes received 
+文山州新闻综合 | http | curl: (28) Operation timed out after 10014 milliseconds with 0 bytes received 
+易门综合 | http | curl: (28) Operation timed out after 5025 milliseconds with 0 bytes received 
+陇川综合 | http | curl: (28) Operation timed out after 10010 milliseconds with 0 bytes received 
+云南都市 | http | curl: (35) schannel: next InitializeSecurityContext failed: SEC_E_CERT_EXPIRED (0x80090328) - �յ���֤���ѹ��ڡ� 
+云南娱乐 | http | curl: (35) schannel: next InitializeSecurityContext failed: SEC_E_CERT_EXPIRED (0x80090328) - �յ���֤���ѹ��ڡ� 
+安多卫视 | http | HTTP 404
+安多卫视 | http | curl: (28) Operation timed out after 10011 milliseconds with 0 bytes received 
+西宁新闻综合 | http | HTTP 404
+西宁生活服务 | http | curl: (28) Operation timed out after 10010 milliseconds with 0 bytes received 
+西宁生活服务 | http | curl: (28) Operation timed out after 10008 milliseconds with 0 bytes received 
+青海都市 | http | curl: (7) Failed to connect to 2409:8087:1e01:20::3:80 after 0 ms: Could not connect to server 
+黑龙江文体 | http | curl: (7) Failed to connect to 2409:8087:1a01:df::7005:80 after 0 ms: Could not connect to server 
+黑龙江文体 | http | curl: (7) Failed to connect to 2409:8087:1a01:df::4025:80 after 0 ms: Could not connect to server 
+黑龙江文体 | http | curl: (28) Operation timed out after 10011 milliseconds with 0 bytes received 
+黑龙江新闻法治 | http | curl: (7) Failed to connect to 2409:8087:1a01:df::7005:80 after 0 ms: Could not connect to server 
+黑龙江新闻法治 | http | curl: (28) Operation timed out after 10009 milliseconds with 0 bytes received 
+黑龙江影视 | http | curl: (7) Failed to connect to 2409:8087:1a01:df::7005:80 after 0 ms: Could not connect to server 
+黑龙江影视 | http | curl: (28) Operation timed out after 10006 milliseconds with 0 bytes received 
+黑龙江都市 | http | curl: (7) Failed to connect to 2409:8087:1a01:df::7005:80 after 0 ms: Could not connect to server 
+黑龙江都市 | http | curl: (7) Failed to connect to 2409:8087:1a01:df::4025:80 after 1 ms: Could not connect to server 
+黑龙江都市 | http | curl: (7) Failed to connect to 2409:8087:1a01:df::4055:80 after 0 ms: Could not connect to server 
+黑龙江少儿 | http | curl: (7) Failed to connect to 2409:8087:1a01:df::7005:80 after 0 ms: Could not connect to server 
+黑龙江少儿 | probe | no readable video track/dimensions
+黑龙江少儿 | http | curl: (28) Operation timed out after 10006 milliseconds with 0 bytes received 
+黑龙江新闻 | probe | [tls @ 000002014a81d280] Error in the pull function. [tls @ 000002014a81d280] IO error: End of file https://ls.qingting.fm/live/4974/64k.m3u8: End of file 
+黑龙江新闻 | http | HTTP 301
+黑龙江新闻 | http | curl: (28) Operation timed out after 10007 milliseconds with 0 bytes received 
+哈尔滨新闻综合 | http | curl: (28) Connection timed out after 5011 milliseconds 
+大庆新闻综合 | http | curl: (28) Connection timed out after 5015 milliseconds 
+鹤岗新闻综合 | http | curl: (7) Failed to connect to 2409:8087:1a01:df::4059:80 after 0 ms: Could not connect to server 
+鹤岗新闻综合 | http | curl: (7) Failed to connect to 2409:8087:1a01:df::4060:80 after 0 ms: Could not connect to server 
+齐齐哈尔新闻综合 | http | HTTP 302
+齐齐哈尔新闻综合 | http | curl: (7) Failed to connect to 2409:8087:1a15:10d1::31:80 after 1 ms: Could not connect to server 
+齐齐哈尔新闻综合 | http | curl: (28) Operation timed out after 10004 milliseconds with 0 bytes received 
+双鸭山综合 | http | curl: (52) Empty reply from server 
+七台河民生社教 | http | curl: (52) Empty reply from server 
+翡翠台 | http | curl: (52) Empty reply from server 
+明珠台 | http | HTTP 403
+凤凰资讯 | probe | Not detecting m3u8/hls with non standard extension and non standard mime type https://cdn6.cc.cd/163189/fhzx: I/O error 
+凤凰资讯 | probe | Not detecting m3u8/hls with non standard extension and non standard mime type https://cdn6.cc.cd/163189/fhzx: I/O error 
+凤凰香港 | probe | Not detecting m3u8/hls with non standard extension and non standard mime type https://cdn6.cc.cd/163189/fhhk: I/O error 
+凤凰香港 | probe | [tls @ 000001f425e9a880] Error in the pull function. [tls @ 000001f425e9a880] IO error: End of file https://cdn6.cc.cd/163189/fhhk: End of file 
+凤凰香港 | http | curl: (35) schannel: next InitializeSecurityContext failed: SEC_E_ILLEGAL_MESSAGE (0x80090326) - This error usually occurs when a fatal SSL/TLS alert is received (e.g. handshake fa
+纬来体育 | http | curl: (35) schannel: failed to receive handshake, SSL/TLS connection failed 
+纬来体育 | http | curl: (28) Operation timed out after 6199 milliseconds with 0 bytes received 
+纬来体育 | http | HTTP 403
+纬来育乐 | http | HTTP 403
+J2 | http | HTTP 403
+Viutv | probe | Not detecting m3u8/hls with non standard extension and non standard mime type https://10.fast.hidns.vip/163189/viu/video/index.php: I/O error 
+Viutv | http | curl: (52) Empty reply from server 
+Viutv | http | HTTP 404
+三立台湾 | http | HTTP 403
+无线新闻 | probe | Not detecting m3u8/hls with non standard extension and non standard mime type https://cdn6.cc.cd/163189/wxxw: I/O error 
+无线新闻 | http | HTTP 523
+三立新闻 | http | curl: (28) Operation timed out after 10006 milliseconds with 0 bytes received 
+三立新闻 | http | HTTP 403
+三立新闻 | content | channel playlist, not an HLS media stream
+东森综合 | http | HTTP 403
+东森电影 | http | HTTP 403
+东森电影 | http | curl: (28) Operation timed out after 10010 milliseconds with 0 bytes received 
+靖天资讯 | http | HTTP 308
+靖天资讯 | http | HTTP 403
+新动漫 | http | curl: (28) Connection timed out after 5002 milliseconds 
+新动漫 | http | curl: (28) Operation timed out after 11773 milliseconds with 0 bytes received 
+爱动漫 | http | HTTP 302
+爱动漫 | http | curl: (7) Failed to connect to 2409:8087:5e08:24::17:6610 after 0 ms: Could not connect to server 
+爱动漫 | http | curl: (7) Failed to connect to 2409:8087:5e08:24::11:6610 after 0 ms: Could not connect to server 
+CN卡通 | http | HTTP 403
+CN卡通 | http | curl: (28) Operation timed out after 10008 milliseconds with 0 bytes received 
+优漫卡通 | http | curl: (28) Operation timed out after 10014 milliseconds with 0 bytes received 
+优漫卡通 | http | curl: (35) schannel: next InitializeSecurityContext failed: SEC_E_CERT_EXPIRED (0x80090328) - �յ���֤���ѹ��ڡ� 
+金鹰卡通 | http | curl: (35) schannel: next InitializeSecurityContext failed: SEC_E_ILLEGAL_MESSAGE (0x80090326) - This error usually occurs when a fatal SSL/TLS alert is received (e.g. handshake fa
+金鹰卡通 | http | curl: (28) Operation timed out after 10009 milliseconds with 0 bytes received 
+浙江少儿 | http | curl: (28) Operation timed out after 10014 milliseconds with 0 bytes received 
+河北少儿科教 | http | HTTP 403
+七龙珠 | http | HTTP 302
+火影忍者 | http | HTTP 302
+中华小当家 | http | curl: (56) schannel: failed to read data from server: SEC_E_DECRYPT_FAILURE (0x80090330) - �޷�����ָ�������ݡ� 
+中华小当家 | http | HTTP 302
+猫和老鼠 | http | curl: (56) schannel: failed to read data from server: SEC_E_DECRYPT_FAILURE (0x80090330) - �޷�����ָ�������ݡ� 
+猫和老鼠 | http | HTTP 302
+蜡笔小新 | http | HTTP 404
+漫画解说 | http | curl: (28) Operation timed out after 6405 milliseconds with 0 bytes received 
+漫画解说 | http | HTTP 502
+CCTV-4 中文国际（美） Ⓢ | http | curl: (35) schannel: next InitializeSecurityContext failed: SEC_E_CERT_EXPIRED (0x80090328) - �յ���֤���ѹ��ڡ� 
+CGTN Français | probe | [tls @ 00000250abaab780] Error in the pull function. [tls @ 00000250abaab780] IO error: End of file https://livefr.cgtn.com/200f/prog_index.m3u8: End of file 
+HOY TV Ⓖ | http | HTTP 403
+TVB News Channel | http | curl: (35) schannel: failed to receive handshake, SSL/TLS connection failed 
+TVB Finance (Sports & Information Channel) | http | curl: (35) schannel: failed to receive handshake, SSL/TLS connection failed 
+CGTN Pусский | probe | [tls @ 000002a4e0eea300] Error in the pull function. [tls @ 000002a4e0eea300] IO error: End of file https://liveru.cgtn.com/200r/prog_index.m3u8: End of file 
+CTV (中視) Ⓨ | content | HTML/XML instead of a video stream
+CTV News Channel (中視新聞台) Ⓨ | content | HTML/XML instead of a video stream
+PTS (公視主頻) Ⓨ | content | HTML/XML instead of a video stream
+PTS Taigi (公視台語台) Ⓨ Ⓖ | content | HTML/XML instead of a video stream
+TaiwanPlus Ⓨ | content | HTML/XML instead of a video stream
+FTV News (民視新聞台) Ⓨ | content | HTML/XML instead of a video stream
+FTV Taiwan (民視台灣台) | http | curl: (52) Empty reply from server 
+TTV Main Channel (臺灣電視台) Ⓨ Ⓖ | content | HTML/XML instead of a video stream
+TTV News (台視新聞台) Ⓨ | content | HTML/XML instead of a video stream
+Congress Channel 1 Ⓨ | content | HTML/XML instead of a video stream
+Congress Channel 2 Ⓨ | content | HTML/XML instead of a video stream
+CGTN Documentary English Ⓢ | probe | [tls @ 00000232713c8ac0] Error in the pull function. [tls @ 00000232713c8ac0] IO error: End of file https://livedoc.cgtn.com/200d/prog_index.m3u8: End of file 
+CGTN العربية | http | curl: (28) Operation timed out after 10014 milliseconds with 0 bytes received 
+CGTN | probe | [tls @ 0000016a561e6240] Error in the pull function. [tls @ 0000016a561e6240] IO error: End of file https://live.cgtn.com/200/prog_index.m3u8: End of file 
+Taiwan+ | http | curl: (35) schannel: failed to receive handshake, SSL/TLS connection failed 
+CGTN Español | probe | [tls @ 000002e05e7cf540] Error in the pull function. [tls @ 000002e05e7cf540] IO error: End of file https://livees.cgtn.com/200e/prog_index.m3u8: End of file 
+澳视澳门 | http | curl: (35) schannel: failed to receive handshake, SSL/TLS connection failed 
+澳视葡文 | http | curl: (35) schannel: failed to receive handshake, SSL/TLS connection failed 
+澳门卫星 | http | curl: (35) schannel: failed to receive handshake, SSL/TLS connection failed 
+澳门体育 | http | curl: (35) schannel: failed to receive handshake, SSL/TLS connection failed 
+澳门资讯 | http | curl: (28) Connection timed out after 5001 milliseconds 
+澳门综艺 | http | curl: (35) schannel: failed to receive handshake, SSL/TLS connection failed 
+澳亚卫视 | http | curl: (28) Connection timed out after 5012 milliseconds 
+澳视澳门 | http | curl: (35) schannel: failed to receive handshake, SSL/TLS connection failed 
+澳门资讯 | http | curl: (35) schannel: failed to receive handshake, SSL/TLS connection failed 
+莲花卫视 | content | HTML/XML instead of a video stream
+澳视澳门 | http | curl: (52) Empty reply from server 
+澳视葡文 | http | curl: (52) Empty reply from server 
+澳门卫星 | http | curl: (52) Empty reply from server 
+澳门体育 | http | curl: (52) Empty reply from server 
+澳门资讯 | http | curl: (52) Empty reply from server 
+澳门综艺 | http | curl: (52) Empty reply from server 
+澳视澳门 | http | curl: (52) Empty reply from server 
+澳门资讯 | http | curl: (52) Empty reply from server 
+澳亚卫视 | http | curl: (52) Empty reply from server 
+澳门莲花 | http | curl: (52) Empty reply from server 

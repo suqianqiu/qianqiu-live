@@ -1,0 +1,62 @@
+[
+  {
+    "name": "澳视澳门",
+    "info": "#EXTINF:-1 tvg-id=\"TDMOuMun.mo\" group-title=\"澳门\",澳视澳门",
+    "url": "https://live4.tdm.com.mo/ch1/ch1.live/playlist.m3u8",
+    "source": "iptv-mo"
+  },
+  {
+    "name": "澳视葡文",
+    "info": "#EXTINF:-1 tvg-id=\"CanalMacau.mo\" group-title=\"澳门\",澳视葡文",
+    "url": "https://live4.tdm.com.mo/ch2/ch2.live/playlist.m3u8",
+    "source": "iptv-mo"
+  },
+  {
+    "name": "澳门卫星",
+    "info": "#EXTINF:-1 tvg-id=\"TDMMacauSatellite.mo\" group-title=\"澳门\",澳门卫星",
+    "url": "https://live4.tdm.com.mo/ch3/ch3.live/playlist.m3u8",
+    "source": "iptv-mo"
+  },
+  {
+    "name": "澳门体育",
+    "info": "#EXTINF:-1 tvg-id=\"TDMSports.mo\" group-title=\"澳门\",澳门体育",
+    "url": "https://live4.tdm.com.mo/ch4/sport_ch4.live/playlist.m3u8",
+    "source": "iptv-mo"
+  },
+  {
+    "name": "澳门资讯",
+    "info": "#EXTINF:-1 tvg-id=\"TDMInformation.mo\" group-title=\"澳门\",澳门资讯",
+    "url": "https://live4.tdm.com.mo/ch5/info_ch5.live/playlist.m3u8",
+    "source": "iptv-mo"
+  },
+  {
+    "name": "澳门综艺",
+    "info": "#EXTINF:-1 tvg-id=\"TDMEntertainment.mo\" group-title=\"澳门\",澳门综艺",
+    "url": "https://live4.tdm.com.mo/ch6/hd_ch6.live/playlist.m3u8",
+    "source": "iptv-mo"
+  },
+  {
+    "name": "澳亚卫视",
+    "info": "#EXTINF:-1 tvg-id=\"MASTV.mo\" group-title=\"澳门\",澳亚卫视",
+    "url": "https://live.mastvnet.com/lsdream/lY44pmm/2000/live.m3u8",
+    "source": "iptv-mo"
+  },
+  {
+    "name": "澳视澳门",
+    "info": "#EXTINF:-1 tvg-id=\"TDMOuMun.mo\" group-title=\"澳门\",澳视澳门",
+    "url": "https://live4.tdm.com.mo/ch1/_definst_/ch1.live/playlist.m3u8",
+    "source": "iptv-mo"
+  },
+  {
+    "name": "澳门资讯",
+    "info": "#EXTINF:-1 tvg-id=\"TDMInformation.mo\" group-title=\"澳门\",澳门资讯",
+    "url": "https://live4.tdm.com.mo/ch5/_definst_/info_ch5.live/playlist.m3u8",
+    "source": "iptv-mo"
+  },
+  {
+    "name": "莲花卫视",
+    "info": "#EXTINF:-1 tvg-id=\"LotusTV.mo\" group-title=\"澳门\",莲花卫视",
+    "url": "http://anren.live/HK/BiIOU11uLA.m3u8",
+    "source": "iptv-mo"
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "name": "yang-gather",
+    "source_url": "https://raw.githubusercontent.com/YanG-1989/m3u/main/Gather.m3u",
+    "error": "",
+    "ok": true
+  },
+  {
+    "name": "guovin",
+    "source_url": "https://raw.githubusercontent.com/Guovin/iptv-api/gd/output/result.m3u",
+    "error": "",
+    "ok": true
+  },
+  {
+    "name": "free-tv",
+    "source_url": "https://raw.githubusercontent.com/Free-TV/IPTV/master/playlist.m3u8",
+    "error": "",
+    "ok": true
+  },
+  {
+    "name": "channel-db",
+    "source_url": "https://iptv-org.github.io/api/channels.json",
+    "error": "curl: (28) Operation timed out after 40009 milliseconds with 4860480 out of 7950475 bytes received\r\n",
+    "ok": false
+  }
+]

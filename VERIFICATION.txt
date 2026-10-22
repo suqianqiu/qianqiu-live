@@ -1,0 +1,62 @@
+Historical device verification for version 1.0.0, on 2026-10-21 (Asia/Shanghai)
+
+Version 1.0.1 updates the public playlist and bundled-list migration behavior.
+Its source validation is computer-only; the TV was not accessed during that update.
+See validation-20261021/report.txt for the current network-validation results.
+
+Device: Whaley WTV55K1J, Android 5.0.2, API 21, approx. 2 GB RAM.
+Application: com.tv.simplelive 1.0.0, minSdk 21, targetSdk 28.
+APK includes armeabi-v7a and arm64-v8a. LibVLC AAR minimum SDK: 17.
+
+Passed:
+- APK v1/v2/v3 signatures verified with Android apksigner.
+- Physical TV installation and launch (no external player required).
+- TV-sized UI and D-pad/menu/back interaction.
+- HTTP M3U import using a temporary local server and adb reverse.
+- 1280x720 H.264/AAC HTTP MP4 playback, both hardware and software policies.
+- 1280x720 H.264/AAC HLS segment playback, both explicit hardware and software policies.
+- Hardware path evidenced by OMX.MS.AVC.Decoder and actual displayed test frames.
+- Software path evidenced by disabled hardware policy, video-output event and actual test frames.
+- Invalid HTTP 404 media in automatic mode: one software retry, then a terminal error.
+  Log: mode=0 softwareRetry=false generation=6; mode=0 softwareRetry=true generation=7.
+- Standalone PlaylistTest: M3U attributes containing commas, relative URLs, deduplication,
+  TXT lists, protocol filtering, rejecting an HLS media manifest as a channel list,
+  and enforcing the 4 MB input limit.
+
+Limits / not claimed:
+- Test media was generated locally and sent over HTTP/HLS, not a production live broadcast.
+- Audible sound quality and audio/video synchronization were not measured.
+- Public IPTV channels were not individually validated; a tested CCTV+ master URL did not
+  produce video on this TV within the timeout. No universal channel availability claim.
+- On-TV download from iptv-org.github.io failed with a network/IPv6 reachability error;
+  an offline playlist snapshot is bundled as fallback. Other sites may behave differently.
+- 4K, HEVC software decoding performance, DRM, phone-only UI applications, long-duration
+  soak stability, and every Android device were not validated.
+
+Visual evidence remains in build/verified-hls-software.png,
+build/verified-hls-hardware.png and build/verified-fallback.png in the working project.
+Temporary HTTP server and adb reverse mappings are removed after validation.
+
+Version 1.0.2 verified on TV, 2026-10-22:
+- Installed as versionCode 3; existing application data preserved.
+- 52 bundled labels localized to Chinese; validated stream URLs unchanged.
+- Full-screen channel selector shown on launch and after exit/relaunch.
+- Channel ListView focused for remote navigation; screenshot build/restart-102.png.
+
+Version 1.0.4 verified 2026-10-22:
+- Computer validation: 1106 candidate URLs, 269 decodable routes, 193 selected channels.
+- Regions: CN/previous Chinese channels 171, HK 8, MO 0, TW 14. All 27 Macau candidates failed.
+- 46 targeted failed addresses retried; 16 recovered.
+- Five programme-loop routes and one Android-incompatible URL excluded.
+- All stream tests performed on computer; no TV source playback test in this update.
+- APK signatures v1/v2/v3 verified; packaged asset byte-matches validated playlist.
+- Java application parser confirmed exactly 193 entries before installation.
+- Installed on TV as versionCode 5, versionName 1.0.4; application launched.
+- TV startup page displays 193 channels and a focused full-width channel list.
+- Screenshot: build/start104.png; results: validation-20261022/report.txt.
+
+Version 1.0.6 privacy update, 2026-10-22:
+- Generic vector television launcher icon and TV banner replace personal media.
+- Personal image resource removed from the application and published source package.
+- Package identifier, playback code, playlist and signing key retained for compatible updates.
+- Earlier successful playback screenshots are retained as historical evidence, not a fresh playback claim.

@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-22",
+  "candidate_urls": 1106,
+  "passed_urls": 269,
+  "channels": 193,
+  "regions": {
+    "CN": 171,
+    "HK": 8,
+    "MO": 0,
+    "TW": 14
+  },
+  "retry_count": 46,
+  "excluded_decodable_entries": 6,
+  "method": "Computer only: HTTP GET, ffprobe video dimensions, software decode of 3 frames.",
+  "limits": "No content-identity, audio, long-duration or TV decoding guarantee."
+}

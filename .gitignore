@@ -1,0 +1,14 @@
+build/
+dist/
+deps/
+*.jks
+*.keystore
+*.p12
+*.pfx
+.env*
+__pycache__/
+*.pyc
+*.log
+
+# Personal media must not be republished.
+res/drawable-nodpi/brand_portrait.jpg

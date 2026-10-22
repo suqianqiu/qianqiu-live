@@ -1,0 +1,34 @@
+VideoLAN LibVLC Android 3.6.5
+Copyright VideoLAN, VLC authors and libvlcjni contributors.
+License: LGPL-2.1-or-later. See licenses/COPYING.LIB.
+Original binary (unmodified):
+https://repo.maven.apache.org/maven2/org/videolan/android/libvlc-all/3.6.5/libvlc-all-3.6.5.aar
+Android JNI source project:
+https://code.videolan.org/videolan/libvlcjni
+VLC native source project:
+https://code.videolan.org/videolan/vlc
+Exact binary build revisions are retained in deps/libvlc/res/values/values.xml.
+LibVLC JNI revision: 965e864. VLC revision: 4cbf73c397.
+The delivered source package contains the original AAR and LibVLC Java source archive.
+LibVLC can be replaced/rebuilt independently; build.ps1 repackages the library without static linking.
+Use the matching libvlc-3.6.5 tag and the pinned VLC revision for native source builds.
+
+Public playlist metadata: iptv-org/iptv (Unlicense).
+https://github.com/iptv-org/iptv
+assets/public-cn.m3u is a computer-validated merge of public snapshots fetched on 2026-10-22.
+iptv-org CN/HK/MO/TW playlists and channel metadata: https://iptv-org.github.io/iptv/
+iptv-org metadata is provided under the project's Unlicense; see licenses/IPTV-Unlicense.txt.
+Additional public playlist sources and their own project notices:
+https://github.com/YueChan/Live
+https://github.com/fanmingming/live
+https://github.com/Guovin/iptv-api
+https://github.com/Free-TV/IPTV
+Search-discovered Macau addresses are recorded in validation-20261022/focused-new.json and macau2.json.
+Source URLs and download outcomes are in validation-20261022/source-manifest*.json.
+Selected URLs, validation results and measured dimensions are retained in that folder.
+This does not grant rights to third-party broadcasts; streams are not bundled.
+
+Demo video: Big Buck Bunny, Blender Foundation, CC BY 3.0.
+https://peach.blender.org/
+https://creativecommons.org/licenses/by/3.0/
+Not bundled; streamed only when selected.

@@ -1,0 +1,51 @@
+[
+  {
+    "name": "iptv-cn",
+    "source_url": "https://iptv-org.github.io/iptv/countries/cn.m3u",
+    "region": "大陆",
+    "entries": 149,
+    "error": ""
+  },
+  {
+    "name": "iptv-hk",
+    "source_url": "https://iptv-org.github.io/iptv/countries/hk.m3u",
+    "region": "香港",
+    "entries": 17,
+    "error": ""
+  },
+  {
+    "name": "iptv-mo",
+    "source_url": "https://iptv-org.github.io/iptv/countries/mo.m3u",
+    "region": "澳门",
+    "entries": 7,
+    "error": ""
+  },
+  {
+    "name": "iptv-tw",
+    "source_url": "https://iptv-org.github.io/iptv/countries/tw.m3u",
+    "region": "台湾",
+    "entries": 31,
+    "error": ""
+  },
+  {
+    "name": "yuechan",
+    "source_url": "https://raw.githubusercontent.com/YueChan/Live/main/IPTV.m3u",
+    "region": "混合",
+    "entries": 96,
+    "error": ""
+  },
+  {
+    "name": "fmm-global",
+    "source_url": "https://live.fanmingming.com/tv/m3u/global.m3u",
+    "region": "混合",
+    "entries": 0,
+    "error": "curl: (22) The requested URL returned error: 404\r\n"
+  },
+  {
+    "name": "fmm-ipv6",
+    "source_url": "https://live.fanmingming.com/tv/m3u/ipv6.m3u",
+    "region": "大陆",
+    "entries": 82,
+    "error": ""
+  }
+]

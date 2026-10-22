@@ -1,0 +1,5 @@
+* text=auto eol=lf
+assets/** -text
+*.pem -text
+*.png binary
+*.jpg binary

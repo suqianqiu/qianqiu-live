@@ -1,0 +1,12 @@
+[
+  {
+    "file": "libvlc-all-3.6.5-sources.jar",
+    "url": "https://repo.maven.apache.org/maven2/org/videolan/android/libvlc-all/3.6.5/libvlc-all-3.6.5-sources.jar",
+    "sha256": "95bb03b150ca4cda5fb334b02df2e4f95c627940a1134f805161ab0146566a37"
+  },
+  {
+    "file": "libvlc-all-3.6.5.aar",
+    "url": "https://repo.maven.apache.org/maven2/org/videolan/android/libvlc-all/3.6.5/libvlc-all-3.6.5.aar",
+    "sha256": "6a15a1f7acd0738a31acce0c7e5eb6f5f340b62e6b64d8f83df547da56a44b47"
+  }
+]

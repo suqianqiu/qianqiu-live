@@ -1,0 +1,32 @@
+[
+  {
+    "name": "新沂新闻",
+    "reason": "URL syntax rejected by Android playlist parser",
+    "url": "http://live.xysrmt.cn/xwzh/sd/live.m3u8?zjiangsd\""
+  },
+  {
+    "name": "七龙珠",
+    "reason": "programme loop rather than a TV channel",
+    "url": "https://live.ottiptv.cc/huya/11601966"
+  },
+  {
+    "name": "七龙珠",
+    "reason": "programme loop rather than a TV channel",
+    "url": "https://live.metshop.top/huya/11601966"
+  },
+  {
+    "name": "海绵宝宝",
+    "reason": "programme loop rather than a TV channel",
+    "url": "https://live.metshop.top/douyu/3949681"
+  },
+  {
+    "name": "中华小当家",
+    "reason": "programme loop rather than a TV channel",
+    "url": "https://live.metshop.top/huya/11342413"
+  },
+  {
+    "name": "猫和老鼠",
+    "reason": "programme loop rather than a TV channel",
+    "url": "https://live.metshop.top/huya/11352879"
+  }
+]
