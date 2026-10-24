@@ -1,4 +1,4 @@
-param([switch]$Install, [string]$Device='')
+param([switch]$Install, [string]$Device='', [int]$AdbPort=5037)
 $ErrorActionPreference='Stop'
 Set-Location $PSScriptRoot
 $sdk=Join-Path $env:LOCALAPPDATA 'Android/Sdk'
@@ -35,12 +35,12 @@ Run "$bt/zipalign.exe" @('-f','4','build/unsigned.apk','build/aligned.apk')
 if(!(Test-Path player-local.jks)) {
     Run keytool @('-genkeypair','-keystore','player-local.jks','-storepass','simplelive-local','-keypass','simplelive-local','-alias','simplelive','-keyalg','RSA','-keysize','2048','-validity','10000','-dname','CN=Simple Live TV Local Build')
 }
-Run "$bt/apksigner.bat" @('sign','--ks','player-local.jks','--ks-pass','pass:simplelive-local','--key-pass','pass:simplelive-local','--min-sdk-version','21','--v1-signing-enabled','true','--out','dist/QianqiuTV-1.0.6.apk','build/aligned.apk')
-Run "$bt/apksigner.bat" @('verify','--verbose','dist/QianqiuTV-1.0.6.apk')
-Run "$bt/aapt.exe" @('dump','badging','dist/QianqiuTV-1.0.6.apk')
+Run "$bt/apksigner.bat" @('sign','--ks','player-local.jks','--ks-pass','pass:simplelive-local','--key-pass','pass:simplelive-local','--min-sdk-version','21','--v1-signing-enabled','true','--out','dist/QianqiuTV-1.3.0.apk','build/aligned.apk')
+Run "$bt/apksigner.bat" @('verify','--verbose','dist/QianqiuTV-1.3.0.apk')
+Run "$bt/aapt.exe" @('dump','badging','dist/QianqiuTV-1.3.0.apk')
 if($Install) {
-    if(!$Device){throw 'Specify -Device with your own ADB device serial or address'}
-    Run adb @('-s',$Device,'install','-r','dist/QianqiuTV-1.0.6.apk')
-    Run adb @('-s',$Device,'shell','am','start','-n','com.tv.simplelive/.MainActivity')
+    if([string]::IsNullOrWhiteSpace($Device)){throw 'Specify your authorized Android device explicitly with -Device.'}
+    Run adb @('-H','127.0.0.1','-P',"$AdbPort",'-s',$Device,'install','-r','dist/QianqiuTV-1.3.0.apk')
+    # Installation does not start the app or wake the display.
 }
-Write-Output 'Built dist/QianqiuTV-1.0.6.apk'
+Write-Output 'Built dist/QianqiuTV-1.3.0.apk'

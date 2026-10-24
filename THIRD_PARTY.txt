@@ -32,3 +32,11 @@ Demo video: Big Buck Bunny, Blender Foundation, CC BY 3.0.
 https://peach.blender.org/
 https://creativecommons.org/licenses/by/3.0/
 Not bundled; streamed only when selected.
+
+1.3.0公开候选来源补充（仅引用播放地址，不托管内容；授权与条款须自行核查）：
+https://github.com/vbskycn/iptv
+https://github.com/zilong7728/Collect-IPTV
+https://github.com/hujingguang/ChinaIPTV
+https://github.com/CCSH/IPTV
+https://github.com/Free-TV/IPTV
+https://github.com/cs3306/IPTV-Sources

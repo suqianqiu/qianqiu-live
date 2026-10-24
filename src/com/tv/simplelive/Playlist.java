@@ -8,7 +8,7 @@ import java.util.regex.*;
 /** M3U and simple name,url lists; bounded, UTF-8, no credentials or custom auth. */
 public final class Playlist {
     public static final int MAX_BYTES = 4 * 1024 * 1024;
-    public static final int MAX_CHANNELS = 5000;
+    public static final int MAX_CHANNELS = 20000;
     public static final class Channel {
         public final String name, url, group;
         public Channel(String name, String url, String group) {
@@ -72,6 +72,9 @@ public final class Playlist {
                     if (line.charAt(i) == ',' && !quoted) { comma = i; break; }
                 }
                 name = comma >= 0 ? line.substring(comma + 1).trim() : "";
+                // Regional CCTV4 editions can share a display name; preserve their explicit ID.
+                Matcher regional = Pattern.compile("tvg-id=\"CCTV4(Europe|America)\\.cn\"",Pattern.CASE_INSENSITIVE).matcher(line);
+                if(regional.find()) name = regional.group(1).equalsIgnoreCase("Europe")?"CCTV4欧洲":"CCTV4美洲";
                 Matcher matcher = groupPattern.matcher(line);
                 group = matcher.find() ? matcher.group(1) : "";
                 continue;

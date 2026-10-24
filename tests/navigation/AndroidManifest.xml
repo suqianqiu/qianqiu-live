@@ -1,0 +1,1 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.tv.simplelive.navigationtest"><uses-sdk android:minSdkVersion="21" android:targetSdkVersion="28"/><application android:label="Live Navigation Verification"/><instrumentation android:name="com.tv.simplelive.NavigationTest" android:targetPackage="com.tv.simplelive"/></manifest>
