@@ -28,6 +28,21 @@ public final class MainActivity extends Activity {
     private final ExecutorService playerWorker = Executors.newSingleThreadExecutor();
     private int closingPlayers;
     private boolean pendingPlay, destroyed;
+    private final PlaybackRecovery recovery=new PlaybackRecovery();
+    private Runnable reconnect;
+    private final Runnable playbackWatch=new Runnable(){public void run(){
+        if(!foreground||destroyed)return;
+        if(player!=null&&seenVideo&&reconnect==null){
+            // Stats are counters, not frame colors: still scenes do not trigger reconnects.
+            try{
+                org.videolan.libvlc.interfaces.IMedia current=player.getMedia();
+                if(current!=null)try{org.videolan.libvlc.interfaces.IMedia.Stats stats=current.getStats();if(stats!=null)recovery.frames(stats.displayedPictures,SystemClock.elapsedRealtime());}finally{current.release();}
+            }catch(RuntimeException ignored){/* Clock monitoring still works without native stats. */}
+            String reason=recovery.stalled(SystemClock.elapsedRealtime());
+            if(reason!=null)scheduleReconnect(reason);
+        }
+        handler.postDelayed(this,2000);
+    }};
     private SourceInspector inspector;
     private volatile int inspectionGeneration;
     private volatile boolean inspectionForeground;
@@ -67,8 +82,8 @@ public final class MainActivity extends Activity {
             ArrayList<String> options = new ArrayList<String>();
             options.add("--network-caching=1800");
             options.add("--no-video-title-show");
-            options.add("--no-stats");
             options.add("--aout=opensles_android");
+            VideoOutputPolicy.configure(options);
             vlc = new LibVLC(this, options);
         } catch (Throwable error) {
             setState("解码库初始化失败：" + error.getClass().getSimpleName());
@@ -219,7 +234,11 @@ public final class MainActivity extends Activity {
         playerWorker.shutdown();
     }
     private void play(int position, boolean retrySoft) {
+        playRequest(position,retrySoft,false);
+    }
+    private void playRequest(int position, boolean retrySoft, boolean automatic) {
         if (!foreground || vlc == null || channels.isEmpty()) return;
+        cancelReconnect();if(!automatic)recovery.reset();
         if(inspector!=null&&!inspectionManual){cancelInspection();inspectionStatus.setText("播放时暂停自动深测；下次进入续测，或手动巡检");}
         disposePlayer();
         playbackError.setVisibility(View.GONE);
@@ -244,6 +263,8 @@ public final class MainActivity extends Activity {
     private void startPendingPlayback() {
         if (!pendingPlay || closingPlayers != 0 || !foreground || destroyed || vlc == null) return;
         pendingPlay = false;
+        recovery.start(SystemClock.elapsedRealtime());
+        handler.removeCallbacks(playbackWatch);handler.postDelayed(playbackWatch,2000);
         playbackError.setVisibility(View.GONE);
         final int generation = playGeneration;
         try {
@@ -253,7 +274,7 @@ public final class MainActivity extends Activity {
             out.attachViews(new IVLCVout.OnNewVideoLayoutListener() {
                 public void onNewVideoLayout(IVLCVout vout, int w, int h, int vw, int vh, int sn, int sd) {
                     if (generation != playGeneration || player == null || w == 0 || h == 0) return;
-                    seenVideo = true;
+                    if(!seenVideo)recovery.start(SystemClock.elapsedRealtime());seenVideo = true;
                     videoCover.setVisibility(View.GONE);
                     android.util.Log.i("SimpleLiveTV", "video-layout " + w + "x" + h + " mode=" + mode + " softRetry=" + softwareRetry);
                     // Preserve display aspect ratio, including non-square sample pixels.
@@ -273,16 +294,18 @@ public final class MainActivity extends Activity {
                         case MediaPlayer.Event.Buffering:
                             if (event.getBuffering() < 100) setState("正在缓冲 " + (int)event.getBuffering() + "%"); break;
                         case MediaPlayer.Event.Playing: setState("正在播放"); break;
+                        case MediaPlayer.Event.TimeChanged: recovery.clock(event.getTimeChanged(),SystemClock.elapsedRealtime());break;
                         case MediaPlayer.Event.Vout:
                             if (event.getVoutCount() > 0) {
-                                seenVideo = true; videoCover.setVisibility(View.GONE);
+                                if(!seenVideo)recovery.start(SystemClock.elapsedRealtime());seenVideo = true; videoCover.setVisibility(View.GONE);
                                 android.util.Log.i("SimpleLiveTV", "video-output ready mode=" + mode + " softRetry=" + softwareRetry);
                             }
                             break;
                         case MediaPlayer.Event.EncounteredError: failed(generation); break;
                         case MediaPlayer.Event.EndReached:
                             if (!seenVideo) failed(generation);
-                            else setState("播放结束；按 ↑/↓ 换台，按返回回到列表"); break;
+                            else if(!PlaybackRecovery.finite(channels.get(index).url,"直接播放".equals(channels.get(index).name),player.getLength()))scheduleReconnect("直播连接结束");
+                            else {handler.removeCallbacks(playbackWatch);setState("播放结束；按 ↑/↓ 换台，按返回回到列表");} break;
                     }
                 }
             });
@@ -304,10 +327,12 @@ public final class MainActivity extends Activity {
     }
     private void noVideo(int generation) {
         if (generation != playGeneration || player == null || !foreground || seenVideo) return;
-        if (mode == 0 && !softwareRetry) play(index, true);
+        if(recovery.attempts()>0)scheduleReconnect("重连后未出现画面");
+        else if (mode == 0 && !softwareRetry) playRequest(index, true,true);
         else unavailable("20 秒未出现画面，请检查直播源或网络");
     }
     private void unavailable(String reason) {
+        cancelReconnect();
         pendingPlay = false;
         showUnavailable(reason);
         disposePlayer();
@@ -324,10 +349,23 @@ public final class MainActivity extends Activity {
         handler.post(new Runnable() {
             public void run() {
                 if (generation != playGeneration || !foreground) return;
-                if (mode == 0 && !softwareRetry) play(index, true);
+                if(seenVideo||recovery.attempts()>0)scheduleReconnect("播放连接中断");
+                else if (mode == 0 && !softwareRetry) playRequest(index, true,true);
                 else unavailable("地址失效、网络或格式可能不兼容");
             }
         });
+    }
+    private void cancelReconnect(){if(reconnect!=null){handler.removeCallbacks(reconnect);reconnect=null;}}
+    private void scheduleReconnect(String reason){
+        if(!foreground||destroyed||index<0||reconnect!=null)return;
+        long delay=recovery.nextDelay();
+        if(delay<0){unavailable("已自动重连3次仍未恢复，请换台或稍后重试");return;}
+        final int channel=index;final boolean soft=mode==2||(mode==0&&(softwareRetry||recovery.attempts()>=2));
+        disposePlayer();final int token=playGeneration;
+        setState(reason+"，正在自动重连（"+recovery.attempts()+"/3）");
+        android.util.Log.i("SimpleLiveTV","automatic reconnect attempt="+recovery.attempts()+" cause="+reason);
+        reconnect=new Runnable(){public void run(){reconnect=null;if(token==playGeneration&&foreground&&!destroyed&&channel==index)playRequest(channel,soft,true);}};
+        handler.postDelayed(reconnect,delay);
     }
     private void loadInspectionHealth() {
         if(prefs.getInt("inspectionSchema",0)!=SourceInspector.SCHEMA){inspectionStatus.setText("将按新标准深测；旧版小样本记录不作优选依据");return;}
@@ -465,7 +503,7 @@ public final class MainActivity extends Activity {
                             disposePlayer(); channels.clear(); channels.add(new Playlist.Channel("演示片 · Big Buck Bunny（非直播）", DEMO, "测试"));
                             index = -1; updateList(); play(0, false); showPanel(false); break;
                         case 7:
-                            new AlertDialog.Builder(MainActivity.this).setTitle("千秋电视 1.3.0")
+                            new AlertDialog.Builder(MainActivity.this).setTitle("千秋电视 1.3.2")
                                 .setMessage("学习用途与免责声明：仅用于技术学习和交流，请仅访问有权使用的内容，遵守法律、源站条款及第三方许可；公开地址和检测通过不代表传播授权。不托管视频，不保证长期可用。\n\n面向 Android 5.0+ 的轻量播放器。\n\n解码内核：VideoLAN LibVLC 3.6.5（LGPL 2.1）。\n源码与许可证随 APK 一同提供。\nhttps://code.videolan.org/videolan/libvlcjni\n\n公开候选：iptv-org、YueChan及本版新增的六个公开项目，详情见GitHub仓库。频道可用性由源站及网络决定。请仅导入你有权访问的播放地址。\n\n软解可能受电视CPU性能限制，不能保证4K流畅。")
                                 .setPositiveButton("知道了", null).show(); break;
                         case 8: startInspection(true);break;
@@ -569,15 +607,17 @@ public final class MainActivity extends Activity {
     }
     @Override protected void onStart() {
         super.onStart(); foreground = true;
+        handler.removeCallbacks(playbackWatch);handler.postDelayed(playbackWatch,2000);
         showPanel(true);
         if (index < 0 && !channels.isEmpty()) list.setSelection(0);
 
     }
     @Override protected void onResume(){super.onResume();inspectionForeground=true;if(prefs.getBoolean("autoInspect",true))startInspection(false);}
     @Override protected void onPause(){inspectionForeground=false;cancelInspection();super.onPause();}
-    @Override protected void onStop() { foreground = false; pendingPlay = false;cancelInspection(); disposePlayer(); super.onStop(); }
+    @Override protected void onStop() { foreground = false; pendingPlay = false;handler.removeCallbacks(playbackWatch);cancelReconnect();cancelInspection(); disposePlayer(); super.onStop(); }
     @Override protected void onDestroy() {
         destroyed = true; pendingPlay = false; loadGeneration++;
+        handler.removeCallbacks(playbackWatch);cancelReconnect();
         handler.removeCallbacks(hideHint); worker.shutdownNow();
         releaseVlcWhenIdle(); super.onDestroy();
     }

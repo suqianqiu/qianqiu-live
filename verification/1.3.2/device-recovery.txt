@@ -1,0 +1,19 @@
+PASS: production player outputs fixture video
+
+PASS: frozen HTTP stream automatically reconnects and resumes without remote input
+
+PASS: automatic recovery preserves channel and fullscreen
+
+PASS: successful recovery retains retry count until stable window
+
+PASS: production player outputs fixture video
+
+PASS: manual channel switch cancels old delayed reconnect and resets budget
+
+PASS: persistent outage stops after three attempts with visible failure instead of infinite retry
+
+PASS: exhausted recovery leaves no delayed retry
+
+PASS: production player outputs fixture video
+
+PASS: leaving app cancels recovery

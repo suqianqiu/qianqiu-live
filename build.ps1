@@ -1,4 +1,4 @@
-param([switch]$Install, [string]$Device='', [int]$AdbPort=5037)
+param([switch]$Install, [string]$Device='', [int]$AdbPort=54720)
 $ErrorActionPreference='Stop'
 Set-Location $PSScriptRoot
 $sdk=Join-Path $env:LOCALAPPDATA 'Android/Sdk'
@@ -18,10 +18,12 @@ if(!(Test-Path 'deps/libvlc/classes.jar')) {
 }
 New-Item -ItemType Directory -Force -Path build/classes,build/generated,build/dex,build/package/lib,dist | Out-Null
 Run "$bt/aapt.exe" @('package','-f','--auto-add-overlay','-M','AndroidManifest.xml','-S','res','-S','deps/libvlc/res','-A','assets','-I',$android,'-J','build/generated','--extra-packages','org.videolan','-F','build/unsigned.apk')
+$classesDir=Join-Path $PSScriptRoot ('build/classes-'+[Guid]::NewGuid().ToString('N'))
+New-Item -ItemType Directory -Path $classesDir | Out-Null
 $sources=@(Get-ChildItem src,build/generated -Filter '*.java' -Recurse | ForEach-Object FullName)
-Run javac (@('-encoding','UTF-8','-source','8','-target','8','-bootclasspath',$android,'-classpath','deps/libvlc/classes.jar','-d','build/classes')+$sources)
-$classes=@(Get-ChildItem build/classes -Filter '*.class' -Recurse | ForEach-Object FullName)
-Run "$bt/d8.bat" (@('--min-api','21','--lib',$android,'--output','build/dex','deps/libvlc/classes.jar')+$classes)
+Run javac (@('-encoding','UTF-8','-source','8','-target','8','-bootclasspath',$android,'-classpath','deps/libvlc/classes.jar','-d',$classesDir)+$sources)
+Run jar @('cf','build/app-classes.jar','-C',$classesDir,'.')
+Run "$bt/d8.bat" @('--min-api','21','--lib',$android,'--output','build/dex','deps/libvlc/classes.jar','build/app-classes.jar')
 Copy-Item -LiteralPath build/dex/classes.dex -Destination build/package/classes.dex -Force
 foreach($abi in @('arm64-v8a','armeabi-v7a')) {
     Copy-Item -LiteralPath "deps/libvlc/jni/$abi" -Destination build/package/lib -Recurse -Force
@@ -35,12 +37,12 @@ Run "$bt/zipalign.exe" @('-f','4','build/unsigned.apk','build/aligned.apk')
 if(!(Test-Path player-local.jks)) {
     Run keytool @('-genkeypair','-keystore','player-local.jks','-storepass','simplelive-local','-keypass','simplelive-local','-alias','simplelive','-keyalg','RSA','-keysize','2048','-validity','10000','-dname','CN=Simple Live TV Local Build')
 }
-Run "$bt/apksigner.bat" @('sign','--ks','player-local.jks','--ks-pass','pass:simplelive-local','--key-pass','pass:simplelive-local','--min-sdk-version','21','--v1-signing-enabled','true','--out','dist/QianqiuTV-1.3.0.apk','build/aligned.apk')
-Run "$bt/apksigner.bat" @('verify','--verbose','dist/QianqiuTV-1.3.0.apk')
-Run "$bt/aapt.exe" @('dump','badging','dist/QianqiuTV-1.3.0.apk')
+Run "$bt/apksigner.bat" @('sign','--ks','player-local.jks','--ks-pass','pass:simplelive-local','--key-pass','pass:simplelive-local','--min-sdk-version','21','--v1-signing-enabled','true','--out','dist/QianqiuTV-1.3.2.apk','build/aligned.apk')
+Run "$bt/apksigner.bat" @('verify','--verbose','dist/QianqiuTV-1.3.2.apk')
+Run "$bt/aapt.exe" @('dump','badging','dist/QianqiuTV-1.3.2.apk')
 if($Install) {
     if([string]::IsNullOrWhiteSpace($Device)){throw 'Specify your authorized Android device explicitly with -Device.'}
-    Run adb @('-H','127.0.0.1','-P',"$AdbPort",'-s',$Device,'install','-r','dist/QianqiuTV-1.3.0.apk')
+    Run adb @('-H','127.0.0.1','-P',"$AdbPort",'-s',$Device,'install','-r','dist/QianqiuTV-1.3.2.apk')
     # Installation does not start the app or wake the display.
 }
-Write-Output 'Built dist/QianqiuTV-1.3.0.apk'
+Write-Output 'Built dist/QianqiuTV-1.3.2.apk'

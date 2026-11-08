@@ -1,3 +1,5 @@
+1.3.2：微鲸 Android 5.0.2 上61项策略/恢复/导航检查通过。完整结果见 docs/VERIFICATION-1.3.2.md。
+
 Current 1.3.0 verification: docs/VERIFICATION-1.3.0.md
 Historical records below are not current-version results.
 

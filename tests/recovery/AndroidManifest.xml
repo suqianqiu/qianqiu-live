@@ -1,0 +1,1 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.tv.simplelive.recoverytest"><uses-sdk android:minSdkVersion="21" android:targetSdkVersion="28"/><application android:label="Playback Recovery Verification"/><instrumentation android:name="com.tv.simplelive.RecoveryTest" android:targetPackage="com.tv.simplelive"/></manifest>

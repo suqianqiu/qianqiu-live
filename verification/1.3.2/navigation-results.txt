@@ -1,0 +1,69 @@
+PASS: failed stream displays unavailable message
+
+PASS: playback failure keeps fullscreen and current channel index
+
+PASS: persistent error explains channel up/down and Back controls
+
+PASS: failure notice remains after normal six-second hint timeout
+
+PASS: next channel renders video and advances playback
+
+PASS: Down after failure plays the next channel without visiting list
+
+PASS: failed stream displays unavailable message
+
+PASS: Up after successful playback returns to failed channel in fullscreen
+
+PASS: Back opens list at the failed channel
+
+PASS: next channel renders video and advances playback
+
+PASS: list selection and Confirm still start the selected channel
+
+PASS: next channel renders video and advances playback
+
+PASS: old channel error and timeout cannot interrupt rapid channel switch
+
+PASS: queued channel starts after prior player cleanup
+
+PASS: no-video timeout keeps fullscreen and channel navigation
+
+PASS: queued channel starts after prior player cleanup
+
+PASS: automatic decoder retries software once without opening list
+
+PASS: old hard-decoder failure cannot cancel software retry
+
+PASS: failed stream displays unavailable message
+
+PASS: failed software retry stays fullscreen
+
+PASS: queued channel starts after prior player cleanup
+
+PASS: queued channel starts after prior player cleanup
+
+PASS: failure preserves an already-open list rather than changing navigation
+
+PASS: normal cleanup drains before fault injection
+
+PASS: cleanup contains injected Java exception at listener
+
+PASS: cleanup contains injected Java exception at stop
+
+PASS: cleanup contains injected Java exception at detach
+
+PASS: cleanup contains injected Java exception at release
+
+PASS: cleanup contains JNI linkage error
+
+PASS: failure notice appears without waiting for blocked native stop
+
+PASS: native stop is executed on cleanup worker
+
+PASS: remote input remains responsive while old stop is blocked; latest channel wins
+
+PASS: UI remains responsive beyond ANR threshold during delayed stop
+
+PASS: next channel renders video and advances playback
+
+PASS: stop and detach exceptions do not prevent latest channel playback

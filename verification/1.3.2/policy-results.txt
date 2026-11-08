@@ -1,0 +1,17 @@
+PASS: short buffer does not reconnect
+PASS: frozen clock reconnects after 12 seconds
+PASS: first retry delayed one second
+PASS: advancing video and clock accepted before frame threshold
+PASS: frozen video detected while audio clock advances
+PASS: second retry backs off three seconds
+PASS: third retry backs off and then stops
+PASS: minute of stable progress replenishes retry budget
+PASS: unsupported zero frame counters do not cause false recovery
+PASS: explicit channel change resets retry budget
+PASS: duplicate clock events cannot mask frozen playback
+PASS: clock discontinuity counts as progress
+PASS: positive HLS window duration does not turn live EOF into normal finish
+PASS: finite movie ends normally
+PASS: explicit finite direct video is not looped
+PASS: live transport stream EOF reconnects
+16 checks passed
