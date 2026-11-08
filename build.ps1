@@ -1,4 +1,4 @@
-param([switch]$Install, [string]$Device='', [int]$AdbPort=54720)
+param([switch]$Install, [string]$Device='', [int]$AdbPort=5037)
 $ErrorActionPreference='Stop'
 Set-Location $PSScriptRoot
 $sdk=Join-Path $env:LOCALAPPDATA 'Android/Sdk'
