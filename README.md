@@ -8,7 +8,7 @@
 
 当前版本 **1.3.2（versionCode 15）**，安装名称 **千秋电视**，包名 `com.tv.simplelive`，支持 Android 5.0 / API 21 及以上，包含 arm64-v8a、armeabi-v7a。使用 LibVLC 3.6.5；不设账号、会员或应用付费解锁。第三方内容的授权及可用性仍由各来源决定。
 
-[下载 1.3.2 APK 与源码](https://github.com/suqianqiu/qianqiu-live/releases/tag/v1.3.2) · [安装指南](INSTALL.md) · [完整巡检与有效性规则](docs/SOURCE_RULES.md) · [本版验证记录](docs/VERIFICATION-1.3.0.md) · [第三方许可](THIRD_PARTY.txt)
+[下载 1.3.2 APK 与源码](https://github.com/suqianqiu/qianqiu-live/releases/tag/v1.3.2) · [安装指南](INSTALL.md) · [完整巡检与有效性规则](docs/SOURCE_RULES.md) · [本版验证记录](docs/VERIFICATION-1.3.2.md) · [第三方许可](THIRD_PARTY.txt)
 
 ## 1.3.2 更新
 
