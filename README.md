@@ -6,9 +6,20 @@
 >
 > 第三方列表、视频内容和网络条件随时变化，不保证频道身份、画面实时性、持续流畅、长期可用或全部设备兼容。本声明不免除依法应承担的责任。权利或安全问题请在本仓库 Issues 提供具体链接，以便核查处理。
 
-当前版本 **1.3.2（versionCode 15）**，安装名称 **千秋电视**，包名 `com.tv.simplelive`，支持 Android 5.0 / API 21 及以上，包含 arm64-v8a、armeabi-v7a。使用 LibVLC 3.6.5；不设账号、会员或应用付费解锁。第三方内容的授权及可用性仍由各来源决定。
+当前版本 **1.3.3（versionCode 16）**，安装名称 **千秋电视**，包名 `com.tv.simplelive`，支持 Android 5.0 / API 21 及以上，包含 arm64-v8a、armeabi-v7a。使用 LibVLC 3.6.5；不设账号、会员或应用付费解锁。第三方内容的授权及可用性仍由各来源决定。
 
-[下载 1.3.2 APK 与源码](https://github.com/suqianqiu/qianqiu-live/releases/tag/v1.3.2) · [安装指南](INSTALL.md) · [完整巡检与有效性规则](docs/SOURCE_RULES.md) · [本版验证记录](docs/VERIFICATION-1.3.2.md) · [第三方许可](THIRD_PARTY.txt)
+[下载 1.3.3 APK 与源码](https://github.com/suqianqiu/qianqiu-live/releases/tag/v1.3.3) · [安装指南](INSTALL.md) · [完整巡检与有效性规则](docs/SOURCE_RULES.md) · [本版验证记录](docs/VERIFICATION-1.3.3.md) · [第三方许可](THIRD_PARTY.txt)
+
+## 1.3.3 更新
+
+- **屏蔽 CCTV5 错误线路**。复核到一条挂着 CCTV5 名称的线路持续播出保健品推销，已将该地址加入排除规则。选台、重连、候选比选和旧巡检记录恢复均应用规则。
+- **保留频道位置**。只隔离已核实的错误地址，其他候选线路仍可参与巡检。网络和解码巡检结果只代表线路可播放，频道节目身份需单独复核。
+
+### 错误线路拦截示意
+
+![千秋电视已屏蔽的错误 CCTV5 线路，推销画面加红叉](docs/screenshots/ad-block-1.3.3.png)
+
+根据取证时的推销画面制作，红叉是说明页标注。覆盖安装和巡检回归已验证。微鲸已确认安装 1.3.3，当时设备有其他安装任务，选台与换台的实机回归未完成。详见 [验证记录](docs/VERIFICATION-1.3.3.md)。
 
 ## 1.3.2 更新
 
@@ -18,8 +29,6 @@
 - 保留 1.3.1 华为设备直接 Surface 输出兼容修复。
 
 微鲸 Android 5.0.2 完成策略 16 项、真实数据停滞恢复 10 项、遥控导航回归 35 项，共 61 项检查。AM9 Pro 与微鲸均已安装 1.3.2。华为未重复进行本次恢复测试；有限重连无法修复永久失效或内容错误的源。
-
-**已知问题：CCTV5 曾被报告播放错误的保健品视频，本版尚未完成该问题的源隔离与修复，不能将“可连接/可解码”视为频道内容正确。**
 
 详见 [1.3.2 验证记录](docs/VERIFICATION-1.3.2.md)。
 
@@ -45,7 +54,7 @@ HLS 每条线路两轮、每轮四个不同的完整分片；计算每段“媒�
 
 ## 下载与遥控器
 
-从 [Releases](https://github.com/suqianqiu/qianqiu-live/releases/latest) 下载 `QianqiuLive-1.3.2.apk`，使用 U 盘或已授权的网络 ADB 覆盖安装。升级应保留原签名；自行构建的签名与发布版不同，不能直接覆盖。源码 ZIP 不包含发行私钥。
+从 [Releases](https://github.com/suqianqiu/qianqiu-live/releases/latest) 下载 `QianqiuLive-1.3.3.apk`，使用 U 盘或已授权的网络 ADB 覆盖安装。升级应保留原签名；自行构建的签名与发布版不同，不能直接覆盖。源码 ZIP 不包含发行私钥。
 
 | 按键 | 操作 |
 | --- | --- |

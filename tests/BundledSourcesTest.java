@@ -7,7 +7,10 @@ public final class BundledSourcesTest {
         Path assets=Paths.get(args[0]);
         List<Playlist.Channel> catalog=Playlist.parse(Files.readAllBytes(assets.resolve("public-cn.m3u")),"https://example.org/list");
         List<Playlist.Channel> routes=Playlist.parse(Files.readAllBytes(assets.resolve("public-candidates-v3.m3u")),"https://example.org/list");
-        check(catalog.size()==253&&routes.size()==485,"253 catalogue entries and 485 distinct candidate URLs parse");
+        check(catalog.size()==253&&routes.size()==484,"253 catalogue entries and 484 distinct candidate URLs parse");
+        String wrong = "http://207.56.13.146:81/cdnlive/cctv5.m3u8";
+        check(SourceAliases.rejected(wrong + "?cache=changed"), "CCTV5 block survives query changes");
+        check(!SourceAliases.rejected("http://207.56.13.146:81/cdnlive/cctv5plus.m3u8"), "block is limited to the reviewed path");
         Set<String> keys=new HashSet<String>(),urls=new HashSet<String>();for(Playlist.Channel c:catalog){check(keys.add(SourceInspector.key(c.name)),"unique station: "+c.name);urls.add(c.url);}
         for(Playlist.Channel c:routes){check(keys.contains(SourceInspector.key(c.name)),"candidate belongs to catalogue: "+c.name);check(!SourceAliases.rejected(c.url),"no known placeholder: "+c.name);}
         check(!SourceInspector.key("CCTV4欧洲").equals(SourceInspector.key("CCTV4美洲")),"CCTV4 regional editions stay separate");

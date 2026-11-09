@@ -6,7 +6,7 @@ $bt=Join-Path $sdk 'build-tools/35.0.0'
 $android=Join-Path $sdk 'platforms/android-35/android.jar'
 function Run($exe,$arguments){ & $exe @arguments; if($LASTEXITCODE -ne 0){throw "$exe failed"} }
 New-Item -ItemType Directory -Force classes,dex,package | Out-Null
-Run jar @('cf',"$app/build/app-classes.jar",'-C',"$app/build/classes",'.')
+if (!(Test-Path "$app/build/app-classes.jar")) { throw 'Build the app before compiling navigation tests' }
 Run "$bt/aapt.exe" @('package','-f','-M','AndroidManifest.xml','-A','fixture','-I',$android,'-F','unsigned.apk')
 Run javac @('-encoding','UTF-8','-source','8','-target','8','-bootclasspath',$android,'-classpath',"$app/build/app-classes.jar;$app/deps/libvlc/classes.jar",'-d','classes','NavigationTest.java')
 Run jar @('cf','tests.jar','-C','classes','.')

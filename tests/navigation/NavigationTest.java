@@ -14,7 +14,7 @@ import java.util.concurrent.*;
 /** Device regression: real failed/working streams and remote navigation, with isolated channels. */
 public final class NavigationTest extends Instrumentation {
     private MainActivity activity;
-    private boolean realRoutes;
+    private boolean realRoutes, quarantine;
     private final StringBuilder log = new StringBuilder();
     private Object field(String name) throws Exception { Field f=MainActivity.class.getDeclaredField(name);f.setAccessible(true);return f.get(activity); }
     private void set(String name,Object value) throws Exception { Field f=MainActivity.class.getDeclaredField(name);f.setAccessible(true);f.set(activity,value); }
@@ -29,7 +29,7 @@ public final class NavigationTest extends Instrumentation {
     private void waitPlayer()throws Exception{long end=System.currentTimeMillis()+15000;while(field("player")==null&&System.currentTimeMillis()<end)Thread.sleep(50);check(field("player")!=null,"queued channel starts after prior player cleanup");}
     private void waitError()throws Exception{long end=System.currentTimeMillis()+15000;while(!error()&&System.currentTimeMillis()<end)Thread.sleep(100);check(error(),"failed stream displays unavailable message");}
     private void waitVideo()throws Exception{long end=System.currentTimeMillis()+(realRoutes?90000:20000);boolean yes=false;while(System.currentTimeMillis()<end){org.videolan.libvlc.MediaPlayer p=(org.videolan.libvlc.MediaPlayer)field("player");if(p!=null&&(Boolean)field("seenVideo")&&p.getTime()>500){yes=true;break;}Thread.sleep(100);}check(yes,"next channel renders video and advances playback");}
-    @Override public void onCreate(Bundle args){super.onCreate(args);realRoutes=args!=null&&"true".equals(args.getString("real"));start();}
+    @Override public void onCreate(Bundle args){super.onCreate(args);realRoutes=args!=null&&"true".equals(args.getString("real"));quarantine=args!=null&&"true".equals(args.getString("quarantine"));start();}
     @Override public void onStart(){Bundle result=new Bundle();ServerSocket server=null;ExecutorService pool=Executors.newCachedThreadPool();SharedPreferences prefs=getTargetContext().getSharedPreferences("settings",0);final boolean hadMode=prefs.contains("mode"),hadIndex=prefs.contains("lastIndex");final int oldMode=prefs.getInt("mode",0),oldIndex=prefs.getInt("lastIndex",-1);final boolean hadAuto=prefs.contains("autoInspect"),oldAuto=prefs.getBoolean("autoInspect",true);prefs.edit().putBoolean("autoInspect",false).commit();
         try{
             final ServerSocket fixture=new ServerSocket(0,10,InetAddress.getByName("127.0.0.1"));server=fixture;final ExecutorService threads=pool;
@@ -37,7 +37,21 @@ public final class NavigationTest extends Instrumentation {
             final String origin="http://127.0.0.1:"+fixture.getLocalPort()+"/";
             activity=(MainActivity)startActivitySync(new Intent(getTargetContext(),MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
             runOnMainSync(new Runnable(){public void run(){try{ArrayList<Playlist.Channel> channels=(ArrayList<Playlist.Channel>)field("channels");channels.clear();channels.add(new Playlist.Channel("故障频道（测试）",origin+"fail",""));channels.add(new Playlist.Channel("正常频道（测试片）",origin+"index.m3u8",""));channels.add(new Playlist.Channel("等待信号（测试）",origin+"stall",""));set("mode",1);}catch(Exception e){throw new RuntimeException(e);}}});call("updateList",new Class<?>[]{});
-            if(realRoutes){
+            if(quarantine){
+                runOnMainSync(new Runnable(){public void run(){try{
+                    ArrayList<Playlist.Channel> channels=(ArrayList<Playlist.Channel>)field("channels");
+                    channels.set(0,new Playlist.Channel("央视五套·体育",
+                        "http://207.56.13.146:81/cdnlive/cctv5.m3u8?test=cache",""));
+                }catch(Exception e){throw new RuntimeException(e);}}});
+                call("updateList",new Class<?>[]{});
+                play(0,true);
+                check(error() && field("player")==null, "blocked CCTV5 never creates a native player");
+                check(((TextView)field("playbackError")).getText().toString().contains("推销节目，已屏蔽"),
+                        "blocked CCTV5 shows the reason");
+                sendKeyDownUpSync(KeyEvent.KEYCODE_DPAD_DOWN);
+                waitVideo();
+                check((Integer)field("index")==1 && !error(), "next channel plays after quarantine");
+            }else if(realRoutes){
                 final ArrayList<Playlist.Channel> real=new ArrayList<Playlist.Channel>();
                 try(InputStream in=getTargetContext().getAssets().open("public-cn.m3u")){for(Playlist.Channel c:Playlist.parse(Playlist.read(in),""))if(c.name.equals("央视五套·体育")||c.name.equals("央视六套·电影"))real.add(c);}
                 check(real.size()==2,"CCTV-5 and CCTV-6 routes loaded from installed bundled playlist");

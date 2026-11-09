@@ -49,6 +49,21 @@ public final class SourceInspectorTest {
             }finally{x.close();}
         }});server.start();
         try{
+            Playlist.Channel wrong = c("央视五套·体育", "http://207.56.13.146:81/cdnlive/cctv5.m3u8");
+            Playlist.Channel alternative = c(wrong.name, base + "/fast/index.m3u8");
+            SourceInspector.Health stale = new SourceInspector.Health();
+            stale.ok = true;
+            stale.testedAt = System.currentTimeMillis();
+            Map<String, SourceInspector.Entry> staleCheckpoint = Collections.singletonMap(
+                    SourceInspector.key(wrong.name), new SourceInspector.Entry(wrong, stale));
+            SourceInspector replacement = new SourceInspector(Collections.<String>emptySet(),
+                    staleCheckpoint, Collections.<String,SourceInspector.RouteRecord>emptyMap(), DECODER);
+            SourceInspector.Result quarantined = scan(replacement, Collections.singletonList(wrong),
+                    Arrays.asList(wrong, alternative), new String[0], 15000, null);
+            check(quarantined.candidates.size() == 1 && quarantined.candidates.get(0).url.equals(alternative.url),
+                    "quarantined default and cached candidate are excluded");
+            check(quarantined.entries.get(0).health.ok && quarantined.entries.get(0).channel.url.equals(alternative.url),
+                    "fresh blocked checkpoint cannot prevent a working replacement");
             check(SourceInspector.key("央视五套·体育").equals(SourceInspector.key("CCTV-5 HD")),"canonical CCTV aliases merge");
             check(!SourceInspector.key("CCTV5+").equals(SourceInspector.key("CCTV5"))&&!SourceInspector.key("CCTV4K").equals(SourceInspector.key("CCTV4")),"distinct CCTV editions stay distinct");
             SourceInspector.Result feed=scan(engine(),Arrays.asList(c("央视五套·体育",base+"/dead"),c("Local",base+"/html"),c("CCTV5",base+"/fast/index.m3u8")),EMPTY,new String[]{base+"/feed"},15000,null);

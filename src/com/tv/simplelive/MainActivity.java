@@ -178,6 +178,7 @@ public final class MainActivity extends Activity {
         for (int i = 0; i < channels.size(); i++) {
             Playlist.Channel c=channels.get(i); SourceInspector.Health h=channelHealth.get(c.url);
             String badge=h==null?"":"  · "+(h.testedAt>0&&!SourceInspector.fresh(h.testedAt,System.currentTimeMillis())?"到期待复测":h.state);
+            if (SourceAliases.rejected(c.url)) badge = "  · 已屏蔽";
             names.add(String.format(java.util.Locale.US, "%02d  %s%s", i+1, c.name, badge));
         }
         adapter.notifyDataSetChanged();
@@ -263,6 +264,11 @@ public final class MainActivity extends Activity {
     private void startPendingPlayback() {
         if (!pendingPlay || closingPlayers != 0 || !foreground || destroyed || vlc == null) return;
         pendingPlay = false;
+        String rejected = SourceAliases.rejectionReason(channels.get(index).url);
+        if (rejected != null) {
+            unavailable(rejected);
+            return;
+        }
         recovery.start(SystemClock.elapsedRealtime());
         handler.removeCallbacks(playbackWatch);handler.postDelayed(playbackWatch,2000);
         playbackError.setVisibility(View.GONE);
@@ -374,7 +380,7 @@ public final class MainActivity extends Activity {
         try {
             org.json.JSONObject saved=new org.json.JSONObject(prefs.getString("inspectionHealth","{}"));
             Iterator<String> keys=saved.keys();while(keys.hasNext()){
-                String url=keys.next();org.json.JSONObject item=saved.getJSONObject(url);SourceInspector.Health h=new SourceInspector.Health();
+                String url=keys.next();if(SourceAliases.rejected(url))continue;org.json.JSONObject item=saved.getJSONObject(url);SourceInspector.Health h=new SourceInspector.Health();
                 h=readHealth(item);channelHealth.put(url,h);
             }
         }catch(Exception ignored) { }
@@ -418,9 +424,19 @@ public final class MainActivity extends Activity {
         try(FileInputStream in=openFileInput(candidateFile())){cached.addAll(Playlist.parse(Playlist.read(in),PUBLIC_LIST));}catch(Exception ignored){}
         final HashMap<String,SourceInspector.Entry> saved=checkpoints();
         boolean restored=false;int selected=list.getSelectedItemPosition();
-        for(int i=0;i<original.size();i++){Playlist.Channel c=original.get(i);SourceInspector.Entry e=saved.get(SourceInspector.key(c.name));if(e!=null&&SourceInspector.fresh(e.health.testedAt,System.currentTimeMillis())){Playlist.Channel recovered=new Playlist.Channel(c.name,e.channel.url,c.group);original.set(i,recovered);channels.set(i,recovered);channelHealth.put(recovered.url,e.health);restored=true;}}
+        for (int i = 0; i < original.size(); i++) {
+            Playlist.Channel c = original.get(i);
+            SourceInspector.Entry e = saved.get(SourceInspector.key(c.name));
+            if (e == null || SourceAliases.rejected(e.channel.url)
+                    || !SourceInspector.fresh(e.health.testedAt, System.currentTimeMillis())) continue;
+            Playlist.Channel recovered = new Playlist.Channel(c.name, e.channel.url, c.group);
+            original.set(i, recovered);
+            channels.set(i, recovered);
+            channelHealth.put(recovered.url, e.health);
+            restored = true;
+        }
         if(restored){updateList();if(selected>=0)list.setSelection(selected);if(index>=0)list.setItemChecked(index,true);}
-        boolean due=false;long now=System.currentTimeMillis();for(Playlist.Channel c:original){SourceInspector.Entry e=saved.get(SourceInspector.key(c.name));if(e==null||!SourceInspector.fresh(e.health.testedAt,now))due=true;}
+        boolean due=false;long now=System.currentTimeMillis();for(Playlist.Channel c:original){SourceInspector.Entry e=saved.get(SourceInspector.key(c.name));if(e==null||!SourceInspector.fresh(e.health.testedAt,now)||(e.health.ok&&SourceAliases.rejected(e.channel.url)))due=true;}
         for(Playlist.Channel c:cached){SourceInspector.Entry e=saved.get(SourceInspector.key(c.name));if(e==null||!SourceInspector.fresh(e.health.testedAt,now))due=true;}
         final String feedKey="inspectionFeedAt:"+source,recordKey=checkpointKey(),cacheFile=candidateFile();
         boolean refresh=Playlist.isHttp(source)&&!SourceInspector.fresh(prefs.getLong(feedKey,0),now);
@@ -503,7 +519,7 @@ public final class MainActivity extends Activity {
                             disposePlayer(); channels.clear(); channels.add(new Playlist.Channel("演示片 · Big Buck Bunny（非直播）", DEMO, "测试"));
                             index = -1; updateList(); play(0, false); showPanel(false); break;
                         case 7:
-                            new AlertDialog.Builder(MainActivity.this).setTitle("千秋电视 1.3.2")
+                            new AlertDialog.Builder(MainActivity.this).setTitle("千秋电视 1.3.3")
                                 .setMessage("学习用途与免责声明：仅用于技术学习和交流，请仅访问有权使用的内容，遵守法律、源站条款及第三方许可；公开地址和检测通过不代表传播授权。不托管视频，不保证长期可用。\n\n面向 Android 5.0+ 的轻量播放器。\n\n解码内核：VideoLAN LibVLC 3.6.5（LGPL 2.1）。\n源码与许可证随 APK 一同提供。\nhttps://code.videolan.org/videolan/libvlcjni\n\n公开候选：iptv-org、YueChan及本版新增的六个公开项目，详情见GitHub仓库。频道可用性由源站及网络决定。请仅导入你有权访问的播放地址。\n\n软解可能受电视CPU性能限制，不能保证4K流畅。")
                                 .setPositiveButton("知道了", null).show(); break;
                         case 8: startInspection(true);break;

@@ -57,7 +57,7 @@ final class SourceInspector {
     private static final class Group {
         final Playlist.Channel original;final boolean existing;
         final ArrayList<Playlist.Channel> routes=new ArrayList<Playlist.Channel>();
-        Group(Playlist.Channel c,boolean e){original=c;existing=e;routes.add(c);}
+        Group(Playlist.Channel c,boolean e){original=c;existing=e;add(c);}
         void add(Playlist.Channel c){if(SourceAliases.rejected(c.url))return;for(Playlist.Channel r:routes)if(r.url.equals(c.url))return;if(routes.size()<MAX_ROUTES)routes.add(c);}
     }
     private final AtomicBoolean cancelled=new AtomicBoolean();
@@ -113,7 +113,7 @@ final class SourceInspector {
     }
     private Entry inspectGroup(Group g,Listener listener){
         String k=key(g.original.name);Entry saved=previous.get(k);
-        if(saved!=null&&fresh(saved.health.testedAt,System.currentTimeMillis()))return new Entry(new Playlist.Channel(g.original.name,saved.channel.url,g.original.group),saved.health);
+        if(saved!=null&&!SourceAliases.rejected(saved.channel.url)&&fresh(saved.health.testedAt,System.currentTimeMillis()))return new Entry(new Playlist.Channel(g.original.name,saved.channel.url,g.original.group),saved.health);
         Health best=null;Playlist.Channel chosen=g.original;String failure="无合格源";
         for(Playlist.Channel route:g.routes){
             if(stopped()){Health h=new Health();h.state="比选未完成，下次续测";return new Entry(g.original,h);}
@@ -134,7 +134,7 @@ final class SourceInspector {
         if(r!=null&&fresh(r.completedAt,now))return health(r);if(r==null||!fresh(r.startedAt,now)){r=new RouteRecord();r.startedAt=now;}
         byte[] last=null;
         try{
-            requireRunning();if(SourceAliases.rejected(route.url))throw new IOException("已知无信号占位源，已排除");boolean direct=route.url.matches("(?i).*\\.(ts|flv)(?:[?].*)?$")||r.kind.equals("direct");
+            requireRunning();boolean direct=route.url.matches("(?i).*\\.(ts|flv)(?:[?].*)?$")||r.kind.equals("direct");
             if(direct){r.kind="direct";last=direct(route.url,id,r,l);}
             else{
                 for(int round=Math.max(1,r.round+1);round<=2;round++){
@@ -201,6 +201,8 @@ final class SourceInspector {
         for(int hop=0;hop<5;hop++){HttpURLConnection c=open(address,limit);boolean keep=false;try{int code=c.getResponseCode();if(code==301||code==302||code==303||code==307||code==308){String u=c.getHeaderField("Location");if(u==null)throw new IOException("重定向无地址");address=new URL(new URL(address),u).toString();continue;}if(code!=200)throw new IOException("连续流HTTP "+code);keep=true;return c;}finally{if(!keep){active.remove(c);c.disconnect();}}}throw new IOException("重定向次数过多");
     }
     private HttpURLConnection open(String address,long limit)throws Exception{
+        String rejected = SourceAliases.rejectionReason(address);
+        if (rejected != null) throw new IOException(rejected);
         requireRunning();if(System.nanoTime()>=limit)throw new IOException("请求超时");if(!Playlist.isHttp(address))throw new IOException("地址格式无效");HttpURLConnection c=(HttpURLConnection)new URL(address).openConnection();int t=(int)Math.max(1,Math.min(2500,TimeUnit.NANOSECONDS.toMillis(limit-System.nanoTime())));c.setConnectTimeout(t);c.setReadTimeout(t);c.setInstanceFollowRedirects(false);c.setRequestProperty("User-Agent","SimpleLiveTV/1.0");c.setRequestProperty("Accept-Encoding","identity");c.setRequestProperty("Cache-Control","no-cache");active.add(c);return c;
     }
     private Reply getReply(String address,int max,long limit)throws Exception{

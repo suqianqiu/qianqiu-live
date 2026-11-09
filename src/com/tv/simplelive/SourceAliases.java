@@ -1,4 +1,5 @@
 package com.tv.simplelive;
+import java.net.URI;
 import java.util.*;
 /** Reviewed public snapshot aliases and known placeholder URLs. No device measurements. */
 final class SourceAliases {
@@ -49,5 +50,16 @@ final class SourceAliases {
     static String resolve(String name){String value=NAMES.get(name);return value==null?name:value;}
     // This correction belongs to one reviewed URL, not every station labelled TVBS.
     static String routeName(String name,String url){return url.equals("https://7612-5516-affc-d88b.kylintv.tv/live/tvbshd_iphone.m3u8")?"TVBS新闻台":name;}
-    static boolean rejected(String url){return BLOCKED.contains(url);}
+    static String rejectionReason(String url) {
+        if (BLOCKED.contains(url)) return "已知无信号占位源，已屏蔽";
+        try {
+            URI uri = new URI(url).normalize();
+            if ("207.56.13.146".equals(uri.getHost()) && uri.getPort() == 81
+                    && "/cdnlive/cctv5.m3u8".equals(uri.getPath())) {
+                return "该线路播放非 CCTV5 的推销节目，已屏蔽";
+            }
+        } catch (Exception ignored) {}
+        return null;
+    }
+    static boolean rejected(String url){return rejectionReason(url) != null;}
 }
