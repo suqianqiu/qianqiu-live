@@ -1,0 +1,18 @@
+{
+  "version": "1.3.4",
+  "sha256": "6B3BC211E446093EE2FBE255D19BB60C26C8E0D2C71601191B6ED113C61DB1F5",
+  "device": "isolated Android 11/API30 emulator, production ARM APK",
+  "logic_checks": 32,
+  "ui_checks": 7,
+  "real_github_checks": 3,
+  "package_installer": {
+    "from": "1.3.4",
+    "to_fixture": "1.3.5",
+    "system_confirmation": true,
+    "installed_version_verified": true,
+    "data_marker_retained": true
+  },
+  "published": true,
+  "physical_install": true,
+  "physical_device": "Huawei HarmonyOS 4.3 / Android 12; installed version confirmed"
+}

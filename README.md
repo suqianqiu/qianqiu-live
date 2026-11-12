@@ -6,9 +6,21 @@
 >
 > 第三方列表、视频内容和网络条件随时变化，不保证频道身份、画面实时性、持续流畅、长期可用或全部设备兼容。本声明不免除依法应承担的责任。权利或安全问题请在本仓库 Issues 提供具体链接，以便核查处理。
 
-当前版本 **1.3.3（versionCode 16）**，安装名称 **千秋电视**，包名 `com.tv.simplelive`，支持 Android 5.0 / API 21 及以上，包含 arm64-v8a、armeabi-v7a。使用 LibVLC 3.6.5；不设账号、会员或应用付费解锁。第三方内容的授权及可用性仍由各来源决定。
+当前版本 **1.3.4（versionCode 17）**，安装名称 **千秋电视**，包名 `com.tv.simplelive`，支持 Android 5.0 / API 21 及以上，包含 arm64-v8a、armeabi-v7a。使用 LibVLC 3.6.5；不设账号、会员或应用付费解锁。第三方内容的授权及可用性仍由各来源决定。
 
-[下载 1.3.3 APK 与源码](https://github.com/suqianqiu/qianqiu-live/releases/tag/v1.3.3) · [安装指南](INSTALL.md) · [完整巡检与有效性规则](docs/SOURCE_RULES.md) · [本版验证记录](docs/VERIFICATION-1.3.3.md) · [第三方许可](THIRD_PARTY.txt)
+[下载 1.3.4 APK 与源码](https://github.com/suqianqiu/qianqiu-live/releases/tag/v1.3.4) · [安装指南](INSTALL.md) · [完整巡检与有效性规则](docs/SOURCE_RULES.md) · [本版验证记录](docs/VERIFICATION-1.3.3.md) · [第三方许可](THIRD_PARTY.txt)
+
+## 1.3.4 更新：应用内升级
+
+- **每天首次打开自动检查**：按电视本地日期，每天后台检测一次正式版本；失败不反复打扰，也可手动检查。
+- **升级入口**：设置 → 版本更新。支持下载进度、暂停和断点续传，校验通过后进入系统确认安装。
+- **保留现有数据**：覆盖安装前核对文件摘要、包名、签名及版本，保留设置和已有数据。
+
+![千秋电视 1.3.4 华为智慧屏升级页面](docs/screenshots/update-1.3.4.png)
+
+完整操作步骤、授权引导和失败处理见 [版本更新产品说明](docs/UPDATES.md)。旧版需要先覆盖安装一次此版，后续即可应用内升级。
+
+两款应用均在 Android 11 模拟器通过 32 项逻辑、7 项页面遥控器、3 项真实 GitHub 检查，并验证系统确认覆盖安装后保留数据；本版已覆盖安装到华为智慧屏。完整说明见 [本版验证记录](docs/VERIFICATION-1.3.4.md)。
 
 ## 1.3.3 更新
 
@@ -54,7 +66,7 @@ HLS 每条线路两轮、每轮四个不同的完整分片；计算每段“媒�
 
 ## 下载与遥控器
 
-从 [Releases](https://github.com/suqianqiu/qianqiu-live/releases/latest) 下载 `QianqiuLive-1.3.3.apk`，使用 U 盘或已授权的网络 ADB 覆盖安装。升级应保留原签名；自行构建的签名与发布版不同，不能直接覆盖。源码 ZIP 不包含发行私钥。
+从 [Releases](https://github.com/suqianqiu/qianqiu-live/releases/latest) 下载 `QianqiuLive-1.3.4.apk`，使用 U 盘或已授权的网络 ADB 覆盖安装。升级应保留原签名；自行构建的签名与发布版不同，不能直接覆盖。源码 ZIP 不包含发行私钥。
 
 | 按键 | 操作 |
 | --- | --- |

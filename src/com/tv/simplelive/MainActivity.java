@@ -19,6 +19,7 @@ import java.util.*;
 import java.util.concurrent.*;
 
 public final class MainActivity extends Activity {
+    private UpdatePrompt updatePrompt;
     private static final String PUBLIC_LIST = "https://iptv-org.github.io/iptv/countries/cn.m3u";
     private static final String DEMO = "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
     private static final int FILE_PICKER = 101;
@@ -502,7 +503,7 @@ public final class MainActivity extends Activity {
     }
     private void showSettings() {
         new AlertDialog.Builder(this).setTitle("播放器设置")
-            .setItems(new String[]{"导入网络 M3U / TXT 列表", "导入本地播放列表", "直接播放 HTTP/HTTPS 视频地址", "解码方式：" + MODES[mode], "恢复随包频道列表", "重新加载当前列表", "播放演示片", "关于与许可证", "立即巡检并更新直播源", "进入时检查12小时到期项："+(prefs.getBoolean("autoInspect",true)?"开启":"关闭")}, new DialogInterface.OnClickListener() {
+            .setItems(new String[]{"导入网络 M3U / TXT 列表", "导入本地播放列表", "直接播放 HTTP/HTTPS 视频地址", "解码方式：" + MODES[mode], "恢复随包频道列表", "重新加载当前列表", "播放演示片", "关于与许可证", "立即巡检并更新直播源", "进入时检查12小时到期项："+(prefs.getBoolean("autoInspect",true)?"开启":"关闭"), "版本更新"}, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface d, int which) {
                     switch (which) {
                         case 0: inputUrl(false); break;
@@ -519,9 +520,10 @@ public final class MainActivity extends Activity {
                             disposePlayer(); channels.clear(); channels.add(new Playlist.Channel("演示片 · Big Buck Bunny（非直播）", DEMO, "测试"));
                             index = -1; updateList(); play(0, false); showPanel(false); break;
                         case 7:
-                            new AlertDialog.Builder(MainActivity.this).setTitle("千秋电视 1.3.3")
+                            new AlertDialog.Builder(MainActivity.this).setTitle("千秋电视 1.3.4")
                                 .setMessage("学习用途与免责声明：仅用于技术学习和交流，请仅访问有权使用的内容，遵守法律、源站条款及第三方许可；公开地址和检测通过不代表传播授权。不托管视频，不保证长期可用。\n\n面向 Android 5.0+ 的轻量播放器。\n\n解码内核：VideoLAN LibVLC 3.6.5（LGPL 2.1）。\n源码与许可证随 APK 一同提供。\nhttps://code.videolan.org/videolan/libvlcjni\n\n公开候选：iptv-org、YueChan及本版新增的六个公开项目，详情见GitHub仓库。频道可用性由源站及网络决定。请仅导入你有权访问的播放地址。\n\n软解可能受电视CPU性能限制，不能保证4K流畅。")
                                 .setPositiveButton("知道了", null).show(); break;
+                        case 10: startActivity(new Intent(MainActivity.this,UpdateActivity.class));break;
                         case 8: startInspection(true);break;
                         case 9: boolean enabled=!prefs.getBoolean("autoInspect",true);prefs.edit().putBoolean("autoInspect",enabled).apply();if(enabled)startInspection(false);else cancelInspection();break;
                     }
@@ -628,8 +630,8 @@ public final class MainActivity extends Activity {
         if (index < 0 && !channels.isEmpty()) list.setSelection(0);
 
     }
-    @Override protected void onResume(){super.onResume();inspectionForeground=true;if(prefs.getBoolean("autoInspect",true))startInspection(false);}
-    @Override protected void onPause(){inspectionForeground=false;cancelInspection();super.onPause();}
+    @Override protected void onResume(){super.onResume();if(updatePrompt==null)updatePrompt=new UpdatePrompt(this);updatePrompt.resume();inspectionForeground=true;if(prefs.getBoolean("autoInspect",true))startInspection(false);}
+    @Override protected void onPause(){if(updatePrompt!=null)updatePrompt.pause();inspectionForeground=false;cancelInspection();super.onPause();}
     @Override protected void onStop() { foreground = false; pendingPlay = false;handler.removeCallbacks(playbackWatch);cancelReconnect();cancelInspection(); disposePlayer(); super.onStop(); }
     @Override protected void onDestroy() {
         destroyed = true; pendingPlay = false; loadGeneration++;

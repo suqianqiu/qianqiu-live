@@ -12,6 +12,7 @@ $aar='deps/libvlc-all-3.6.5.aar'
 if(!(Test-Path $aar)){throw 'Missing LibVLC AAR. See README for the official Maven URL.'}
 $expected='6A15A1F7ACD0738A31ACCE0C7E5EB6F5F340B62E6B64D8F83DF547DA56A44B47'
 if((Get-FileHash $aar -Algorithm SHA256).Hash -ne $expected){throw 'LibVLC dependency checksum does not match the reviewed build.'}
+if((Get-FileHash 'assets/trusted-roots.pem' -Algorithm SHA256).Hash -ne '0E99DB0DD2EAEBC57711CF214980196E1F1E2A569BFA4EA7BAE26A5FDC439DBF'){throw 'CA root bundle checksum mismatch'}
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 if(!(Test-Path 'deps/libvlc/classes.jar')) {
     [IO.Compression.ZipFile]::ExtractToDirectory((Resolve-Path $aar).Path,(Join-Path $PSScriptRoot 'deps/libvlc'))
@@ -21,7 +22,7 @@ Run "$bt/aapt.exe" @('package','-f','--auto-add-overlay','-M','AndroidManifest.x
 $classesDir=Join-Path $PSScriptRoot ('build/classes-'+[Guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path $classesDir | Out-Null
 $sources=@(Get-ChildItem src,build/generated -Filter '*.java' -Recurse | ForEach-Object FullName)
-Run javac (@('-encoding','UTF-8','-source','8','-target','8','-bootclasspath',$android,'-classpath','deps/libvlc/classes.jar','-d',$classesDir)+$sources)
+Run javac (@('-encoding','UTF-8','--release','8','-classpath',"$android;deps/libvlc/classes.jar",'-d',$classesDir)+$sources)
 Run jar @('cf','build/app-classes.jar','-C',$classesDir,'.')
 Run "$bt/d8.bat" @('--min-api','21','--lib',$android,'--output','build/dex','deps/libvlc/classes.jar','build/app-classes.jar')
 Copy-Item -LiteralPath build/dex/classes.dex -Destination build/package/classes.dex -Force
@@ -37,12 +38,12 @@ Run "$bt/zipalign.exe" @('-f','4','build/unsigned.apk','build/aligned.apk')
 if(!(Test-Path player-local.jks)) {
     Run keytool @('-genkeypair','-keystore','player-local.jks','-storepass','simplelive-local','-keypass','simplelive-local','-alias','simplelive','-keyalg','RSA','-keysize','2048','-validity','10000','-dname','CN=Simple Live TV Local Build')
 }
-Run "$bt/apksigner.bat" @('sign','--ks','player-local.jks','--ks-pass','pass:simplelive-local','--key-pass','pass:simplelive-local','--min-sdk-version','21','--v1-signing-enabled','true','--out','dist/QianqiuTV-1.3.3.apk','build/aligned.apk')
-Run "$bt/apksigner.bat" @('verify','--verbose','dist/QianqiuTV-1.3.3.apk')
-Run "$bt/aapt.exe" @('dump','badging','dist/QianqiuTV-1.3.3.apk')
+Run "$bt/apksigner.bat" @('sign','--ks','player-local.jks','--ks-pass','pass:simplelive-local','--key-pass','pass:simplelive-local','--min-sdk-version','21','--v1-signing-enabled','true','--out','dist/QianqiuTV-1.3.4.apk','build/aligned.apk')
+Run "$bt/apksigner.bat" @('verify','--verbose','dist/QianqiuTV-1.3.4.apk')
+Run "$bt/aapt.exe" @('dump','badging','dist/QianqiuTV-1.3.4.apk')
 if($Install) {
-    if([string]::IsNullOrWhiteSpace($Device)){throw 'Specify your authorized Android device explicitly with -Device.'}
-    Run adb @('-H','127.0.0.1','-P',"$AdbPort",'-s',$Device,'install','-r','dist/QianqiuTV-1.3.3.apk')
+    if([string]::IsNullOrWhiteSpace($Device)){throw 'Specify -Device with an explicitly authorized ADB target.'}
+    Run adb @('-H','127.0.0.1','-P',"$AdbPort",'-s',$Device,'install','-r','dist/QianqiuTV-1.3.4.apk')
     # Installation does not start the app or wake the display.
 }
-Write-Output 'Built dist/QianqiuTV-1.3.3.apk'
+Write-Output 'Built dist/QianqiuTV-1.3.4.apk'
