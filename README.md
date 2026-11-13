@@ -6,9 +6,17 @@
 >
 > 第三方列表、视频内容和网络条件随时变化，不保证频道身份、画面实时性、持续流畅、长期可用或全部设备兼容。本声明不免除依法应承担的责任。权利或安全问题请在本仓库 Issues 提供具体链接，以便核查处理。
 
-当前版本 **1.3.5（versionCode 18）**，安装名称 **千秋电视**，包名 `com.tv.simplelive`，支持 Android 5.0 / API 21 及以上，包含 arm64-v8a、armeabi-v7a。使用 LibVLC 3.6.5；不设账号、会员或应用付费解锁。第三方内容的授权及可用性仍由各来源决定。
+当前版本 **1.3.6（versionCode 19）**，安装名称 **千秋电视**，包名 `com.tv.simplelive`，支持 Android 5.0 / API 21 及以上，包含 arm64-v8a、armeabi-v7a。使用 LibVLC 3.6.5；不设账号、会员或应用付费解锁。第三方内容的授权及可用性仍由各来源决定。
 
 [下载 1.3.4 APK 与源码](https://github.com/suqianqiu/qianqiu-live/releases/tag/v1.3.5) · [安装指南](INSTALL.md) · [完整巡检与有效性规则](docs/SOURCE_RULES.md) · [本版验证记录](docs/VERIFICATION-1.3.3.md) · [第三方许可](THIRD_PARTY.txt)
+
+## 1.3.6 更新：图标圆角外透明
+
+<img src="assets/branding/origami-logo.png" width="192" alt="圆角外透明Logo">
+
+修复圆角外的黑底或白底，PNG保留真实透明通道；图案与荧光效果继续保留。电视桌面及横幅引用同一图标资源。
+
+[腾讯云下载](https://www.dajinsuan.com/tvapp/qianqiu-live/v1.3.6/QianqiuLive-1.3.6.apk) · [GitHub备用](https://github.com/suqianqiu/qianqiu-live/releases/tag/v1.3.6)
 
 ## 1.3.5 更新：腾讯云优先升级与折纸Logo
 

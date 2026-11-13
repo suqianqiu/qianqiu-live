@@ -1,6 +1,6 @@
 param([switch]$Install, [string]$Device='', [int]$AdbPort=5037, [string]$ManifestPath='AndroidManifest.xml', [string]$OutputApk='')
 $ErrorActionPreference='Stop'
-if([string]::IsNullOrWhiteSpace($OutputApk)){$OutputApk='dist/QianqiuLive-1.3.5.apk'}
+if([string]::IsNullOrWhiteSpace($OutputApk)){$OutputApk='dist/QianqiuLive-1.3.6.apk'}
 Set-Location $PSScriptRoot
 $sdk=Join-Path $env:LOCALAPPDATA 'Android/Sdk'
 $bt=Join-Path $sdk 'build-tools/35.0.0'
@@ -49,4 +49,4 @@ if($Install) {
     Run adb @('-H','127.0.0.1','-P',"$AdbPort",'-s',$Device,'install','-r',$OutputApk)
     # Installation does not start the app or wake the display.
 }
-Write-Output 'Built dist/QianqiuLive-1.3.5.apk'
+Write-Output 'Built dist/QianqiuLive-1.3.6.apk'

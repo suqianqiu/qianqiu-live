@@ -1,4 +1,4 @@
-# 安装千秋直播 1.3.5
+# 安装千秋直播 1.3.6
 
 > **学习用途与免责声明：下载、安装或使用前请先阅读。**
 >
@@ -6,11 +6,11 @@
 >
 > 第三方列表、视频内容和网络条件随时变化，不保证频道身份、画面实时性、持续流畅、长期可用或全部设备兼容。本声明不免除依法应承担的责任。权利或安全问题请在本仓库 Issues 提供具体链接，以便核查处理。
 
-从 [1.3.5 Release](https://github.com/suqianqiu/qianqiu-live/releases/tag/v1.3.5) 下载 `QianqiuLive-1.3.5.apk` 并核对同页 `SHA256SUMS.txt`。
+从 [1.3.6 Release](https://github.com/suqianqiu/qianqiu-live/releases/tag/v1.3.6) 下载 `QianqiuLive-1.3.6.apk` 并核对同页 `SHA256SUMS.txt`。
 
 U盘安装：复制APK至U盘，在自己的Android电视或盒子文件管理器打开，允许该来源安装并按提示完成覆盖安装。
 
-网络ADB安装：只连接自己授权的目标设备，先核对 `adb -s DEVICE_IP:PORT shell getprop ro.product.model`，再运行 `adb -s DEVICE_IP:PORT install -r QianqiuLive-1.3.5.apk`。不要用不带 `-s` 的命令让工具自行选设备。设备若要求配对或确认调试授权，应在目标设备上完成。安装无需发送遥控按键、唤醒或自动启动应用。
+网络ADB安装：只连接自己授权的目标设备，先核对 `adb -s DEVICE_IP:PORT shell getprop ro.product.model`，再运行 `adb -s DEVICE_IP:PORT install -r QianqiuLive-1.3.6.apk`。不要用不带 `-s` 的命令让工具自行选设备。设备若要求配对或确认调试授权，应在目标设备上完成。安装无需发送遥控按键、唤醒或自动启动应用。
 
 给电脑AI工具的提示词：请下载上述Release的APK与SHA256SUMS，核对哈希，仅连接我明确指定并授权的盒子，先核对型号再覆盖安装，保留应用数据，不操作其他电视，不自动唤醒或启动。
 
@@ -19,8 +19,8 @@ Android 5.0+，需要设备系统允许外部APK安装。覆盖安装必须包�
 
 ## 后续应用内升级
 
-从 1.3.5 开始，每天首次打开后台检查一次；进入 设置 → 版本更新 可手动检查、下载及确认安装。详细步骤见 [版本更新说明](docs/UPDATES.md)。
+从 1.3.6 开始，每天首次打开后台检查一次；进入 设置 → 版本更新 可手动检查、下载及确认安装。详细步骤见 [版本更新说明](docs/UPDATES.md)。
 
 ## 腾讯云优先下载
 
-最新版安装包：[腾讯云下载](https://www.dajinsuan.com/tvapp/qianqiu-live/v1.3.5/QianqiuLive-1.3.5.apk)。GitHub保留备用。旧版首次需要覆盖安装新升级模块，之后在应用内检测和下载。
+最新版安装包：[腾讯云下载](https://www.dajinsuan.com/tvapp/qianqiu-live/v1.3.6/QianqiuLive-1.3.6.apk)。GitHub保留备用。旧版首次需要覆盖安装新升级模块，之后在应用内检测和下载。
