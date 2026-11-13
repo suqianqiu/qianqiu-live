@@ -20,16 +20,19 @@ import javax.net.ssl.HttpsURLConnection;
 final class AppUpdate {
     static final String API="https://api.github.com/repos/suqianqiu/qianqiu-live/releases/latest";
     static final String DOWNLOAD="https://github.com/suqianqiu/qianqiu-live/releases/download/";
+    static final String COS_HOST="www.dajinsuan.com";
+    static final String COS="https://"+COS_HOST+"/tvapp/qianqiu-live/";
     static final long MAX_APK=512L*1024*1024;
     interface ConnectionFactory { HttpURLConnection open(URL address)throws Exception; }
     interface Clock { long now(); }
     interface Listener { void changed(State state); }
     enum Phase { IDLE,CHECKING,CURRENT,AVAILABLE,DOWNLOADING,PAUSING,PAUSED,VERIFYING,READY,INSTALLING,ERROR }
     static final class Release {
-        final String version,url,sha,notes,name;final long size;
-        Release(String version,String url,String sha,String notes,String name,long size){this.version=version;this.url=url;this.sha=sha;this.notes=notes;this.name=name;this.size=size;}
-        JSONObject json()throws JSONException{return new JSONObject().put("version",version).put("url",url).put("sha",sha).put("notes",notes).put("name",name).put("size",size);}
-        static Release read(JSONObject j)throws Exception{Release r=new Release(j.getString("version"),j.getString("url"),j.getString("sha"),j.optString("notes",""),j.getString("name"),j.getLong("size"));validateRelease(r);return r;}
+        final String version,url,sha,notes,name,apiUrl;final long size;
+        Release(String version,String url,String sha,String notes,String name,long size){this(version,url,sha,notes,name,size,"");}
+        Release(String version,String url,String sha,String notes,String name,long size,String apiUrl){this.version=version;this.url=url;this.sha=sha;this.notes=notes;this.name=name;this.size=size;this.apiUrl=apiUrl;}
+        JSONObject json()throws JSONException{return new JSONObject().put("version",version).put("url",url).put("sha",sha).put("notes",notes).put("name",name).put("size",size).put("apiUrl",apiUrl);}
+        static Release read(JSONObject j)throws Exception{Release r=new Release(j.getString("version"),j.getString("url"),j.getString("sha"),j.optString("notes",""),j.getString("name"),j.getLong("size"),j.optString("apiUrl",""));validateRelease(r);return r;}
     }
     static final class State {
         final Phase phase;final Release release;final String message,current;final long bytes,checked;final boolean newer,ready;
@@ -49,12 +52,12 @@ final class AppUpdate {
     private AppUpdate(Context context){this(context,address->{CompatTls.initialize(context);return(HttpURLConnection)address.openConnection();},System::currentTimeMillis);}
     AppUpdate(Context context,ConnectionFactory connections,Clock clock){
         this.context=context.getApplicationContext();this.connections=connections;this.clock=clock;
-        prefs=this.context.getSharedPreferences("appUpdate",0);directory=new File(this.context.getCacheDir(),"app-update");directory.mkdirs();part=new File(directory,"package.part");apk=new File(directory,"package.apk");
+        prefs=this.context.getSharedPreferences("appUpdate",0);if(prefs.getInt("sourceRevision",0)<2)prefs.edit().remove("attemptDay").remove("checkedDay").remove("failedAt").putInt("sourceRevision",2).commit();directory=new File(this.context.getCacheDir(),"app-update");directory.mkdirs();part=new File(directory,"package.part");apk=new File(directory,"package.apk");
         try{String saved=prefs.getString("release","");if(!saved.isEmpty())release=Release.read(new JSONObject(saved));}catch(Exception ignored){}
         if(release!=null&&newer(release.version,currentVersion())){bytes=part.length();phase=apk.length()==release.size?Phase.READY:bytes>0?Phase.PAUSED:Phase.AVAILABLE;}else if(release!=null){phase=Phase.CURRENT;clearPackages();}
         if(prefs.getInt("installSession",-1)>=0){phase=Phase.INSTALLING;recoverInstall();}
     }
-    static String day(long now){SimpleDateFormat f=new SimpleDateFormat("yyyy-MM-dd",Locale.US);return f.format(new Date(now));}
+    static String day(long now){SimpleDateFormat f=new SimpleDateFormat("yyyy-MM-dd",Locale.US);f.setTimeZone(TimeZone.getDefault());return f.format(new Date(now));}
     String currentVersion(){try{return context.getPackageManager().getPackageInfo(context.getPackageName(),0).versionName;}catch(Exception e){return "0.0.0";}}
     static boolean newer(String offered,String installed){int[] a=version(offered),b=version(installed);for(int i=0;i<3;i++)if(a[i]!=b[i])return a[i]>b[i];return false;}
     private static int[] version(String value){if(value==null||!value.matches("[0-9]{1,6}\\.[0-9]{1,6}\\.[0-9]{1,6}"))throw new IllegalArgumentException("版本号无效");String[] p=value.split("\\.");return new int[]{Integer.parseInt(p[0]),Integer.parseInt(p[1]),Integer.parseInt(p[2])};}
@@ -63,11 +66,11 @@ final class AppUpdate {
         if(json.optBoolean("draft",true)||json.optBoolean("prerelease",true))throw new IOException("不是正式版本");
         String tag=json.getString("tag_name");if(!tag.startsWith("v"))throw new IOException("版本信息无效");String v=tag.substring(1);version(v);
         String name="QianqiuLive-"+v+".apk";Release found=null;JSONArray assets=json.getJSONArray("assets");
-        for(int i=0;i<assets.length();i++){JSONObject a=assets.getJSONObject(i);if(!name.equals(a.optString("name")))continue;if(found!=null||!"uploaded".equals(a.optString("state")))throw new IOException("安装包信息无效");String digest=a.optString("digest","");if(!digest.matches("sha256:[a-fA-F0-9]{64}"))throw new IOException("缺少安装包校验信息");found=new Release(v,a.getString("browser_download_url"),digest.substring(7).toLowerCase(Locale.US),notes(json.optString("body","")),name,a.getLong("size"));}
+        for(int i=0;i<assets.length();i++){JSONObject a=assets.getJSONObject(i);if(!name.equals(a.optString("name")))continue;if(found!=null||!"uploaded".equals(a.optString("state")))throw new IOException("安装包信息无效");String digest=a.optString("digest","");if(!digest.matches("sha256:[a-fA-F0-9]{64}"))throw new IOException("缺少安装包校验信息");found=new Release(v,a.getString("browser_download_url"),digest.substring(7).toLowerCase(Locale.US),notes(json.optString("body","")),name,a.getLong("size"),a.optString("url",""));}
         if(found==null)throw new IOException("未找到适合此设备的安装包");validateRelease(found);return found;
     }
     private static String notes(String body){StringBuilder out=new StringBuilder();for(String line:body.split("\\r?\\n")){String s=line.trim();if(s.startsWith("- ")&&!s.contains("http")&&!s.contains(".apk")&&!s.contains(".zip")&&!s.contains(".jar")){if(out.length()>0)out.append('\n');out.append("• ").append(s.substring(2).replace("**",""));if(out.length()>320)break;}}return out.length()==0?"改进使用体验与稳定性。":out.substring(0,Math.min(420,out.length()));}
-    private static void validateRelease(Release r)throws Exception{version(r.version);if(r.size<=0||r.size>MAX_APK||!r.sha.matches("[a-f0-9]{64}"))throw new IOException("安装包信息无效");String a="QianqiuLive-"+r.version+".apk";if(!r.name.equals(a)||!r.url.equals(DOWNLOAD+"v"+r.version+"/"+r.name))throw new IOException("安装包来源无效");}
+    private static void validateRelease(Release r)throws Exception{version(r.version);if(r.size<=0||r.size>MAX_APK||!r.sha.matches("[a-f0-9]{64}"))throw new IOException("安装包信息无效");String a="QianqiuLive-"+r.version+".apk";if(!r.name.equals(a)||!r.url.equals(DOWNLOAD+"v"+r.version+"/"+r.name))throw new IOException("安装包来源无效");if(!r.apiUrl.isEmpty()&&!r.apiUrl.matches("https://api\\.github\\.com/repos/suqianqiu/qianqiu-live/releases/assets/[1-9][0-9]{0,19}"))throw new IOException("安装包API来源无效");}
     synchronized State state(){boolean n=release!=null&&newer(release.version,currentVersion());return new State(phase,release,message,currentVersion(),bytes,prefs.getLong("checked",0),n,n&&apk.length()==release.size);}
     void add(Listener listener){listeners.addIfAbsent(listener);ui.post(()->listener.changed(state()));}
     void remove(Listener listener){listeners.remove(listener);}
@@ -82,32 +85,102 @@ final class AppUpdate {
         if(working||phase==Phase.INSTALLING)return;long now=clock.now();
         if(!manual&&day(now).equals(prefs.getString("attemptDay","")))return;
         working=true;prefs.edit().putLong("attempt",now).putString("attemptDay",day(now)).commit();status(Phase.CHECKING,"正在检查更新…");
-        work.execute(()->{try{HttpURLConnection c=open(API,Collections.emptyMap());byte[] data;try{if(c.getResponseCode()!=200)throw new IOException("检查失败");try(InputStream in=c.getInputStream()){data=read(in,256*1024);}}finally{c.disconnect();}
-            Release next=parse(new JSONObject(new String(data,"UTF-8")),preferTv(Build.SUPPORTED_ABIS));
+        work.execute(()->{try{Release next=latest();
             synchronized(this){if(release==null||!release.sha.equals(next.sha))clearPackages();release=next;prefs.edit().putString("release",next.json().toString()).putLong("checked",clock.now()).putString("checkedDay",day(clock.now())).remove("failedAt").apply();bytes=part.length();if(!newer(next.version,currentVersion())){clearPackages();status(Phase.CURRENT,"当前已是最新版本");}else status(apk.length()==next.size?Phase.READY:bytes>0?Phase.PAUSED:Phase.AVAILABLE,"发现新版本 "+next.version);}
-        }catch(Exception e){prefs.edit().putLong("failedAt",clock.now()).apply();synchronized(this){status(release!=null&&newer(release.version,currentVersion())?(apk.length()==release.size?Phase.READY:part.length()>0?Phase.PAUSED:Phase.AVAILABLE):Phase.ERROR,"暂时无法检查更新，请稍后重试");}}
+        }catch(Exception e){prefs.edit().putLong("failedAt",clock.now()).apply();synchronized(this){status(release!=null&&newer(release.version,currentVersion())?(apk.length()==release.size?Phase.READY:part.length()>0?Phase.PAUSED:Phase.AVAILABLE):Phase.ERROR,checkProblem(e));}}
         finally{synchronized(this){working=false;}publish();}});
     }
-    private HttpURLConnection open(String address,Map<String,String> headers)throws Exception{
+    private Release metadata(String address,boolean tv,boolean downloading)throws Exception{
+        HttpURLConnection c=open(address,Collections.singletonMap("Cache-Control","no-cache"),downloading);
+        try{if(c.getResponseCode()!=200)throw new IOException("HTTP "+c.getResponseCode());try(InputStream in=c.getInputStream()){return parse(new JSONObject(new String(read(in,256*1024),"UTF-8")),tv);}}finally{if(downloading)active=null;c.disconnect();}
+    }
+    private Release latest()throws Exception{
+        boolean tv=preferTv(Build.SUPPORTED_ABIS);
+        try{Release r=metadata(COS+"latest.json",tv,false);android.util.Log.i("QianqiuUpdate","Version metadata: Tencent COS "+r.version);return r;}
+        catch(Exception e){android.util.Log.w("QianqiuUpdate","Tencent COS check failed; trying GitHub",e);return metadata(API,tv,false);}
+    }
+    static String mirror(Release target){return COS+"v"+target.version+"/"+target.name;}
+    private HttpURLConnection open(String address,Map<String,String> headers)throws Exception{return open(address,headers,false);}
+    private HttpURLConnection open(String address,Map<String,String> headers,boolean downloading)throws Exception{
         URL url=new URL(address);for(int i=0;i<6;i++){
-            String h=url.getHost().toLowerCase(Locale.US);if(!url.getProtocol().equals("https")||url.getUserInfo()!=null||url.getPort()!=-1&&url.getPort()!=443||!Arrays.asList("api.github.com","github.com","release-assets.githubusercontent.com","objects.githubusercontent.com","github-releases.githubusercontent.com").contains(h))throw new IOException("下载来源无效");
-            HttpURLConnection c=connections.open(url);c.setInstanceFollowRedirects(false);c.setConnectTimeout(10000);c.setReadTimeout(15000);c.setUseCaches(false);c.setRequestProperty("User-Agent","QianqiuLive-Update/"+currentVersion());c.setRequestProperty("Accept-Encoding","identity");for(Map.Entry<String,String> row:headers.entrySet())c.setRequestProperty(row.getKey(),row.getValue());if(c instanceof HttpsURLConnection)((HttpsURLConnection)c).setSSLSocketFactory(CompatTls.factory());
-            int code;try{code=c.getResponseCode();}catch(Exception e){c.disconnect();throw e;}if(code==301||code==302||code==303||code==307||code==308){String location=c.getHeaderField("Location");c.disconnect();if(location==null)throw new IOException("下载地址无效");url=new URL(url,location);continue;}return c;
+            if(downloading&&paused)throw new IOException("PAUSED");
+            String h=url.getHost().toLowerCase(Locale.US);if(!url.getProtocol().equals("https")||url.getUserInfo()!=null||url.getPort()!=-1&&url.getPort()!=443||!Arrays.asList(COS_HOST,"api.github.com","github.com","release-assets.githubusercontent.com","objects.githubusercontent.com","github-releases.githubusercontent.com").contains(h)||h.equals(COS_HOST)&&!url.getPath().startsWith("/tvapp/qianqiu-live/"))throw new IOException("下载来源无效");
+            HttpURLConnection c=connections.open(url);c.setInstanceFollowRedirects(false);c.setConnectTimeout(10000);c.setReadTimeout(15000);c.setUseCaches(false);c.setRequestProperty("User-Agent","QianqiuLive-Update/"+currentVersion());c.setRequestProperty("Accept-Encoding","identity");for(Map.Entry<String,String> row:headers.entrySet())c.setRequestProperty(row.getKey(),row.getValue());if(c instanceof HttpsURLConnection)((HttpsURLConnection)c).setSSLSocketFactory(UpdateTls.factory(context));
+            if(downloading)active=c;
+            int code;try{if(downloading&&paused)throw new IOException("PAUSED");code=c.getResponseCode();}catch(Exception e){c.disconnect();if(downloading)active=null;throw e;}if(code==301||code==302||code==303||code==307||code==308){String location=c.getHeaderField("Location");c.disconnect();if(downloading)active=null;if(location==null)throw new IOException("下载地址无效");url=new URL(url,location);continue;}return c;
         }throw new IOException("下载跳转过多");
+    }
+    private static String checkProblem(Exception error){
+        for(Throwable cause=error;cause!=null;cause=cause.getCause()){
+            if(cause instanceof javax.net.ssl.SSLHandshakeException||cause instanceof java.security.cert.CertificateException)return "无法验证更新服务器的安全证书，请检查系统时间或使用兼容修复安装包";
+            if(cause instanceof UnknownHostException)return "无法解析更新服务器地址，请检查电视网络后重试";
+            if(cause instanceof SocketTimeoutException)return "连接更新服务器超时，请稍后重试";
+        }
+        return "暂时无法检查更新，请稍后重试";
     }
     private static byte[] read(InputStream in,int cap)throws Exception{ByteArrayOutputStream out=new ByteArrayOutputStream();byte[] b=new byte[8192];for(int n;(n=in.read(b))!=-1;){if(out.size()+n>cap)throw new IOException("版本信息过大");out.write(b,0,n);}return out.toByteArray();}
     private void space(long required)throws IOException{if(new StatFs(directory.getPath()).getAvailableBytes()<required+16L*1024*1024)throw new IOException("SPACE");}
+    private Release downloadRelease(Release target)throws Exception{
+        if(!target.apiUrl.isEmpty())return target;
+        // Older saved offers did not contain the attachment API address. Resolve the exact tag,
+        // keeping the user's selected version and its immutable identity rather than changing it.
+        HttpURLConnection c=open(API.substring(0,API.length()-6)+"tags/v"+target.version,Collections.emptyMap(),true);
+        Release resolved;
+        try{if(c.getResponseCode()!=200)throw new IOException("HTTP "+c.getResponseCode());try(InputStream in=c.getInputStream()){resolved=parse(new JSONObject(new String(read(in,256*1024),"UTF-8")),target.name.startsWith("QianqiuLive-TV-"));}}finally{active=null;c.disconnect();}
+        if(!resolved.version.equals(target.version)||!resolved.name.equals(target.name)||!resolved.sha.equals(target.sha)||resolved.size!=target.size)throw new IOException("OFFER_CHANGED");
+        synchronized(this){release=resolved;prefs.edit().putString("release",resolved.json().toString()).apply();}
+        return resolved;
+    }
+    private void transferAttempt(Release target,String address)throws Exception{
+        long have=part.length();if(have>target.size){erase(part);have=0;}
+        space(target.size-have);Map<String,String> headers=new HashMap<>();headers.put("Accept","application/octet-stream");if(have>0)headers.put("Range","bytes="+have+"-");
+        HttpURLConnection c=open(address,headers,true);
+        try{
+            int code=c.getResponseCode();long expected;
+            if(code==200){have=0;expected=target.size;}
+            else if(code==206){String range=c.getHeaderField("Content-Range");java.util.regex.Matcher m=java.util.regex.Pattern.compile("bytes ([0-9]+)-([0-9]+)/([0-9]+)").matcher(range==null?"":range);if(!m.matches()||Long.parseLong(m.group(1))!=have||Long.parseLong(m.group(3))!=target.size||Long.parseLong(m.group(2))<have||Long.parseLong(m.group(2))>=target.size)throw new IOException("RANGE");expected=Long.parseLong(m.group(2))-have+1;}
+            else throw new IOException("HTTP "+code);
+            String type=c.getContentType(),length=c.getHeaderField("Content-Length");
+            if(type!=null&&(type.toLowerCase(Locale.US).contains("json")||type.toLowerCase(Locale.US).contains("text/")))throw new IOException("NOT_APK");
+            if(length!=null&&Long.parseLong(length)!=expected)throw new IOException("SIZE");
+            synchronized(this){bytes=have;}publish();long received=0;
+            try(InputStream in=c.getInputStream();RandomAccessFile out=new RandomAccessFile(part,"rw")){
+                out.setLength(have);out.seek(have);byte[] b=new byte[65536];long last=0;
+                for(int n;!paused&&(n=in.read(b))!=-1;){if(received+n>expected||have+n>target.size)throw new IOException("SIZE");out.write(b,0,n);have+=n;received+=n;synchronized(this){bytes=have;}if(SystemClock.elapsedRealtime()-last>250){publish();last=SystemClock.elapsedRealtime();}}
+                out.getFD().sync();
+            }
+            if(!paused&&part.length()!=target.size)throw new IOException("INCOMPLETE");
+        }finally{active=null;c.disconnect();}
+    }
+    private void transfer(Release target)throws Exception{
+        for(int attempt=0;attempt<4&&!paused;attempt++){
+            // Resolve an old GitHub offer only after COS fails, so a healthy COS never needs GitHub.
+            if(attempt==2)try{target=downloadRelease(target);}catch(Exception e){if(paused||"OFFER_CHANGED".equals(e.getMessage()))throw e;android.util.Log.w("QianqiuUpdate","Attachment API lookup failed; using release download",e);}
+            String address=attempt<2?mirror(target):attempt==2&&!target.apiUrl.isEmpty()?target.apiUrl:target.url;
+            try{status(Phase.DOWNLOADING,attempt<2?attempt==0?"正在从腾讯云下载更新…":"正在从腾讯云继续下载…":"腾讯云暂不可用，正在从GitHub继续下载…");android.util.Log.i("QianqiuUpdate","Download source: "+(attempt<2?"Tencent COS":"GitHub")+"; offset="+part.length());transferAttempt(target,address);return;}
+            catch(Exception e){android.util.Log.w("QianqiuUpdate","Download attempt "+(attempt+1)+" failed after "+part.length()+" bytes",e);if(paused)return;if(e instanceof FileNotFoundException||"SPACE".equals(e.getMessage())||attempt==3)throw e;SystemClock.sleep(400L*(attempt+1));}
+        }
+    }
+    private static String downloadProblem(Exception error){
+        if("SPACE".equals(error.getMessage()))return "存储空间不足，请清理后重试";
+        if("OFFER_CHANGED".equals(error.getMessage()))return "版本信息已变化，请重新检查更新";
+        for(Throwable cause=error;cause!=null;cause=cause.getCause()){
+            if(cause instanceof SocketTimeoutException||cause instanceof ConnectException)return "连接下载服务器超时或失败，已保留进度，可稍后继续";
+            if(cause instanceof UnknownHostException)return "无法解析下载服务器地址，请检查网络后继续";
+            if(cause instanceof javax.net.ssl.SSLException)return "无法验证下载连接，请检查系统时间或使用兼容修复安装包";
+        }
+        if(error instanceof FileNotFoundException)return "无法写入安装包，请检查存储空间后重试";
+        if(error.getMessage()!=null&&error.getMessage().matches("HTTP [0-9]{3}"))return "下载服务器返回 "+error.getMessage()+"，已保留进度，可稍后继续";
+        return "下载连接中断或返回异常，已保留进度，可继续下载";
+    }
     synchronized void download(){
         if(working||release==null||!newer(release.version,currentVersion()))return;Release target=release;working=true;paused=false;status(Phase.DOWNLOADING,"正在下载更新…");
         work.execute(()->{try{
             if(apk.length()==target.size){status(Phase.VERIFYING,"正在校验安装包…");validateApk(apk,target);status(Phase.READY,"安装包已准备好");return;}
             if(part.length()==target.size){status(Phase.VERIFYING,"正在校验安装包…");validateApk(part,target);if(!part.renameTo(apk))throw new IOException("SAVE");synchronized(this){bytes=target.size;}status(Phase.READY,"安装包已准备好");return;}
-            long have=part.length();if(have>target.size){erase(part);have=0;}space(target.size-have);Map<String,String> headers=new HashMap<>();if(have>0)headers.put("Range","bytes="+have+"-");HttpURLConnection c=open(target.url,headers);active=c;
-            try{int code=c.getResponseCode();if(code==200)have=0;else if(code==206){String range=c.getHeaderField("Content-Range");java.util.regex.Matcher m=java.util.regex.Pattern.compile("bytes ([0-9]+)-([0-9]+)/([0-9]+)").matcher(range==null?"":range);if(!m.matches()||Long.parseLong(m.group(1))!=have||Long.parseLong(m.group(3))!=target.size||Long.parseLong(m.group(2))<have||Long.parseLong(m.group(2))>=target.size)throw new IOException("RANGE");}else throw new IOException("HTTP");
-                synchronized(this){bytes=have;}publish();try(InputStream in=c.getInputStream();RandomAccessFile out=new RandomAccessFile(part,"rw")){out.setLength(have);out.seek(have);byte[] b=new byte[65536];long last=0;for(int n;!paused&&(n=in.read(b))!=-1;){if(have+n>target.size)throw new IOException("SIZE");out.write(b,0,n);have+=n;synchronized(this){bytes=have;}if(SystemClock.elapsedRealtime()-last>250){publish();last=SystemClock.elapsedRealtime();}}out.getFD().sync();}
-            }finally{active=null;c.disconnect();}
+            transfer(target);
             if(paused){status(Phase.PAUSED,"下载已暂停，可稍后继续");return;}if(part.length()!=target.size)throw new IOException("INCOMPLETE");status(Phase.VERIFYING,"正在校验安装包…");validateApk(part,target);if(!part.renameTo(apk))throw new IOException("SAVE");status(Phase.READY,"安装包已准备好，点击即可升级");
-        }catch(Exception e){if(paused)status(Phase.PAUSED,"下载已暂停，可稍后继续");else if(e instanceof BadApk){erase(part);erase(apk);synchronized(this){bytes=0;}status(Phase.AVAILABLE,"安装包校验未通过，请重新下载");}else status(part.length()>0?Phase.PAUSED:Phase.AVAILABLE,"SPACE".equals(e.getMessage())?"存储空间不足，请清理后重试":"下载未完成，请稍后继续");}
+        }catch(Exception e){synchronized(this){bytes=part.length();}if(paused)status(Phase.PAUSED,"下载已暂停，可稍后继续");else if(e instanceof BadApk){erase(part);erase(apk);synchronized(this){bytes=0;}status(Phase.AVAILABLE,"安装包校验未通过，请重新下载");}else status(part.length()>0?Phase.PAUSED:Phase.AVAILABLE,downloadProblem(e));}
         finally{synchronized(this){working=false;}publish();}});
     }
     synchronized void pause(){if(phase!=Phase.DOWNLOADING)return;paused=true;status(Phase.PAUSING,"正在暂停下载…");HttpURLConnection c=active;if(c!=null){Thread close=new Thread(c::disconnect,"update-pause");close.setDaemon(true);close.start();}}

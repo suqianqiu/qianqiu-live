@@ -1,0 +1,20 @@
+[
+  {
+    "name": "USERTrustECCCertificationAuthority",
+    "url": "https://crt.sh/?d=2841410",
+    "subject": "CN=USERTrust ECC Certification Authority,O=The USERTRUST Network,L=Jersey City,ST=New Jersey,C=US",
+    "sha256_der": "4ff460d54b9c86dabfbcfc5712e0400d2bed3fbc4d4fbdaa86e06adcd2a9ad7a"
+  },
+  {
+    "name": "SectigoPublicServerAuthenticationRootE46",
+    "url": "https://crt.sh/?d=4256644603",
+    "subject": "CN=Sectigo Public Server Authentication Root E46,O=Sectigo Limited,C=GB",
+    "sha256_der": "c90f26f0fb1b4018b22227519b5ca2b53e2ca5b3be5cf18efe1bef47380c5383"
+  },
+  {
+    "name": "SectigoPublicServerAuthenticationRootR46",
+    "url": "https://crt.sh/?d=4256644734",
+    "subject": "CN=Sectigo Public Server Authentication Root R46,O=Sectigo Limited,C=GB",
+    "sha256_der": "7bb647a62aeeac88bf257aa522d01ffea395e0ab45c73f93f65654ec38f25a06"
+  }
+]

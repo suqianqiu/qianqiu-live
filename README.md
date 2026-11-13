@@ -6,9 +6,17 @@
 >
 > 第三方列表、视频内容和网络条件随时变化，不保证频道身份、画面实时性、持续流畅、长期可用或全部设备兼容。本声明不免除依法应承担的责任。权利或安全问题请在本仓库 Issues 提供具体链接，以便核查处理。
 
-当前版本 **1.3.4（versionCode 17）**，安装名称 **千秋电视**，包名 `com.tv.simplelive`，支持 Android 5.0 / API 21 及以上，包含 arm64-v8a、armeabi-v7a。使用 LibVLC 3.6.5；不设账号、会员或应用付费解锁。第三方内容的授权及可用性仍由各来源决定。
+当前版本 **1.3.5（versionCode 18）**，安装名称 **千秋电视**，包名 `com.tv.simplelive`，支持 Android 5.0 / API 21 及以上，包含 arm64-v8a、armeabi-v7a。使用 LibVLC 3.6.5；不设账号、会员或应用付费解锁。第三方内容的授权及可用性仍由各来源决定。
 
-[下载 1.3.4 APK 与源码](https://github.com/suqianqiu/qianqiu-live/releases/tag/v1.3.4) · [安装指南](INSTALL.md) · [完整巡检与有效性规则](docs/SOURCE_RULES.md) · [本版验证记录](docs/VERIFICATION-1.3.3.md) · [第三方许可](THIRD_PARTY.txt)
+[下载 1.3.4 APK 与源码](https://github.com/suqianqiu/qianqiu-live/releases/tag/v1.3.5) · [安装指南](INSTALL.md) · [完整巡检与有效性规则](docs/SOURCE_RULES.md) · [本版验证记录](docs/VERIFICATION-1.3.3.md) · [第三方许可](THIRD_PARTY.txt)
+
+## 1.3.5 更新：腾讯云优先升级与折纸Logo
+
+<img src="assets/branding/origami-logo.png" width="192" alt="折纸科技风Logo">
+
+[腾讯云下载最新版](https://www.dajinsuan.com/tvapp/qianqiu-live/v1.3.5/QianqiuLive-1.3.5.apk) · [GitHub备用](https://github.com/suqianqiu/qianqiu-live/releases/tag/v1.3.5) · [升级机制](docs/UPDATES.md)
+
+检测和下载优先走腾讯云香港COS，GitHub备用；保留断点续传和安装包身份校验。新Logo同时用于桌面图标和电视横幅。旧版需先覆盖安装一次，才能取得新的升级入口。
 
 ## 1.3.4 更新：应用内升级
 
