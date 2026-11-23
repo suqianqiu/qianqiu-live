@@ -28,7 +28,7 @@ public final class MainActivity extends Activity {
     private final ExecutorService worker = Executors.newSingleThreadExecutor();
     private final ExecutorService playerWorker = Executors.newSingleThreadExecutor();
     private int closingPlayers;
-    private boolean pendingPlay, destroyed;
+    private boolean pendingPlay, destroyed, exiting;
     private final PlaybackRecovery recovery=new PlaybackRecovery();
     private Runnable reconnect;
     private final Runnable playbackWatch=new Runnable(){public void run(){
@@ -59,6 +59,7 @@ public final class MainActivity extends Activity {
     private LinearLayout panel;
     private TextView status, heading, hint, playbackError, inspectionStatus;
     private ListView list;
+    private Button homeButton;
     private ArrayAdapter<String> adapter;
     private final ArrayList<String> names = new ArrayList<String>();
     private android.content.SharedPreferences prefs;
@@ -142,7 +143,7 @@ public final class MainActivity extends Activity {
         root.addView(panel, new FrameLayout.LayoutParams(width, -1, Gravity.LEFT));
         heading = label("千秋电视  /  LIVE", 27, 0xFF81E2CB); heading.setTypeface(null, Typeface.BOLD);
         panel.addView(heading);
-        TextView guide = label("确定选台 · 返回全屏 · 菜单设置\n全屏时上下换台，左右切换解码", 14, 0xFFAFBFCD);
+        TextView guide = label("确定选台 · 返回桌面 · 菜单设置\n全屏播放按返回打开列表，上下换台", 14, 0xFFAFBFCD);
         guide.setPadding(0, dp(8), 0, dp(12)); panel.addView(guide);
         LinearLayout buttons = new LinearLayout(this);
         addButton(buttons, "设置", new Runnable() { public void run() { showSettings(); } });
@@ -167,6 +168,17 @@ public final class MainActivity extends Activity {
         status.setEllipsize(android.text.TextUtils.TruncateAt.END); status.setPadding(0, dp(8), 0, 0); panel.addView(status);
         inspectionStatus = label("尚未巡检", 13, 0xFF81E2CB); inspectionStatus.setMaxLines(3);
         inspectionStatus.setPadding(0, dp(6), 0, 0); panel.addView(inspectionStatus);
+        homeButton=new Button(this);homeButton.setId(View.generateViewId());homeButton.setText("回到桌面");homeButton.setTextSize(18);homeButton.setAllCaps(false);homeButton.setMinHeight(dp(48));
+        homeButton.setOnClickListener(new View.OnClickListener(){public void onClick(View v){returnToDesktop();}});
+        LinearLayout.LayoutParams homeLayout=new LinearLayout.LayoutParams(-1,dp(48));homeLayout.topMargin=dp(8);panel.addView(homeButton,homeLayout);
+        list.setId(View.generateViewId());homeButton.setNextFocusUpId(list.getId());list.setNextFocusDownId(homeButton.getId());
+        homeButton.setNextFocusDownId(homeButton.getId());homeButton.setNextFocusLeftId(homeButton.getId());homeButton.setNextFocusRightId(homeButton.getId());
+        list.setOnKeyListener(new View.OnKeyListener(){public boolean onKey(View v,int key,KeyEvent event){
+            if(event.getAction()==KeyEvent.ACTION_DOWN&&key==KeyEvent.KEYCODE_DPAD_DOWN&&list.getSelectedItemPosition()==channels.size()-1){homeButton.requestFocus();return true;}return false;
+        }});
+        homeButton.setOnKeyListener(new View.OnKeyListener(){public boolean onKey(View v,int key,KeyEvent event){
+            if(event.getAction()==KeyEvent.ACTION_DOWN&&key==KeyEvent.KEYCODE_DPAD_UP){list.requestFocus();if(!channels.isEmpty())list.setSelection(channels.size()-1);return true;}return false;
+        }});
         list.requestFocus();
     }
     private void addButton(LinearLayout row, String text, final Runnable action) {
@@ -177,13 +189,23 @@ public final class MainActivity extends Activity {
     private void updateList() {
         names.clear();
         for (int i = 0; i < channels.size(); i++) {
-            Playlist.Channel c=channels.get(i); SourceInspector.Health h=channelHealth.get(c.url);
-            String badge=h==null?"":"  · "+(h.testedAt>0&&!SourceInspector.fresh(h.testedAt,System.currentTimeMillis())?"到期待复测":h.state);
-            if (SourceAliases.rejected(c.url)) badge = "  · 已屏蔽";
-            names.add(String.format(java.util.Locale.US, "%02d  %s%s", i+1, c.name, badge));
+            names.add(channelLabel(i));
         }
         adapter.notifyDataSetChanged();
         heading.setText("千秋电视  /  " + channels.size() + " 台");
+    }
+    private String channelLabel(int position){
+        Playlist.Channel c=channels.get(position);SourceInspector.Health h=channelHealth.get(c.url);
+        String badge=h==null?"":"  · "+(h.testedAt>0&&!SourceInspector.fresh(h.testedAt,System.currentTimeMillis())?"到期待复测":h.state);
+        if(SourceAliases.rejected(c.url))badge="  · 已屏蔽";
+        return String.format(java.util.Locale.US,"%02d  %s%s",position+1,c.name,badge);
+    }
+    private void returnToDesktop(){
+        if(exiting)return;exiting=true;foreground=false;inspectionForeground=false;pendingPlay=false;loadGeneration++;
+        handler.removeCallbacks(playbackWatch);handler.removeCallbacks(hideHint);cancelReconnect();cancelInspection();disposePlayer();
+        Intent home=new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+        try{startActivity(home);}catch(ActivityNotFoundException unavailable){moveTaskToBack(true);}
+        finishAndRemoveTask();
     }
     private void showPanel(boolean visible) {
         FrameLayout.LayoutParams layout = (FrameLayout.LayoutParams)panel.getLayoutParams();
@@ -196,7 +218,7 @@ public final class MainActivity extends Activity {
     }
     private void setState(String text) { state = text; status.setText(text + "\n" + MODES[mode]); showHint(); }
     private void showHint() {
-        if (playbackError.getVisibility() == View.VISIBLE) {
+        if (panel.getVisibility() == View.VISIBLE || playbackError.getVisibility() == View.VISIBLE) {
             handler.removeCallbacks(hideHint); hint.setVisibility(View.GONE); return;
         }
         hint.setText((index >= 0 && index < channels.size() ? channels.get(index).name + "\n" : "")
@@ -408,12 +430,34 @@ public final class MainActivity extends Activity {
         File folder=new File(getFilesDir(),directory);if(!folder.isDirectory()&&!folder.mkdirs())throw new IOException("无法保存检测断点");byte[] digest=java.security.MessageDigest.getInstance("SHA-256").digest(id.getBytes("UTF-8"));StringBuilder hex=new StringBuilder();for(byte b:digest)hex.append(String.format(java.util.Locale.US,"%02x",b&255));File dest=new File(folder,hex+".bin"),temp=new File(folder,hex+".tmp");
         try(ObjectOutputStream out=new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(temp)))){out.writeUTF(id);out.writeObject(record);}if(!temp.renameTo(dest)){temp.delete();throw new IOException("断点保存失败");}
     }
-    private HashMap<String,SourceInspector.Entry> checkpoints(){
+    private HashMap<String,SourceInspector.Entry> checkpoints(){return checkpoints(checkpointKey());}
+    private HashMap<String,SourceInspector.Entry> checkpoints(String preferenceKey){
         HashMap<String,SourceInspector.Entry> rows=new HashMap<String,SourceInspector.Entry>();
-        try{org.json.JSONObject saved=new org.json.JSONObject(prefs.getString(checkpointKey(),"{}"));Iterator<String> keys=saved.keys();while(keys.hasNext()){String key=keys.next();org.json.JSONObject j=saved.getJSONObject(key);if(j.optInt("schema")!=SourceInspector.SCHEMA)continue;rows.put(key,new SourceInspector.Entry(new Playlist.Channel(j.getString("name"),j.getString("url"),j.optString("group")),readHealth(j)));}}catch(Exception ignored){}return rows;
+        try{org.json.JSONObject saved=new org.json.JSONObject(prefs.getString(preferenceKey,"{}"));Iterator<String> keys=saved.keys();while(keys.hasNext()){String key=keys.next();org.json.JSONObject j=saved.getJSONObject(key);if(j.optInt("schema")!=SourceInspector.SCHEMA)continue;rows.put(key,new SourceInspector.Entry(new Playlist.Channel(j.getString("name"),j.getString("url"),j.optString("group")),readHealth(j)));}}catch(Exception ignored){}return rows;
+    }
+    private void showInspectionEntry(final SourceInspector.Entry entry,final int token,final int generation,final String scanSource){
+        handler.post(new Runnable(){public void run(){
+            if(exiting||destroyed||token!=inspectionGeneration||generation!=loadGeneration||!inspectionForeground||!source.equals(scanSource))return;
+            boolean changed=false;String key=SourceInspector.key(entry.channel.name);
+            for(int i=0;i<channels.size();i++){Playlist.Channel c=channels.get(i);if(!SourceInspector.key(c.name).equals(key))continue;
+                Playlist.Channel updated=new Playlist.Channel(c.name,entry.channel.url,c.group);channels.set(i,updated);channelHealth.put(updated.url,entry.health);
+                String label=channelLabel(i);if(i<names.size()&&!label.equals(names.get(i))){names.set(i,label);changed=true;}
+            }
+            // Positions and count are unchanged: let ListView preserve its selected row and viewport.
+            if(changed)adapter.notifyDataSetChanged();
+        }});
+    }
+    private void saveInspectionEntry(SourceInspector.Entry entry,String recordKey,boolean complete,int token){
+        synchronized(prefs){if(token!=inspectionGeneration||!inspectionForeground)return;try{
+            String key=SourceInspector.key(entry.channel.name),visibleKey=recordKey+":visible";
+            org.json.JSONObject visible=new org.json.JSONObject(prefs.getString(visibleKey,"{}"));
+            org.json.JSONObject value=healthJson(entry.health).put("name",entry.channel.name).put("url",entry.channel.url).put("group",entry.channel.group);
+            if(complete){org.json.JSONObject records=new org.json.JSONObject(prefs.getString(recordKey,"{}"));records.put(key,value);visible.remove(key);prefs.edit().putString(recordKey,records.toString()).putString(visibleKey,visible.toString()).commit();}
+            else{visible.put(key,value);prefs.edit().putString(visibleKey,visible.toString()).apply();}
+        }catch(Exception e){android.util.Log.w("SimpleLiveTV","Could not persist visible inspection result",e);}}
     }
     private void startInspection(boolean manual) {
-        if(destroyed||!inspectionForeground||channels.isEmpty())return;
+        if(exiting||destroyed||!inspectionForeground||channels.isEmpty())return;
         if(inspector!=null){
             if(manual)new AlertDialog.Builder(this).setTitle("直播源巡检中").setMessage(inspectionStatus.getText()+"\n仅在应用前台检测，不打断当前播放。")
                 .setPositiveButton("继续巡检",null).setNegativeButton("停止巡检",new DialogInterface.OnClickListener(){public void onClick(DialogInterface d,int which){cancelInspection();}}).show();
@@ -424,10 +468,13 @@ public final class MainActivity extends Activity {
         if(PUBLIC_LIST.equals(source))try(InputStream in=getAssets().open("public-candidates-v3.m3u")){cached.addAll(Playlist.parse(Playlist.read(in),PUBLIC_LIST));}catch(Exception ignored){}
         try(FileInputStream in=openFileInput(candidateFile())){cached.addAll(Playlist.parse(Playlist.read(in),PUBLIC_LIST));}catch(Exception ignored){}
         final HashMap<String,SourceInspector.Entry> saved=checkpoints();
+        final HashMap<String,SourceInspector.Entry> visible=checkpoints(checkpointKey()+":visible");
         boolean restored=false;int selected=list.getSelectedItemPosition();
         for (int i = 0; i < original.size(); i++) {
             Playlist.Channel c = original.get(i);
             SourceInspector.Entry e = saved.get(SourceInspector.key(c.name));
+            SourceInspector.Entry partial=visible.get(SourceInspector.key(c.name));
+            if(partial!=null&&SourceInspector.fresh(partial.health.testedAt,System.currentTimeMillis())&&(e==null||partial.health.testedAt>e.health.testedAt))e=partial;
             if (e == null || SourceAliases.rejected(e.channel.url)
                     || !SourceInspector.fresh(e.health.testedAt, System.currentTimeMillis())) continue;
             Playlist.Channel recovered = new Playlist.Channel(c.name, e.channel.url, c.group);
@@ -456,18 +503,12 @@ public final class MainActivity extends Activity {
                 running.restoreRoutes(routeRecords(routeDir,token));
                 final SourceInspector.Result result=running.inspect(original,cached,feeds,budget,new SourceInspector.Listener(){
                     public void sampled(String id,SourceInspector.RouteRecord record){if(token!=inspectionGeneration||!inspectionForeground)return;try{writeRoute(routeDir,id,record);}catch(Exception e){android.util.Log.w("SimpleLiveTV","Could not persist route checkpoint",e);}}
-                    public void completed(SourceInspector.Entry entry){
-                        synchronized(prefs){if(token!=inspectionGeneration||!inspectionForeground)return;try{
-                            org.json.JSONObject records=new org.json.JSONObject(prefs.getString(recordKey,"{}"));SourceInspector.Health h=entry.health;
-                            records.put(SourceInspector.key(entry.channel.name),healthJson(h).put("name",entry.channel.name).put("url",entry.channel.url).put("group",entry.channel.group));
-                            prefs.edit().putString(recordKey,records.toString()).commit();
-                        }catch(Exception ignored){}}
-                        final SourceInspector.Entry completed=entry;handler.post(new Runnable(){public void run(){if(token!=inspectionGeneration||!inspectionForeground||!source.equals(scanSource))return;int selected=list.getSelectedItemPosition();for(int i=0;i<channels.size();i++){Playlist.Channel c=channels.get(i);if(SourceInspector.key(c.name).equals(SourceInspector.key(completed.channel.name))){Playlist.Channel updated=new Playlist.Channel(c.name,completed.channel.url,c.group);channels.set(i,updated);channelHealth.put(updated.url,completed.health);}}updateList();if(selected>=0)list.setSelection(selected);if(index>=0)list.setItemChecked(index,true);}});
-                    }
+                    public void updated(SourceInspector.Entry entry){showInspectionEntry(entry,token,listGeneration,scanSource);saveInspectionEntry(entry,recordKey,false,token);}
+                    public void completed(SourceInspector.Entry entry){showInspectionEntry(entry,token,listGeneration,scanSource);saveInspectionEntry(entry,recordKey,true,token);}
                     public void candidates(List<Playlist.Channel> rows,int refreshed){if(token!=inspectionGeneration||!inspectionForeground)return;try{writePlaylist(cacheFile,rows);if(feeds.length>0)prefs.edit().putLong(feedKey,System.currentTimeMillis()).commit();}catch(Exception ignored){}}
                     public void progress(final int done,final int total,final int usable){
                     long now=SystemClock.elapsedRealtime(),previous=lastProgress.get();if(done!=total&&(now-previous<500||!lastProgress.compareAndSet(previous,now)))return;
-                    handler.post(new Runnable(){public void run(){if(token==inspectionGeneration&&!destroyed)inspectionStatus.setText("前台深测 "+done+"/"+total+" · 已选合格最优源 "+usable+" 台");}});
+                    handler.post(new Runnable(){public void run(){if(token==inspectionGeneration&&!destroyed)inspectionStatus.setText("前台深测 "+done+"/"+total+" · 已找到合格源 "+usable+" 台");}});
                 }});
                 handler.post(new Runnable(){public void run(){
                     if(destroyed||token!=inspectionGeneration||listGeneration!=loadGeneration||!source.equals(scanSource))return;
@@ -494,7 +535,7 @@ public final class MainActivity extends Activity {
             if(index>=0)list.setItemChecked(index,true);if(selected>=0)list.setSelection(Math.min(selected,channels.size()-1));
         }
         String time=android.text.format.DateFormat.format("MM-dd HH:mm",new java.util.Date()).toString();
-        inspectionSummary=time+" 深测：最优源 "+result.usable+" / 已测 "+result.checked+" 台"+(result.partial?"，其余待续测":"")+"\n两轮8样本、最差余量≥1.5倍、解码≥30帧；不是长期流畅保证";
+        inspectionSummary=time+" 深测：合格源 "+result.usable+" / 已测 "+result.checked+" 台"+(result.partial?"，其余待续测":"")+"\n两轮8样本、最差余量≥1.5倍、解码≥30帧；不是长期流畅保证";
         try{writePlaylist("playlist.m3u",channels);writePlaylist(candidateFile(),result.candidates);}
         catch(Exception e){inspectionSummary+="\n本次结果未能保存，下次启动将重新巡检";}
         prefs.edit().putInt("inspectionSchema",SourceInspector.SCHEMA).putString("inspectionSummary",inspectionSummary).putString("inspectionHealth",health.toString()).apply();
@@ -630,11 +671,12 @@ public final class MainActivity extends Activity {
         if (index < 0 && !channels.isEmpty()) list.setSelection(0);
 
     }
-    @Override protected void onResume(){super.onResume();if(updatePrompt==null)updatePrompt=new UpdatePrompt(this);updatePrompt.resume();inspectionForeground=true;if(prefs.getBoolean("autoInspect",true))startInspection(false);}
+    @Override protected void onResume(){super.onResume();if(exiting)return;if(updatePrompt==null)updatePrompt=new UpdatePrompt(this);updatePrompt.resume();inspectionForeground=true;if(prefs.getBoolean("autoInspect",true))startInspection(false);}
     @Override protected void onPause(){if(updatePrompt!=null)updatePrompt.pause();inspectionForeground=false;cancelInspection();super.onPause();}
     @Override protected void onStop() { foreground = false; pendingPlay = false;handler.removeCallbacks(playbackWatch);cancelReconnect();cancelInspection(); disposePlayer(); super.onStop(); }
     @Override protected void onDestroy() {
         destroyed = true; pendingPlay = false; loadGeneration++;
+        inspectionForeground=false;cancelInspection();
         handler.removeCallbacks(playbackWatch);cancelReconnect();
         handler.removeCallbacks(hideHint); worker.shutdownNow();
         releaseVlcWhenIdle(); super.onDestroy();
@@ -642,10 +684,7 @@ public final class MainActivity extends Activity {
     @Override public boolean onKeyDown(int key, KeyEvent event) {
         if (key == KeyEvent.KEYCODE_MENU) { if (event.getRepeatCount() == 0) showSettings(); return true; }
         if (key == KeyEvent.KEYCODE_BACK) {
-            if (panel.getVisibility() == View.VISIBLE) {
-                if (index < 0) { finish(); return true; }
-                showPanel(false);
-            } else showPanel(true);
+            if(event.getRepeatCount()==0)handleBack();
             return true;
         }
         if (panel.getVisibility() != View.VISIBLE) {
@@ -657,4 +696,6 @@ public final class MainActivity extends Activity {
         }
         return super.onKeyDown(key, event);
     }
+    private void handleBack(){if(panel.getVisibility()==View.VISIBLE)returnToDesktop();else showPanel(true);}
+    @Override public void onBackPressed(){handleBack();}
 }

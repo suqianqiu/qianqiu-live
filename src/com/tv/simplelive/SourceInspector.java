@@ -25,6 +25,7 @@ final class SourceInspector {
     interface Listener {
         void progress(int done,int total,int usable);
         default void completed(Entry e){}
+        default void updated(Entry e){}
         default void candidates(List<Playlist.Channel> rows,int refreshed){}
         default void sampled(String id,RouteRecord r){}
     }
@@ -103,7 +104,7 @@ final class SourceInspector {
         final ConcurrentHashMap<String,Entry> choices=new ConcurrentHashMap<String,Entry>();final AtomicInteger done=new AtomicInteger(),good=new AtomicInteger();final int total=groups.size();ExecutorService probes=Executors.newFixedThreadPool(concurrency);ArrayList<Future<Entry>> jobs=new ArrayList<Future<Entry>>();
         try{
             // Each worker owns its manifest AND segment batch: never queue after acquiring expiring URLs.
-            for(final Group g:work)jobs.add(probes.submit(new Callable<Entry>(){public Entry call(){Entry e=inspectGroup(g,listener);choices.put(key(g.original.name),e);if(e.health.ok)good.incrementAndGet();int count=done.incrementAndGet();if(listener!=null&&!stopped())listener.progress(count,total,good.get());return e;}}));
+            for(final Group g:work)jobs.add(probes.submit(new Callable<Entry>(){public Entry call(){Entry e=inspectGroup(g,listener,choices);choices.put(key(g.original.name),e);if(e.health.ok)good.incrementAndGet();int count=done.incrementAndGet();if(listener!=null&&!stopped())listener.progress(count,total,good.get());return e;}}));
             for(Future<Entry> f:jobs)try{f.get(Math.max(1,TimeUnit.NANOSECONDS.toMillis(deadline-System.nanoTime())),TimeUnit.MILLISECONDS);}catch(Exception e){if(stopped())break;}
             for(Group g:groups.values()){Entry e=choices.get(key(g.original.name));if(e==null){Health h=new Health();h.state="未完成，下次续测";e=new Entry(g.original,h);}if(g.existing||e.health.ok)result.entries.add(e);}
             for(Entry e:result.entries)if(e.health.testedAt>0){result.checked++;if(e.health.ok)result.usable++;}
@@ -111,14 +112,27 @@ final class SourceInspector {
         }finally{probes.shutdownNow();synchronized(active){for(HttpURLConnection c:active)c.disconnect();active.clear();}}
         return result;
     }
-    private Entry inspectGroup(Group g,Listener listener){
+    private static Health copyHealth(Health source){
+        Health h=new Health();h.ok=source.ok;h.tested=source.tested;h.testedAt=source.testedAt;h.responseMs=source.responseMs;h.bytesPerSecond=source.bytesPerSecond;h.headroom=source.headroom;h.samples=source.samples;h.frames=source.frames;h.routes=source.routes;h.state=source.state;return h;
+    }
+    private static Entry pending(Group g,Playlist.Channel chosen,Health best,Health last,int checked){
+        Health h=best!=null?copyHealth(best):last!=null?copyHealth(last):new Health();h.routes=g.routes.size();
+        h.state=(best!=null?best.state:last!=null?last.state:"未完成")+" · 已测"+checked+"/"+g.routes.size();
+        return new Entry(best!=null?chosen:g.original,h);
+    }
+    private Entry inspectGroup(Group g,Listener listener,Map<String,Entry> choices){
         String k=key(g.original.name);Entry saved=previous.get(k);
         if(saved!=null&&!SourceAliases.rejected(saved.channel.url)&&fresh(saved.health.testedAt,System.currentTimeMillis()))return new Entry(new Playlist.Channel(g.original.name,saved.channel.url,g.original.group),saved.health);
-        Health best=null;Playlist.Channel chosen=g.original;String failure="无合格源";
+        Health best=null,last=null;Playlist.Channel chosen=g.original;String failure="无合格源";int checked=0;
         for(Playlist.Channel route:g.routes){
-            if(stopped()){Health h=new Health();h.state="比选未完成，下次续测";return new Entry(g.original,h);}
-            Health h=probe(route,k,listener);if(h.testedAt==0){Health pending=new Health();pending.state="比选未完成，下次续测";return new Entry(g.original,pending);}
+            if(stopped())return pending(g,chosen,best,last,checked);
+            Health h=probe(route,k,listener);if(h.testedAt==0)return pending(g,chosen,best,last,checked);
+            last=h;checked++;
             if(better(h,best)){best=h;chosen=new Playlist.Channel(g.original.name,route.url,g.original.group);}if(!h.ok)failure=h.state;
+            // Publish each measured route, not just the winner after every candidate finishes.
+            // Keep the snapshot even when the overall budget expires before this group returns.
+            Entry current=pending(g,chosen,best,last,checked);choices.put(k,current);
+            if(listener!=null&&!stopped())listener.updated(current);
         }
         if(best==null){best=new Health();best.tested=true;best.state="无合格源："+failure;}best.routes=g.routes.size();best.testedAt=System.currentTimeMillis();Entry e=new Entry(chosen,best);if(listener!=null&&!stopped())listener.completed(e);return e;
     }

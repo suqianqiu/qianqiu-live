@@ -1,6 +1,6 @@
-param([switch]$Install, [string]$Device='', [int]$AdbPort=5037, [string]$ManifestPath='AndroidManifest.xml', [string]$OutputApk='')
+param([switch]$Install, [string]$Device='', [int]$AdbPort=5037, [string]$ManifestPath='AndroidManifest.xml', [string]$OutputApk='', [switch]$IncludeX86ForTests)
 $ErrorActionPreference='Stop'
-if([string]::IsNullOrWhiteSpace($OutputApk)){$OutputApk='dist/QianqiuLive-1.3.6.apk'}
+if([string]::IsNullOrWhiteSpace($OutputApk)){$OutputApk='dist/QianqiuLive-1.3.7.apk'}
 Set-Location $PSScriptRoot
 $sdk=Join-Path $env:LOCALAPPDATA 'Android/Sdk'
 $bt=Join-Path $sdk 'build-tools/35.0.0'
@@ -20,7 +20,8 @@ Add-Type -AssemblyName System.IO.Compression.FileSystem
 if(!(Test-Path 'deps/libvlc/classes.jar')) {
     [IO.Compression.ZipFile]::ExtractToDirectory((Resolve-Path $aar).Path,(Join-Path $PSScriptRoot 'deps/libvlc'))
 }
-New-Item -ItemType Directory -Force -Path build/classes,build/generated,build/dex,build/package/lib,dist | Out-Null
+$packageDirectory=if($IncludeX86ForTests){'build/package-qa'}else{'build/package'}
+New-Item -ItemType Directory -Force -Path build/classes,build/generated,build/dex,"$packageDirectory/lib",dist | Out-Null
 Run "$bt/aapt.exe" @('package','-f','--auto-add-overlay','-M',$ManifestPath,'-S','res','-S','deps/libvlc/res','-A','assets','-I',$android,'-J','build/generated','--extra-packages','org.videolan','-F','build/unsigned.apk')
 $classesDir=Join-Path $PSScriptRoot ('build/classes-'+[Guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path $classesDir | Out-Null
@@ -28,11 +29,12 @@ $sources=@(Get-ChildItem src,build/generated -Filter '*.java' -Recurse | ForEach
 Run javac (@('-encoding','UTF-8','--release','8','-classpath',"$android;deps/libvlc/classes.jar",'-d',$classesDir)+$sources)
 Run jar @('cf','build/app-classes.jar','-C',$classesDir,'.')
 Run "$bt/d8.bat" @('--min-api','21','--lib',$android,'--output','build/dex','deps/libvlc/classes.jar','build/app-classes.jar')
-Copy-Item -LiteralPath build/dex/classes.dex -Destination build/package/classes.dex -Force
-foreach($abi in @('arm64-v8a','armeabi-v7a')) {
-    Copy-Item -LiteralPath "deps/libvlc/jni/$abi" -Destination build/package/lib -Recurse -Force
+Copy-Item -LiteralPath build/dex/classes.dex -Destination "$packageDirectory/classes.dex" -Force
+$abis=if($IncludeX86ForTests){@('arm64-v8a','armeabi-v7a','x86_64')}else{@('arm64-v8a','armeabi-v7a')}
+foreach($abi in $abis) {
+    Copy-Item -LiteralPath "deps/libvlc/jni/$abi" -Destination "$packageDirectory/lib" -Recurse -Force
 }
-Push-Location build/package
+Push-Location $packageDirectory
 try {
     $files=@(Get-ChildItem -File -Recurse | ForEach-Object { [IO.Path]::GetRelativePath((Get-Location).Path,$_.FullName).Replace('\','/') })
     Run "$bt/aapt.exe" (@('add','../unsigned.apk')+$files)
@@ -49,4 +51,4 @@ if($Install) {
     Run adb @('-H','127.0.0.1','-P',"$AdbPort",'-s',$Device,'install','-r',$OutputApk)
     # Installation does not start the app or wake the display.
 }
-Write-Output 'Built dist/QianqiuLive-1.3.6.apk'
+Write-Output "Built $OutputApk"
