@@ -6,9 +6,23 @@
 >
 > 第三方列表、视频内容和网络条件随时变化，不保证频道身份、画面实时性、持续流畅、长期可用或全部设备兼容。本声明不免除依法应承担的责任。权利或安全问题请在本仓库 Issues 提供具体链接，以便核查处理。
 
-当前版本 **1.3.9（versionCode 22）**，安装名称 **千秋电视**，包名 `com.tv.simplelive`，支持 Android 5.0 / API 21 及以上，包含 arm64-v8a、armeabi-v7a。使用 LibVLC 3.6.5；不设账号、会员或应用付费解锁。第三方内容的授权及可用性仍由各来源决定。
+当前版本 **1.3.10（versionCode 23）**，安装名称 **千秋电视**，包名 `com.tv.simplelive`，支持 Android 5.0 / API 21 及以上，包含 arm64-v8a、armeabi-v7a。使用 LibVLC 3.6.5；不设账号、会员或应用付费解锁。第三方内容的授权及可用性仍由各来源决定。
 
-[下载 1.3.9 APK 与源码](https://github.com/suqianqiu/qianqiu-live/releases/tag/v1.3.9) · [安装指南](INSTALL.md) · [完整巡检与有效性规则](docs/SOURCE_RULES.md) · [本版验证记录](docs/VERIFICATION-1.3.9.md) · [第三方许可](THIRD_PARTY.txt)
+[下载 1.3.10 APK 与源码](https://github.com/suqianqiu/qianqiu-live/releases/tag/v1.3.10) · [安装指南](INSTALL.md) · [完整巡检与有效性规则](docs/SOURCE_RULES.md) · [本版验证记录](docs/VERIFICATION-1.3.10.md) · [第三方许可](THIRD_PARTY.txt)
+
+## 1.3.10 更新：先快检，再验证质量
+
+- **已有线路先检查**：恢复缓存后立即检查当前列表，远程订阅并行刷新，不等远程列表全部返回。
+- **快检只取小样本**：视频最多读取16 KiB前缀，检查HTTP和视频特征；先让每个频道找到可达线路，再处理更多候选。“快检可达”不等于质量合格。
+- **先覆盖频道，再比备用**：质量验证先为各频道寻找一条合格线路，然后继续比较备用；优选仍要求两轮共8个完整样本、至少1.5倍速度余量、至少30帧解码。
+- **缓存分层**：保留旧版路由断点；快检可达缓存10分钟，失败缓存5分钟；严格合格结果保持12小时有效期。快检不写入深测完成记录，也不覆盖已有有效优选。
+- **进度更明确**：分类后的x/y改为快检覆盖频道数，底部区分快检、频道验证、备用比选；每得到结果就更新，保持焦点与视口。
+
+华为保留现有缓存实测：2.367秒已有58/253的快检进度，43.355秒记录到250/253，随后观察到快检完成并继续质量验证。这是保留缓存的实测记录，不代表冷缓存速度，也不能与旧版完整深测耗时直接比较。
+
+[腾讯云下载1.3.10](https://www.dajinsuan.com/tvapp/qianqiu-live/v1.3.10/QianqiuLive-1.3.10.apk) · [GitHub备用](https://github.com/suqianqiu/qianqiu-live/releases/tag/v1.3.10) · [验证范围](docs/VERIFICATION-1.3.10.md)
+
+![华为智慧屏：快检完成后继续逐步验证质量](docs/screenshots/live1310-huawei-pipeline.png)
 
 ## 1.3.9 更新：按钮焦点高亮
 

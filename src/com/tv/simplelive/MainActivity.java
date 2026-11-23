@@ -65,6 +65,7 @@ public final class MainActivity extends Activity {
     private String expandedCategory, progressSource;
     private ChannelDrawer drawer;
     private final ArrayList<ChannelDrawer.Row> drawerRows=new ArrayList<ChannelDrawer.Row>();
+    private final HashSet<String> quickInspectionKeys=new HashSet<String>();
     private final HashSet<String> completedInspectionKeys=new HashSet<String>();
     private ArrayAdapter<String> adapter;
     private final ArrayList<String> names = new ArrayList<String>();
@@ -154,7 +155,7 @@ public final class MainActivity extends Activity {
         homeButton=new Button(this);homeButton.setId(View.generateViewId());homeButton.setText("回到桌面");homeButton.setTextSize(16);homeButton.setAllCaps(false);TvButtonStyle.apply(homeButton);
         homeButton.setOnClickListener(new View.OnClickListener(){public void onClick(View v){returnToDesktop();}});
         top.addView(homeButton,new LinearLayout.LayoutParams(dp(120),dp(48)));panel.addView(top,new LinearLayout.LayoutParams(-1,dp(48)));
-        TextView guide = label("确定展开 / 选台 · 左键收起分类\n返回开关侧栏 · 分类后为已测频道数", 14, 0xFFAFBFCD);
+        TextView guide = label("确定展开 / 选台 · 左键收起分类\n返回开关侧栏 · 分类后为快检频道数", 14, 0xFFAFBFCD);
         guide.setPadding(0, dp(8), 0, dp(12)); panel.addView(guide);
         LinearLayout buttons = new LinearLayout(this);
         addButton(buttons, "设置", new Runnable() { public void run() { showSettings(); } });
@@ -218,15 +219,16 @@ public final class MainActivity extends Activity {
         heading.setText("千秋电视 / " + channels.size() + " 台");
     }
     private void restoreInspectionProgress(Map<String,SourceInspector.Entry> saved){
-        completedInspectionKeys.clear();long now=System.currentTimeMillis();
-        for(Map.Entry<String,SourceInspector.Entry> item:saved.entrySet())if(SourceInspector.fresh(item.getValue().health.testedAt,now))completedInspectionKeys.add(item.getKey());
+        completedInspectionKeys.clear();quickInspectionKeys.clear();long now=System.currentTimeMillis();
+        for(Map.Entry<String,SourceInspector.Entry> item:saved.entrySet())if(SourceInspector.fresh(item.getValue().health,now)){completedInspectionKeys.add(item.getKey());quickInspectionKeys.add(item.getKey());}
+        for(Map.Entry<String,SourceInspector.Entry> item:checkpoints(checkpointKey()+":quick").entrySet()){SourceInspector.Health h=item.getValue().health;if(SourceInspector.quickFresh(h.quickAt,h.reachable,now))quickInspectionKeys.add(item.getKey());}
     }
     private String selectedDrawerKey(){int p=list.getSelectedItemPosition();return p>=0&&p<drawerRows.size()?drawerRows.get(p).identity:null;}
     private int selectedDrawerTop(){View row=list.getChildAt(list.getSelectedItemPosition()-list.getFirstVisiblePosition());return row==null?0:row.getTop();}
     private int findDrawerKey(String key){if(key!=null)for(int i=0;i<drawerRows.size();i++)if(key.equals(drawerRows.get(i).identity))return i;return -1;}
     private int drawerPosition(int channel){for(int i=0;i<drawerRows.size();i++)if(drawerRows.get(i).channel==channel)return i;return -1;}
     private int selectedChannel(){int p=list.getSelectedItemPosition();return p>=0&&p<drawerRows.size()?drawerRows.get(p).channel:-1;}
-    private String drawerLabel(ChannelDrawer.Row row){return row.header()?(row.group.name.equals(expandedCategory)?"▾  ":"▸  ")+row.group.name+"  "+row.group.progress(completedInspectionKeys):channelLabel(row.channel);}
+    private String drawerLabel(ChannelDrawer.Row row){return row.header()?(row.group.name.equals(expandedCategory)?"▾  ":"▸  ")+row.group.name+"  "+row.group.progress(quickInspectionKeys):channelLabel(row.channel);}
     private void renderDrawer(){
         drawerRows.clear();names.clear();if(drawer!=null)drawerRows.addAll(drawer.rows(expandedCategory));
         for(ChannelDrawer.Row row:drawerRows)names.add(drawerLabel(row));adapter.notifyDataSetChanged();
@@ -252,7 +254,7 @@ public final class MainActivity extends Activity {
     }
     private String channelLabel(int position){
         Playlist.Channel c=channels.get(position);SourceInspector.Health h=channelHealth.get(c.url);
-        String badge=h==null?"":"  · "+(h.testedAt>0&&!SourceInspector.fresh(h.testedAt,System.currentTimeMillis())?"到期待复测":h.state);
+        String badge=h==null?"":"  · "+(h.testedAt>0&&!SourceInspector.fresh(h,System.currentTimeMillis())?"到期待复测":h.state);
         if(SourceAliases.rejected(c.url))badge="  · 已屏蔽";
         return (position==index?"▶  ":"")+String.format(java.util.Locale.US,"%02d  %s%s",position+1,c.name,badge);
     }
@@ -473,10 +475,10 @@ public final class MainActivity extends Activity {
     private String candidateFile(){return "inspection-candidates-"+Integer.toHexString(source.hashCode())+".m3u";}
     private String routeDirectory(){return "inspection-routes-v2-"+Integer.toHexString(source.hashCode());}
     private static SourceInspector.Health readHealth(org.json.JSONObject j){
-        SourceInspector.Health h=new SourceInspector.Health();h.tested=j.optBoolean("tested",true);h.testedAt=j.optLong("at");h.responseMs=j.optLong("ms");h.bytesPerSecond=j.optLong("bps");h.headroom=j.optDouble("headroom",0);h.samples=j.optInt("samples");h.frames=j.optInt("frames");h.routes=j.optInt("routes");h.state=j.optString("state","未检测");h.ok=j.optInt("schema")==SourceInspector.SCHEMA&&j.optBoolean("ok")&&h.samples>=8&&h.frames>=30&&h.headroom>=SourceInspector.MIN_HEADROOM;return h;
+        SourceInspector.Health h=new SourceInspector.Health();h.tested=j.optBoolean("tested",true);h.testedAt=j.optLong("at");h.responseMs=j.optLong("ms");h.bytesPerSecond=j.optLong("bps");h.headroom=j.optDouble("headroom",0);h.samples=j.optInt("samples");h.frames=j.optInt("frames");h.routes=j.optInt("routes");h.state=j.optString("state","未检测");h.quickAt=j.optLong("quickAt");h.reachable=j.optBoolean("reachable");h.ok=j.optInt("schema")==SourceInspector.SCHEMA&&j.optBoolean("ok")&&h.samples>=8&&h.frames>=30&&h.headroom>=SourceInspector.MIN_HEADROOM;return h;
     }
     private static org.json.JSONObject healthJson(SourceInspector.Health h)throws Exception{
-        return new org.json.JSONObject().put("schema",SourceInspector.SCHEMA).put("ok",h.ok).put("tested",h.tested).put("at",h.testedAt).put("ms",h.responseMs).put("bps",h.bytesPerSecond).put("headroom",h.headroom).put("samples",h.samples).put("frames",h.frames).put("routes",h.routes).put("state",h.state);
+        return new org.json.JSONObject().put("schema",SourceInspector.SCHEMA).put("ok",h.ok).put("tested",h.tested).put("reachable",h.reachable).put("quickAt",h.quickAt).put("at",h.testedAt).put("ms",h.responseMs).put("bps",h.bytesPerSecond).put("headroom",h.headroom).put("samples",h.samples).put("frames",h.frames).put("routes",h.routes).put("state",h.state);
     }
     private HashMap<String,SourceInspector.RouteRecord> routeRecords(String directory,int token){
         HashMap<String,SourceInspector.RouteRecord> records=new HashMap<String,SourceInspector.RouteRecord>();File[] files=new File(getFilesDir(),directory).listFiles();if(files==null)return records;
@@ -495,7 +497,7 @@ public final class MainActivity extends Activity {
     private void showInspectionEntry(final SourceInspector.Entry entry,final int token,final int generation,final String scanSource,final boolean complete){
         handler.post(new Runnable(){public void run(){
             if(exiting||destroyed||token!=inspectionGeneration||generation!=loadGeneration||!inspectionForeground||!source.equals(scanSource))return;
-            String key=SourceInspector.key(entry.channel.name);if(complete)completedInspectionKeys.add(key);
+            String key=SourceInspector.key(entry.channel.name);if(complete){completedInspectionKeys.add(key);quickInspectionKeys.add(key);}
             for(int i=0;i<channels.size();i++){Playlist.Channel c=channels.get(i);if(!SourceInspector.key(c.name).equals(key))continue;
                 Playlist.Channel updated=new Playlist.Channel(c.name,entry.channel.url,c.group);channels.set(i,updated);channelHealth.put(updated.url,entry.health);
             }
@@ -503,6 +505,23 @@ public final class MainActivity extends Activity {
             refreshDrawerLabels();
         }});
     }
+    private void showQuickInspectionEntry(final SourceInspector.Entry entry,final int token,final int generation,final String scanSource){
+        handler.post(new Runnable(){public void run(){
+            if(exiting||destroyed||token!=inspectionGeneration||generation!=loadGeneration||!inspectionForeground||!source.equals(scanSource))return;
+            String key=SourceInspector.key(entry.channel.name);quickInspectionKeys.add(key);
+            for(int i=0;i<channels.size();i++){Playlist.Channel current=channels.get(i);if(!SourceInspector.key(current.name).equals(key))continue;
+                SourceInspector.Health existing=channelHealth.get(current.url);if(existing!=null&&existing.ok&&SourceInspector.fresh(existing,System.currentTimeMillis()))continue;
+                Playlist.Channel updated=new Playlist.Channel(current.name,entry.health.reachable?entry.channel.url:current.url,current.group);channels.set(i,updated);channelHealth.put(updated.url,entry.health);
+            }refreshDrawerLabels();
+        }});
+    }
+    private void saveQuickInspectionEntry(SourceInspector.Entry entry,String recordKey,int token){
+        synchronized(prefs){if(token!=inspectionGeneration||!inspectionForeground)return;try{
+            String key=SourceInspector.key(entry.channel.name);org.json.JSONObject saved=new org.json.JSONObject(prefs.getString(recordKey+":quick","{}"));
+            saved.put(key,healthJson(entry.health).put("name",entry.channel.name).put("url",entry.channel.url).put("group",entry.channel.group));prefs.edit().putString(recordKey+":quick",saved.toString()).apply();
+        }catch(Exception e){android.util.Log.w("SimpleLiveTV","Could not persist quick inspection",e);}}
+    }
+    private boolean inspectionEntryFresh(SourceInspector.Health h,long now){return SourceInspector.fresh(h,now)||(h.testedAt==0&&SourceInspector.quickFresh(h.quickAt,h.reachable,now));}
     private void saveInspectionEntry(SourceInspector.Entry entry,String recordKey,boolean complete,int token){
         synchronized(prefs){if(token!=inspectionGeneration||!inspectionForeground)return;try{
             String key=SourceInspector.key(entry.channel.name),visibleKey=recordKey+":visible";
@@ -526,23 +545,28 @@ public final class MainActivity extends Activity {
         final HashMap<String,SourceInspector.Entry> saved=checkpoints();
         restoreInspectionProgress(saved);refreshDrawerLabels();
         final HashMap<String,SourceInspector.Entry> visible=checkpoints(checkpointKey()+":visible");
+        for(Map.Entry<String,SourceInspector.Entry> item:visible.entrySet()){SourceInspector.Entry complete=saved.get(item.getKey()),partial=item.getValue();
+            if(complete!=null&&!complete.health.ok&&partial.health.ok&&SourceInspector.fresh(partial.health,System.currentTimeMillis())&&partial.health.testedAt>complete.health.testedAt)saved.remove(item.getKey());
+        }
+        final HashMap<String,SourceInspector.Entry> quickSaved=checkpoints(checkpointKey()+":quick");
         boolean restored=false;int selected=list.getSelectedItemPosition();
         for (int i = 0; i < original.size(); i++) {
             Playlist.Channel c = original.get(i);
             SourceInspector.Entry e = saved.get(SourceInspector.key(c.name));
             SourceInspector.Entry partial=visible.get(SourceInspector.key(c.name));
-            if(partial!=null&&SourceInspector.fresh(partial.health.testedAt,System.currentTimeMillis())&&(e==null||partial.health.testedAt>e.health.testedAt))e=partial;
-            if (e == null || SourceAliases.rejected(e.channel.url)
-                    || !SourceInspector.fresh(e.health.testedAt, System.currentTimeMillis())) continue;
+            if(partial!=null&&SourceInspector.fresh(partial.health,System.currentTimeMillis())&&(e==null||partial.health.testedAt>e.health.testedAt))e=partial;
+            if(e==null||!SourceInspector.fresh(e.health,System.currentTimeMillis())){SourceInspector.Entry quick=quickSaved.get(SourceInspector.key(c.name));if(quick!=null&&inspectionEntryFresh(quick.health,System.currentTimeMillis()))e=quick;}
+            if (e == null || SourceAliases.rejected(e.channel.url)||!inspectionEntryFresh(e.health,System.currentTimeMillis())) continue;
             Playlist.Channel recovered = new Playlist.Channel(c.name, e.channel.url, c.group);
             original.set(i, recovered);
             channels.set(i, recovered);
             channelHealth.put(recovered.url, e.health);
             restored = true;
         }
-        if(restored){updateList();if(selected>=0)list.setSelection(selected);int playing=drawerPosition(index);if(playing>=0)list.setItemChecked(playing,true);}
-        boolean due=false;long now=System.currentTimeMillis();for(Playlist.Channel c:original){SourceInspector.Entry e=saved.get(SourceInspector.key(c.name));if(e==null||!SourceInspector.fresh(e.health.testedAt,now)||(e.health.ok&&SourceAliases.rejected(e.channel.url)))due=true;}
-        for(Playlist.Channel c:cached){SourceInspector.Entry e=saved.get(SourceInspector.key(c.name));if(e==null||!SourceInspector.fresh(e.health.testedAt,now))due=true;}
+        if(restored){updateList();int playing=drawerPosition(index);if(playing>=0)list.setItemChecked(playing,true);}
+        boolean due=false;long now=System.currentTimeMillis();for(Playlist.Channel c:original){SourceInspector.Entry e=saved.get(SourceInspector.key(c.name));if(e==null||!SourceInspector.fresh(e.health,now)||(e.health.ok&&SourceAliases.rejected(e.channel.url)))due=true;}
+        HashSet<String> knownChannels=new HashSet<String>();for(Playlist.Channel c:original)knownChannels.add(SourceInspector.key(c.name));
+        for(Playlist.Channel c:cached){if(!knownChannels.contains(SourceInspector.key(c.name)))continue;SourceInspector.Entry e=saved.get(SourceInspector.key(c.name));if(e==null||!SourceInspector.fresh(e.health,now))due=true;}
         final String feedKey="inspectionFeedAt:"+source,recordKey=checkpointKey(),cacheFile=candidateFile();
         boolean refresh=Playlist.isHttp(source)&&!SourceInspector.fresh(prefs.getLong(feedKey,0),now);
         if(!due&&!refresh){inspectionStatus.setText("12小时内已有检测记录，已跳过；下次进入时检查到期项目");return;}
@@ -552,9 +576,10 @@ public final class MainActivity extends Activity {
         final SourceInspector running=new SourceInspector(priority,saved,Collections.<String,SourceInspector.RouteRecord>emptyMap(),new MediaSampleDecoder(this),player==null?3:1);inspector=running;inspectionManual=manual;
         final String routeDir=routeDirectory();
         final long budget=TimeUnit.HOURS.toMillis(4);
-        inspectionStatus.setText("前台深测：两轮完整样本、1.5倍余量和30帧解码；可停止并续测");
+        inspectionStatus.setText("先快检已有线路，再逐步验证质量；列表刷新不阻塞检测");
         if(manual)Toast.makeText(this,"已开始前台巡检，可继续选台",Toast.LENGTH_SHORT).show();
         final java.util.concurrent.atomic.AtomicLong lastProgress=new java.util.concurrent.atomic.AtomicLong();
+        final long scanStarted=SystemClock.elapsedRealtime();
         Thread thread=new Thread(new Runnable(){public void run(){
             try{
                 running.restoreRoutes(routeRecords(routeDir,token));
@@ -562,11 +587,19 @@ public final class MainActivity extends Activity {
                     public void sampled(String id,SourceInspector.RouteRecord record){if(token!=inspectionGeneration||!inspectionForeground)return;try{writeRoute(routeDir,id,record);}catch(Exception e){android.util.Log.w("SimpleLiveTV","Could not persist route checkpoint",e);}}
                     public void updated(SourceInspector.Entry entry){showInspectionEntry(entry,token,listGeneration,scanSource,false);saveInspectionEntry(entry,recordKey,false,token);}
                     public void completed(SourceInspector.Entry entry){showInspectionEntry(entry,token,listGeneration,scanSource,true);saveInspectionEntry(entry,recordKey,true,token);}
-                    public void candidates(List<Playlist.Channel> rows,int refreshed){if(token!=inspectionGeneration||!inspectionForeground)return;try{writePlaylist(cacheFile,rows);if(feeds.length>0)prefs.edit().putLong(feedKey,System.currentTimeMillis()).commit();}catch(Exception ignored){}}
-                    public void progress(final int done,final int total,final int usable){
-                    long now=SystemClock.elapsedRealtime(),previous=lastProgress.get();if(done!=total&&(now-previous<500||!lastProgress.compareAndSet(previous,now)))return;
-                    handler.post(new Runnable(){public void run(){if(token==inspectionGeneration&&!destroyed)inspectionStatus.setText("前台深测 "+done+"/"+total+" · 已找到合格源 "+usable+" 台");}});
-                }});
+                    public void candidates(List<Playlist.Channel> rows,int refreshed){if(token!=inspectionGeneration||!inspectionForeground)return;try{writePlaylist(cacheFile,rows);if(refreshed>0)prefs.edit().putLong(feedKey,System.currentTimeMillis()).apply();}catch(Exception ignored){}}
+                    public void quick(SourceInspector.Entry entry){showQuickInspectionEntry(entry,token,listGeneration,scanSource);saveQuickInspectionEntry(entry,recordKey,token);}
+                    public void progress(int done,int total,int usable){}
+                    public void stage(final String phase,final int done,final int total,final int usable){
+                        long now=SystemClock.elapsedRealtime(),previous=lastProgress.get();if(done!=total&&now-previous<500)return;lastProgress.set(now);
+                        android.util.Log.i("SimpleLiveTV","inspection stage="+phase+" done="+done+"/"+total+" usable="+usable+" elapsedMs="+(now-scanStarted));
+                        handler.post(new Runnable(){public void run(){if(token!=inspectionGeneration||destroyed||exiting||listGeneration!=loadGeneration||!source.equals(scanSource))return;
+                            if(phase.equals("快检"))inspectionStatus.setText("快检 "+done+"/"+total+" · 可达 "+usable+" 台\n可达不等于流畅，质量标记将在验证后补充");
+                            else if(phase.equals("刷新候选列表"))inspectionStatus.setText("已有结果可继续观看 · 正在刷新候选列表");
+                            else inspectionStatus.setText("快检已完成 · "+phase+" "+done+"/"+total+" · 合格 "+usable+" 台");
+                        }});
+                    }
+                });
                 handler.post(new Runnable(){public void run(){
                     if(destroyed||token!=inspectionGeneration||listGeneration!=loadGeneration||!source.equals(scanSource))return;
                     inspector=null;applyInspection(result);
@@ -581,18 +614,18 @@ public final class MainActivity extends Activity {
     }
     private void applyInspection(SourceInspector.Result result) {
         // Original channels keep their identity/order and URL if every candidate fails.
-        int selected=selectedChannel();String selectedKey=selected>=0&&selected<channels.size()?SourceInspector.key(channels.get(selected).name):null;String playingKey=index>=0&&index<channels.size()?SourceInspector.key(channels.get(index).name):null;ArrayList<Playlist.Channel> revised=new ArrayList<Playlist.Channel>();
+        String playingKey=index>=0&&index<channels.size()?SourceInspector.key(channels.get(index).name):null;ArrayList<Playlist.Channel> revised=new ArrayList<Playlist.Channel>();
         channelHealth.clear();org.json.JSONObject health=new org.json.JSONObject();
         for(SourceInspector.Entry entry:result.entries){
             revised.add(entry.channel);channelHealth.put(entry.channel.url,entry.health);
             try{health.put(entry.channel.url,healthJson(entry.health));}catch(Exception ignored){}
         }
         if(!revised.isEmpty()){
-            channels.clear();channels.addAll(revised);for(int i=0;i<channels.size();i++){String k=SourceInspector.key(channels.get(i).name);if(k.equals(playingKey))index=i;if(k.equals(selectedKey))selected=i;}updateList();
-            int playing=drawerPosition(index);if(playing>=0)list.setItemChecked(playing,true);int selectedRow=drawerPosition(selected);if(selectedRow>=0)list.setSelection(selectedRow);
+            channels.clear();channels.addAll(revised);for(int i=0;i<channels.size();i++){String k=SourceInspector.key(channels.get(i).name);if(k.equals(playingKey))index=i;}updateList();
+            int playing=drawerPosition(index);if(playing>=0)list.setItemChecked(playing,true);
         }
         String time=android.text.format.DateFormat.format("MM-dd HH:mm",new java.util.Date()).toString();
-        inspectionSummary=time+" 深测：合格源 "+result.usable+" / 已测 "+result.checked+" 台"+(result.partial?"，其余待续测":"")+"\n两轮8样本、最差余量≥1.5倍、解码≥30帧；不是长期流畅保证";
+        inspectionSummary=time+" 巡检：合格源 "+result.usable+" / 已验证 "+result.checked+" 台"+(result.partial?"，其余待续测":"")+"\n两轮8样本、最差余量≥1.5倍、解码≥30帧；不是长期流畅保证";
         try{writePlaylist("playlist.m3u",channels);writePlaylist(candidateFile(),result.candidates);}
         catch(Exception e){inspectionSummary+="\n本次结果未能保存，下次启动将重新巡检";}
         prefs.edit().putInt("inspectionSchema",SourceInspector.SCHEMA).putString("inspectionSummary",inspectionSummary).putString("inspectionHealth",health.toString()).apply();

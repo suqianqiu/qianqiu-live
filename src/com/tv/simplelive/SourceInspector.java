@@ -14,6 +14,7 @@ import javax.crypto.spec.*;
 final class SourceInspector {
     static final int SCHEMA=2,MAX_ROUTES=12;
     static final double MIN_HEADROOM=1.5;
+    static final long QUICK_OK_MS=10L*60*1000,QUICK_FAIL_MS=5L*60*1000;
     static final long INTERVAL_MS=12L*60*60*1000;
     static final String[] PUBLIC_FEEDS={"https://iptv-org.github.io/iptv/countries/cn.m3u","https://iptv-org.github.io/iptv/countries/hk.m3u","https://iptv-org.github.io/iptv/countries/mo.m3u","https://iptv-org.github.io/iptv/countries/tw.m3u","https://raw.githubusercontent.com/YueChan/Live/main/IPTV.m3u","https://raw.githubusercontent.com/vbskycn/iptv/master/tv/iptv4.m3u","https://raw.githubusercontent.com/zilong7728/Collect-IPTV/main/best_sorted.m3u","https://raw.githubusercontent.com/hujingguang/ChinaIPTV/main/cnTV_AutoUpdate.m3u8","https://raw.githubusercontent.com/CCSH/IPTV/main/live.m3u","https://raw.githubusercontent.com/Free-TV/IPTV/master/playlist.m3u8","https://raw.githubusercontent.com/cs3306/IPTV-Sources/main/data/output/iptv_collection.m3u"};
     interface Stop { boolean stopped(); }
@@ -28,10 +29,15 @@ final class SourceInspector {
         default void updated(Entry e){}
         default void candidates(List<Playlist.Channel> rows,int refreshed){}
         default void sampled(String id,RouteRecord r){}
+        default void quick(Entry e){}
+        default void stage(String phase,int done,int total,int usable){}
     }
     static boolean fresh(long at,long now){return at>0&&now>=at&&now-at<INTERVAL_MS;}
+    static boolean fresh(Health h,long now){return h!=null&&freshFor(h.testedAt,now,h.ok?INTERVAL_MS:QUICK_FAIL_MS);}
+    static boolean quickFresh(long at,boolean ok,long now){return freshFor(at,now,ok?QUICK_OK_MS:QUICK_FAIL_MS);}
+    private static boolean freshFor(long at,long now,long interval){return at>0&&now>=at&&now-at<interval;}
     static final class Health {
-        boolean ok,tested;long responseMs,bytesPerSecond,testedAt;
+        boolean ok,tested,reachable;long responseMs,bytesPerSecond,testedAt,quickAt;
         double headroom;int samples,frames,routes;String state="未检测";
     }
     static final class Entry {
@@ -50,14 +56,16 @@ final class SourceInspector {
     }
     static final class RouteRecord implements Serializable {
         private static final long serialVersionUID=2L;
-        long startedAt,completedAt;int round,frames;boolean failed;
+        long startedAt,completedAt,quickAt;int round,frames;boolean failed,quickOk;String quickReason="";
         String reason="",kind="hls";
         ArrayList<Sample> samples=new ArrayList<Sample>();HashSet<String> seen=new HashSet<String>();
-        RouteRecord copy(){RouteRecord r=new RouteRecord();r.startedAt=startedAt;r.completedAt=completedAt;r.round=round;r.frames=frames;r.failed=failed;r.reason=reason;r.kind=kind;r.samples.addAll(samples);r.seen.addAll(seen);return r;}
+        RouteRecord copy(){RouteRecord r=new RouteRecord();r.startedAt=startedAt;r.completedAt=completedAt;r.quickAt=quickAt;r.quickOk=quickOk;r.quickReason=quickReason;r.round=round;r.frames=frames;r.failed=failed;r.reason=reason;r.kind=kind;r.samples.addAll(samples);r.seen.addAll(seen);return r;}
     }
     private static final class Group {
         final Playlist.Channel original;final boolean existing;
         final ArrayList<Playlist.Channel> routes=new ArrayList<Playlist.Channel>();
+        final Set<String> quickTried=new HashSet<String>(),deepTried=new HashSet<String>(),published=new HashSet<String>();
+        Playlist.Channel quickRoute;Entry best,last;boolean quickReported,verified,cached;
         Group(Playlist.Channel c,boolean e){original=c;existing=e;add(c);}
         void add(Playlist.Channel c){if(SourceAliases.rejected(c.url))return;for(Playlist.Channel r:routes)if(r.url.equals(c.url))return;if(routes.size()<MAX_ROUTES)routes.add(c);}
     }
@@ -70,7 +78,7 @@ final class SourceInspector {
     SourceInspector(Set<String> keys){this(keys,Collections.<String,Entry>emptyMap());}
     SourceInspector(Set<String> keys,Map<String,Entry> saved){this(keys,saved,Collections.<String,RouteRecord>emptyMap(),new Decoder(){public SampleInfo analyze(byte[] b,boolean d,Stop s)throws Exception{throw new IOException("解码验证不可用");}});}
     SourceInspector(Set<String> keys,Map<String,Entry> saved,Map<String,RouteRecord> routes,Decoder d){this(keys,saved,routes,d,3);}
-    SourceInspector(Set<String> keys,Map<String,Entry> saved,Map<String,RouteRecord> routes,Decoder d,int parallel){priority=new HashSet<String>(keys);previous=new HashMap<String,Entry>(saved);records=new HashMap<String,RouteRecord>();for(Map.Entry<String,RouteRecord> e:routes.entrySet())records.put(e.getKey(),e.getValue().copy());decoder=d;concurrency=Math.max(1,Math.min(3,parallel));}
+    SourceInspector(Set<String> keys,Map<String,Entry> saved,Map<String,RouteRecord> routes,Decoder d,int parallel){priority=new HashSet<String>(keys);previous=new HashMap<String,Entry>(saved);records=new ConcurrentHashMap<String,RouteRecord>();for(Map.Entry<String,RouteRecord> e:routes.entrySet())records.put(e.getKey(),e.getValue().copy());decoder=d;concurrency=Math.max(1,Math.min(3,parallel));}
     void cancel(){cancelled.set(true);}
     void restoreRoutes(Map<String,RouteRecord> saved){for(Map.Entry<String,RouteRecord> e:saved.entrySet())records.put(e.getKey(),e.getValue().copy());}
     boolean stopped(){return cancelled.get()||Thread.currentThread().isInterrupted()||System.nanoTime()>=deadline;}
@@ -89,31 +97,94 @@ final class SourceInspector {
         return s.replaceAll("\\([^)]*\\)|\\[[^]]*\\]","").replaceAll("超高清|超清|高清|标清|[248]K|1080[PI]?|720P|HD|SD","").replaceAll("[\\s·•_-]","");
     }
     static boolean better(Health a,Health b){return a.ok&&(b==null||a.headroom>b.headroom||(a.headroom==b.headroom&&a.responseMs<b.responseMs));}
+    private static final class FeedResult {List<Playlist.Channel> rows;boolean ok;}
+    private static final class Measurement {final Group group;final Playlist.Channel route;final Health health;Measurement(Group g,Playlist.Channel r,Health h){group=g;route=r;health=h;}}
+    private List<Playlist.Channel> candidates(Map<String,Group> groups){ArrayList<Playlist.Channel> rows=new ArrayList<Playlist.Channel>();for(Group g:groups.values())for(Playlist.Channel c:g.routes)rows.add(new Playlist.Channel(g.original.name,c.url,g.original.group));return rows;}
+    private int drainFeeds(CompletionService<FeedResult> feeds,Map<String,Group> groups,Result result,Listener listener){
+        int count=0;Future<FeedResult> done;
+        while((done=feeds.poll())!=null){count++;try{FeedResult f=done.get();if(f.ok){result.feedsOk++;for(Playlist.Channel c:f.rows){Group g=groups.get(key(SourceAliases.routeName(c.name,c.url)));if(g!=null){int before=g.routes.size();g.add(c);if(g.routes.size()>before&&g.cached&&g.best!=null&&!g.best.health.ok){g.cached=false;previous.remove(key(g.original.name));}}}}else result.feedsFailed++;}catch(Exception e){result.feedsFailed++;}
+            if(listener!=null&&!stopped())listener.candidates(candidates(groups),result.feedsOk);
+        }return count;
+    }
+    private Playlist.Channel nextQuick(Group g){for(Playlist.Channel route:g.routes)if(!g.quickTried.contains(route.url))return route;return null;}
+    private Playlist.Channel nextDeep(Group g){if(g.quickRoute!=null&&!g.deepTried.contains(g.quickRoute.url))return g.quickRoute;for(Playlist.Channel route:g.routes)if(!g.deepTried.contains(route.url))return route;return null;}
+    private void reportQuick(Group g,Health h,Playlist.Channel route,Listener listener,Map<String,Entry> choices){
+        g.quickReported=true;if(h.reachable)g.quickRoute=route;
+        Entry e=new Entry(new Playlist.Channel(g.original.name,h.reachable?route.url:g.original.url,g.original.group),h);
+        Entry current=choices.get(key(g.original.name));if(current==null||!current.health.ok)choices.put(key(g.original.name),e);
+        if(listener!=null&&!stopped())listener.quick(e);
+    }
     Result inspect(List<Playlist.Channel> original,List<Playlist.Channel> cached,String[] feeds,long budgetMs,final Listener listener)throws Exception{
         deadline=System.nanoTime()+TimeUnit.MILLISECONDS.toNanos(budgetMs);
         final LinkedHashMap<String,Group> groups=new LinkedHashMap<String,Group>();
         for(Playlist.Channel c:original){Group g=groups.get(key(c.name));if(g==null)groups.put(key(c.name),new Group(c,true));else g.add(c);}
         for(Playlist.Channel c:cached){Group g=groups.get(key(SourceAliases.routeName(c.name,c.url)));if(g!=null)g.add(c);}
-        Result result=new Result();
-        ExecutorService fetchers=Executors.newFixedThreadPool(3);ArrayList<Future<List<Playlist.Channel>>> fetched=new ArrayList<Future<List<Playlist.Channel>>>();
-        try{for(final String feed:feeds)fetched.add(fetchers.submit(new Callable<List<Playlist.Channel>>(){public List<Playlist.Channel> call()throws Exception{Reply r=getReply(feed,Playlist.MAX_BYTES,Math.min(deadline,System.nanoTime()+TimeUnit.SECONDS.toNanos(10)));return Playlist.parse(r.data,r.url);}}));for(Future<List<Playlist.Channel>> f:fetched){if(stopped())break;try{for(Playlist.Channel c:f.get(Math.max(1,TimeUnit.NANOSECONDS.toMillis(deadline-System.nanoTime())),TimeUnit.MILLISECONDS)){Group g=groups.get(key(SourceAliases.routeName(c.name,c.url)));if(g!=null)g.add(c);}result.feedsOk++;}catch(Exception e){if(!stopped())result.feedsFailed++;}}}finally{fetchers.shutdownNow();}
-        for(Group g:groups.values())for(Playlist.Channel c:g.routes)result.candidates.add(new Playlist.Channel(g.original.name,c.url,g.original.group));
-        if(listener!=null&&!stopped())listener.candidates(result.candidates,result.feedsOk);
-        result.groups=groups.size();ArrayList<Group> work=new ArrayList<Group>(groups.values());
-        Collections.sort(work,new Comparator<Group>(){public int compare(Group a,Group b){return Boolean.compare(!priority.contains(key(a.original.name)),!priority.contains(key(b.original.name)));}});
-        final ConcurrentHashMap<String,Entry> choices=new ConcurrentHashMap<String,Entry>();final AtomicInteger done=new AtomicInteger(),good=new AtomicInteger();final int total=groups.size();ExecutorService probes=Executors.newFixedThreadPool(concurrency);ArrayList<Future<Entry>> jobs=new ArrayList<Future<Entry>>();
+        final Result result=new Result();result.groups=groups.size();
+        final Map<String,Entry> choices=new ConcurrentHashMap<String,Entry>();
+        ArrayList<Group> work=new ArrayList<Group>(groups.values());Collections.sort(work,new Comparator<Group>(){public int compare(Group a,Group b){return Boolean.compare(!priority.contains(key(a.original.name)),!priority.contains(key(b.original.name)));}});
+        ExecutorService fetchers=Executors.newFixedThreadPool(3),light=Executors.newFixedThreadPool(concurrency==1?2:6),heavy=Executors.newFixedThreadPool(concurrency);
+        CompletionService<FeedResult> fetched=new ExecutorCompletionService<FeedResult>(fetchers);
+        CompletionService<Measurement> quickJobs=new ExecutorCompletionService<Measurement>(light),deepJobs=new ExecutorCompletionService<Measurement>(heavy);
+        int feedsRemaining=feeds.length,quickDone=0,reachable=0,verified=0,qualified=0;
         try{
-            // Each worker owns its manifest AND segment batch: never queue after acquiring expiring URLs.
-            for(final Group g:work)jobs.add(probes.submit(new Callable<Entry>(){public Entry call(){Entry e=inspectGroup(g,listener,choices);choices.put(key(g.original.name),e);if(e.health.ok)good.incrementAndGet();int count=done.incrementAndGet();if(listener!=null&&!stopped())listener.progress(count,total,good.get());return e;}}));
-            for(Future<Entry> f:jobs)try{f.get(Math.max(1,TimeUnit.NANOSECONDS.toMillis(deadline-System.nanoTime())),TimeUnit.MILLISECONDS);}catch(Exception e){if(stopped())break;}
-            for(Group g:groups.values()){Entry e=choices.get(key(g.original.name));if(e==null){Health h=new Health();h.state="未完成，下次续测";e=new Entry(g.original,h);}if(g.existing||e.health.ok)result.entries.add(e);}
-            for(Entry e:result.entries)if(e.health.testedAt>0){result.checked++;if(e.health.ok)result.usable++;}
-            result.partial=stopped()||done.get()<groups.size();
-        }finally{probes.shutdownNow();synchronized(active){for(HttpURLConnection c:active)c.disconnect();active.clear();}}
+            // Cached channel results are visible before any network list refresh starts.
+            for(Group g:work){Entry saved=previous.get(key(g.original.name));
+                if(saved!=null&&!saved.health.ok&&(!saved.channel.url.equals(g.original.url)||saved.health.routes<g.routes.size())){previous.remove(key(g.original.name));saved=null;}
+                if(saved!=null&&!SourceAliases.rejected(saved.channel.url)&&fresh(saved.health,System.currentTimeMillis())){
+                Health restored=copyHealth(saved.health);restored.reachable=restored.ok||restored.reachable;restored.quickAt=restored.testedAt;
+                saved=new Entry(saved.channel,restored);g.cached=true;g.verified=true;g.best=saved;g.quickReported=true;choices.put(key(g.original.name),new Entry(new Playlist.Channel(g.original.name,saved.channel.url,g.original.group),saved.health));quickDone++;verified++;if(saved.health.reachable)reachable++;if(saved.health.ok)qualified++;
+                if(listener!=null&&!stopped())listener.quick(choices.get(key(g.original.name)));
+            }}
+            if(listener!=null&&!stopped()){listener.candidates(candidates(groups),0);listener.stage("快检",quickDone,work.size(),reachable);}
+            for(final String feed:feeds)fetched.submit(new Callable<FeedResult>(){public FeedResult call(){FeedResult f=new FeedResult();try{Reply r=getReply(feed,Playlist.MAX_BYTES,Math.min(deadline,System.nanoTime()+TimeUnit.SECONDS.toNanos(10)));f.rows=Playlist.parse(r.data,r.url);f.ok=true;}catch(Exception ignored){}return f;}});
+            // One route per channel per wave: a station with many bad URLs cannot monopolize a worker.
+            while(!stopped()){
+                feedsRemaining-=drainFeeds(fetched,groups,result,listener);int pending=0;
+                for(final Group g:work){if(g.cached||g.quickRoute!=null)continue;final Playlist.Channel route=nextQuick(g);if(route==null)continue;g.quickTried.add(route.url);pending++;
+                    quickJobs.submit(new Callable<Measurement>(){public Measurement call(){return new Measurement(g,route,quickProbe(route,key(g.original.name),listener));}});
+                }
+                if(pending==0)break;
+                while(pending>0&&!stopped()){Future<Measurement> future=quickJobs.poll(100,TimeUnit.MILLISECONDS);if(future==null)continue;pending--;Measurement m=future.get();if(m.health.quickAt==0&&m.health.testedAt==0)continue;
+                    if(m.health.reachable){boolean first=!m.group.quickReported;reportQuick(m.group,m.health,m.route,listener,choices);if(first)quickDone++;reachable++;}
+                    else if(nextQuick(m.group)==null&&!m.group.quickReported){reportQuick(m.group,m.health,m.route,listener,choices);quickDone++;}
+                    if(listener!=null&&!stopped())listener.stage("快检",quickDone,work.size(),reachable);
+                }
+            }
+            // Empty/blocked groups still get an explicit checked result; never label quick reachability as quality.
+            for(Group g:work)if(!g.quickReported&&!stopped()){Health h=new Health();h.quickAt=System.currentTimeMillis();h.state="快检未通过：无可检查线路";reportQuick(g,h,g.original,listener,choices);quickDone++;}
+            if(listener!=null&&!stopped())listener.stage("频道验证",verified,work.size(),qualified);
+            // First obtain ONE qualified route for every station; full backup comparison comes afterwards.
+            while(!stopped()){
+                feedsRemaining-=drainFeeds(fetched,groups,result,listener);int pending=0;
+                for(final Group g:work){if(g.cached||g.best!=null&&g.best.health.ok)continue;final Playlist.Channel route=nextDeep(g);if(route==null)continue;g.deepTried.add(route.url);final boolean newQuick=g.quickTried.add(route.url);pending++;
+                    deepJobs.submit(new Callable<Measurement>(){public Measurement call(){Health q=quickProbe(route,key(g.original.name),listener);if(newQuick&&q.reachable&&listener!=null&&!stopped())listener.quick(new Entry(new Playlist.Channel(g.original.name,route.url,g.original.group),q));Health h=q.quickAt==0&&q.testedAt==0?q:probe(route,key(g.original.name),listener);return new Measurement(g,route,h);}});
+                }
+                if(pending==0){if(feedsRemaining==0)for(Group g:work)if(!g.verified&&nextDeep(g)==null){g.verified=true;verified++;}
+                    if(feedsRemaining>0){if(listener!=null)listener.stage("刷新候选列表",verified,work.size(),qualified);Thread.sleep(100);continue;}break;}
+                while(pending>0&&!stopped()){Future<Measurement> future=deepJobs.poll(100,TimeUnit.MILLISECONDS);if(future==null)continue;pending--;Measurement m=future.get();if(m.health.testedAt==0)continue;Group g=m.group;g.last=new Entry(m.route,m.health);
+                    if(m.health.ok&&(g.best==null||better(m.health,g.best.health))){boolean newlyQualified=g.best==null||!g.best.health.ok;g.best=new Entry(new Playlist.Channel(g.original.name,m.route.url,g.original.group),m.health);if(newlyQualified)qualified++;if(!g.verified){g.verified=true;verified++;}}
+                    Health shown=g.best!=null&&g.best.health.ok?copyHealth(g.best.health):copyHealth(m.health);shown.routes=g.routes.size();shown.state=shown.state+" · 已测"+g.deepTried.size()+"/"+g.routes.size();
+                    Entry e=new Entry(g.best!=null&&g.best.health.ok?g.best.channel:g.original,shown);choices.put(key(g.original.name),e);g.published.add(m.route.url);
+                    if(listener!=null&&!stopped())listener.updated(e);
+                    if(!g.verified&&nextDeep(g)==null&&feedsRemaining==0){g.verified=true;verified++;}
+                    if(listener!=null&&!stopped()){listener.progress(verified,work.size(),qualified);listener.stage("频道验证",verified,work.size(),qualified);}
+                }
+            }
+            // The established 8-sample / 30-frame criteria remain unchanged for backup ranking.
+            CompletionService<Entry> comparisons=new ExecutorCompletionService<Entry>(heavy);int pending=0;
+            for(final Group g:work){if(stopped())break;pending++;comparisons.submit(new Callable<Entry>(){public Entry call(){return inspectGroup(g,listener,choices);}});}
+            int compared=0;while(pending>0&&!stopped()){Future<Entry> f=comparisons.poll(100,TimeUnit.MILLISECONDS);if(f==null)continue;pending--;Entry e=f.get();choices.put(key(e.channel.name),e);compared++;if(listener!=null&&!stopped())listener.stage("备用比选",compared,work.size(),qualified);}
+            result.partial=stopped()||pending>0;
+        }finally{
+            fetchers.shutdownNow();light.shutdownNow();heavy.shutdownNow();
+            synchronized(active){for(HttpURLConnection c:active)c.disconnect();active.clear();}
+        }
+        result.candidates.addAll(candidates(groups));
+        for(Group g:groups.values()){Entry e=choices.get(key(g.original.name));if(e==null){Health h=new Health();h.state="未完成，下次续测";e=new Entry(g.original,h);}result.entries.add(e);if(e.health.testedAt>0){result.checked++;if(e.health.ok)result.usable++;}}
         return result;
     }
     private static Health copyHealth(Health source){
-        Health h=new Health();h.ok=source.ok;h.tested=source.tested;h.testedAt=source.testedAt;h.responseMs=source.responseMs;h.bytesPerSecond=source.bytesPerSecond;h.headroom=source.headroom;h.samples=source.samples;h.frames=source.frames;h.routes=source.routes;h.state=source.state;return h;
+        Health h=new Health();h.ok=source.ok;h.tested=source.tested;h.reachable=source.reachable;h.quickAt=source.quickAt;h.testedAt=source.testedAt;h.responseMs=source.responseMs;h.bytesPerSecond=source.bytesPerSecond;h.headroom=source.headroom;h.samples=source.samples;h.frames=source.frames;h.routes=source.routes;h.state=source.state;return h;
     }
     private static Entry pending(Group g,Playlist.Channel chosen,Health best,Health last,int checked){
         Health h=best!=null?copyHealth(best):last!=null?copyHealth(last):new Health();h.routes=g.routes.size();
@@ -122,8 +193,8 @@ final class SourceInspector {
     }
     private Entry inspectGroup(Group g,Listener listener,Map<String,Entry> choices){
         String k=key(g.original.name);Entry saved=previous.get(k);
-        if(saved!=null&&!SourceAliases.rejected(saved.channel.url)&&fresh(saved.health.testedAt,System.currentTimeMillis()))return new Entry(new Playlist.Channel(g.original.name,saved.channel.url,g.original.group),saved.health);
-        Health best=null,last=null;Playlist.Channel chosen=g.original;String failure="无合格源";int checked=0;
+        if(saved!=null&&!SourceAliases.rejected(saved.channel.url)&&fresh(saved.health,System.currentTimeMillis()))return new Entry(new Playlist.Channel(g.original.name,saved.channel.url,g.original.group),saved.health);
+        Health best=g.best!=null&&g.best.health.ok?g.best.health:null,last=null;Playlist.Channel chosen=best!=null?g.best.channel:g.original;String failure="无合格源";int checked=0;
         for(Playlist.Channel route:g.routes){
             if(stopped())return pending(g,chosen,best,last,checked);
             Health h=probe(route,k,listener);if(h.testedAt==0)return pending(g,chosen,best,last,checked);
@@ -132,20 +203,58 @@ final class SourceInspector {
             // Publish each measured route, not just the winner after every candidate finishes.
             // Keep the snapshot even when the overall budget expires before this group returns.
             Entry current=pending(g,chosen,best,last,checked);choices.put(k,current);
-            if(listener!=null&&!stopped())listener.updated(current);
+            if(listener!=null&&!stopped()&&g.published.add(route.url))listener.updated(current);
         }
         if(best==null){best=new Health();best.tested=true;best.state="无合格源："+failure;}best.routes=g.routes.size();best.testedAt=System.currentTimeMillis();Entry e=new Entry(chosen,best);if(listener!=null&&!stopped())listener.completed(e);return e;
+    }
+    private Health quickHealth(RouteRecord r){Health h=new Health();h.quickAt=r.quickAt;h.reachable=r.quickOk;h.state=r.quickOk?"快检可达 · 待深测":"快检未通过："+r.quickReason;return h;}
+    private Health quickProbe(Playlist.Channel route,String group,Listener listener){
+        String id=group+"\n"+route.url;long now=System.currentTimeMillis();RouteRecord r=records.get(id);
+        if(r!=null&&!r.failed&&fresh(r.completedAt,now)){Health h=health(r);if(h.ok){h.reachable=true;h.quickAt=r.completedAt;return h;}}
+        if(r!=null&&quickFresh(r.quickAt,r.quickOk,now))return quickHealth(r);
+        if(r==null){r=new RouteRecord();r.startedAt=now;records.put(id,r);}
+        try{
+            requireRunning();long end=Math.min(deadline,System.nanoTime()+TimeUnit.SECONDS.toNanos(3));byte[] bytes;boolean encrypted=false;
+            if(route.url.matches("(?i).*\\.(ts|flv)(?:[?].*)?$")||"direct".equals(r.kind)){r.kind="direct";bytes=prefix(route.url,end);}
+            else{List<Segment> all=segments(route.url,end);Segment segment=all.get(all.size()-1);encrypted=segment.key!=null;bytes=prefix(segment.url,end);}
+            requireRunning();if(!mediaPrefix(bytes,encrypted))throw new IOException("响应没有视频特征");r.quickOk=true;r.quickReason="";
+        }catch(Exception e){if(stopped())return new Health();r.quickOk=false;r.quickReason=e.getMessage()==null?e.getClass().getSimpleName():e.getMessage();}
+        r.quickAt=System.currentTimeMillis();checkpoint(id,r,listener);return quickHealth(r);
+    }
+    private static boolean mediaPrefix(byte[] bytes,boolean encrypted){
+        if(bytes.length<1024)return false;String start=new String(bytes,0,Math.min(128,bytes.length),java.nio.charset.StandardCharsets.UTF_8).trim().toLowerCase(Locale.US);
+        if(start.startsWith("<html")||start.startsWith("<!doctype")||start.startsWith("<?xml")||start.startsWith("{\"")||start.startsWith("[{"))return false;
+        if(encrypted)return true;
+        if(bytes[0]=='F'&&bytes[1]=='L'&&bytes[2]=='V')return true;
+        for(int stride:new int[]{188,192,204})for(int i=0;i<Math.min(stride,bytes.length-2*stride);i++)if((bytes[i]&255)==0x47&&(bytes[i+stride]&255)==0x47&&(bytes[i+2*stride]&255)==0x47)return true;
+        for(int i=4;i<Math.min(64,bytes.length-4);i++){String box=new String(bytes,i,4,java.nio.charset.StandardCharsets.US_ASCII);if(box.equals("ftyp")||box.equals("styp")||box.equals("moof")||box.equals("sidx")||box.equals("emsg")||box.equals("mdat"))return true;}
+        return false;
+    }
+    private byte[] prefix(String address,long limit)throws Exception{
+        for(int hop=0;hop<5;hop++){HttpURLConnection c=open(address,limit);c.setRequestProperty("Range","bytes=0-16383");try{
+            int code=c.getResponseCode();if(code==301||code==302||code==303||code==307||code==308){String next=c.getHeaderField("Location");if(next==null)throw new IOException("重定向无地址");address=new URL(new URL(address),next).toString();continue;}
+            if(code!=200&&code!=206)throw new IOException("HTTP "+code);
+            String type=c.getContentType();if(type!=null&&(type.toLowerCase(Locale.US).contains("text/html")||type.toLowerCase(Locale.US).contains("application/json")))throw new IOException("响应不是视频");
+            try(InputStream in=c.getInputStream();ByteArrayOutputStream out=new ByteArrayOutputStream()){
+                byte[] buffer=new byte[8192];while(out.size()<16384){requireRunning();if(System.nanoTime()>=limit)throw new IOException("快检超时");int n=in.read(buffer,0,Math.min(buffer.length,16384-out.size()));if(n<0)break;out.write(buffer,0,n);}return out.toByteArray();
+            }
+        }finally{active.remove(c);c.disconnect();}}throw new IOException("重定向次数过多");
     }
     private Health health(RouteRecord r){
         Health h=new Health();h.tested=!r.samples.isEmpty()||r.completedAt>0;h.testedAt=r.completedAt;h.samples=r.samples.size();h.frames=r.frames;h.headroom=Double.POSITIVE_INFINITY;long bytes=0;double seconds=0;
         for(Sample s:r.samples){h.headroom=Math.min(h.headroom,s.duration/Math.max(.001,s.seconds));h.responseMs=Math.max(h.responseMs,(long)(s.seconds*1000));bytes+=s.bytes;seconds+=s.seconds;}
         if(r.samples.isEmpty())h.headroom=0;h.bytesPerSecond=(long)(bytes/Math.max(.001,seconds));h.ok=r.completedAt>0&&!r.failed&&r.samples.size()>=8&&h.headroom>=MIN_HEADROOM&&r.frames>=30;
+        h.reachable=h.ok||r.quickOk;h.quickAt=r.quickAt;
         h.state=h.ok?String.format(Locale.US,"优选 %.2f倍 · %d帧",h.headroom,h.frames):r.completedAt==0?"未完成，下次续测":r.reason;return h;
     }
     private void checkpoint(String id,RouteRecord r,Listener l){if(l!=null)l.sampled(id,r.copy());}
     private Health probe(Playlist.Channel route,String group,Listener l){
         String id=group+"\n"+route.url;RouteRecord r=records.get(id);long now=System.currentTimeMillis();
-        if(r!=null&&fresh(r.completedAt,now))return health(r);if(r==null||!fresh(r.startedAt,now)){r=new RouteRecord();r.startedAt=now;}
+        if(r!=null&&freshFor(r.completedAt,now,r.failed?QUICK_FAIL_MS:INTERVAL_MS))return health(r);
+        if(r!=null&&quickFresh(r.quickAt,r.quickOk,now)&&!r.quickOk){Health h=new Health();h.tested=true;h.testedAt=r.quickAt;h.quickAt=r.quickAt;h.state=r.quickReason;return h;}if(r==null||!fresh(r.startedAt,now)||(r.failed&&r.completedAt>0)){
+            RouteRecord old=r;r=new RouteRecord();r.startedAt=now;if(old!=null){r.quickAt=old.quickAt;r.quickOk=old.quickOk;r.quickReason=old.quickReason;r.kind=old.kind;}
+        }
+        records.put(id,r);
         byte[] last=null;
         try{
             requireRunning();boolean direct=route.url.matches("(?i).*\\.(ts|flv)(?:[?].*)?$")||r.kind.equals("direct");
@@ -175,9 +284,10 @@ final class SourceInspector {
     private long requestLimit(){return Math.min(deadline,System.nanoTime()+TimeUnit.SECONDS.toNanos(12));}
     private static final class Segment {String url,id,init,key,iv;double duration;long sequence;}
     private static String attr(String line,String name){Matcher m=Pattern.compile("(?:^|[:,])"+name+"=\"([^\"]*)\"").matcher(line);return m.find()?m.group(1):null;}
-    private List<Segment> segments(String address)throws Exception{
+    private List<Segment> segments(String address)throws Exception{return segments(address,requestLimit());}
+    private List<Segment> segments(String address,long limit)throws Exception{
         for(int level=0;level<4;level++){
-            Reply response=getReply(address,512*1024,requestLimit());String text=new String(response.data,"UTF-8").replace("\uFEFF","").trim();if(!text.startsWith("#EXTM3U"))throw new IOException("不是可深测的HLS清单");String[] lines=text.split("\\r?\\n");
+            Reply response=getReply(address,512*1024,Math.min(limit,requestLimit()));String text=new String(response.data,"UTF-8").replace("\uFEFF","").trim();if(!text.startsWith("#EXTM3U"))throw new IOException("不是可深测的HLS清单");String[] lines=text.split("\\r?\\n");
             if(text.contains("#EXT-X-STREAM-INF")){
                 String next=null;long largest=-1;for(int i=0;i<lines.length-1;i++)if(lines[i].startsWith("#EXT-X-STREAM-INF:")){Matcher b=Pattern.compile("(?:[:,])BANDWIDTH=(\\d+)").matcher(lines[i]);long bitrate=b.find()?Long.parseLong(b.group(1)):0;int j=i+1;while(j<lines.length&&(lines[j].trim().isEmpty()||lines[j].startsWith("#")))j++;if(j<lines.length&&bitrate>largest){largest=bitrate;next=new URL(new URL(response.url),lines[j].trim()).toString();}}if(next==null)throw new IOException("主清单缺少线路");address=next;continue;
             }
