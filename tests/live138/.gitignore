@@ -1,0 +1,6 @@
+ui-classes/
+ui-dex/
+ui-package/
+*.apk
+*.idsig
+*.jar

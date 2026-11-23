@@ -6,11 +6,27 @@
 >
 > 第三方列表、视频内容和网络条件随时变化，不保证频道身份、画面实时性、持续流畅、长期可用或全部设备兼容。本声明不免除依法应承担的责任。权利或安全问题请在本仓库 Issues 提供具体链接，以便核查处理。
 
-当前版本 **1.3.7（versionCode 20）**，安装名称 **千秋电视**，包名 `com.tv.simplelive`，支持 Android 5.0 / API 21 及以上，包含 arm64-v8a、armeabi-v7a。使用 LibVLC 3.6.5；不设账号、会员或应用付费解锁。第三方内容的授权及可用性仍由各来源决定。
+当前版本 **1.3.8（versionCode 21）**，安装名称 **千秋电视**，包名 `com.tv.simplelive`，支持 Android 5.0 / API 21 及以上，包含 arm64-v8a、armeabi-v7a。使用 LibVLC 3.6.5；不设账号、会员或应用付费解锁。第三方内容的授权及可用性仍由各来源决定。
 
-[下载 1.3.4 APK 与源码](https://github.com/suqianqiu/qianqiu-live/releases/tag/v1.3.5) · [安装指南](INSTALL.md) · [完整巡检与有效性规则](docs/SOURCE_RULES.md) · [本版验证记录](docs/VERIFICATION-1.3.3.md) · [第三方许可](THIRD_PARTY.txt)
+[下载 1.3.8 APK 与源码](https://github.com/suqianqiu/qianqiu-live/releases/tag/v1.3.8) · [安装指南](INSTALL.md) · [完整巡检与有效性规则](docs/SOURCE_RULES.md) · [本版验证记录](docs/VERIFICATION-1.3.8.md) · [第三方许可](THIRD_PARTY.txt)
+
+## 1.3.8 更新：分类抽屉与返回键修正
+
+- **返回只开关侧栏**：直播全屏按一次Back打开左侧抽屉，再按一次Back收起，继续播放；连续按Back不会退出应用。未选台时保留初始列表。系统弹窗先关闭自身。
+- **顶部回到桌面**：全屏列表和侧栏右上方都有“回到桌面”。点击后停止播放、重连和巡检，打开系统桌面并结束任务。
+- **分类抽屉**：按央视、卫视、各省市、港澳台、海外分组，无法确认地区的频道保留在“其他”。确定展开/收起，右键展开并进入首个频道，左键收起并回到分类标题。分组不会删除频道或改变实际换台顺序。
+- **分类独立进度**：标题后的`x/y`为该分类已完成候选比选的频道数/频道总数。失败频道也算已测，部分线路结果立即显示质量但不提前计入完成数。有效断点恢复进度，过期记录待复测；刷新不改变焦点与滚动位置。
+
+[腾讯云下载1.3.8](https://www.dajinsuan.com/tvapp/qianqiu-live/v1.3.8/QianqiuLive-1.3.8.apk) · [GitHub备用](https://github.com/suqianqiu/qianqiu-live/releases/tag/v1.3.8) · [本轮验证范围](docs/VERIFICATION-1.3.8.md)
+
+![华为电视全屏频道列表，桌面按钮位于顶部](docs/screenshots/live138-huawei-full-list.png)
+![华为电视直播中的分类抽屉，分类后显示检测进度](docs/screenshots/live138-huawei-side-drawer.png)
+
+以上为华为智慧屏3840×2160实机截图；截图中的质量是当时已有检测记录，不代表频道持续可用或节目身份已全部验证。
 
 ## 1.3.7 更新：源质量逐条显示与回到桌面
+
+**历史版本说明：以下底部按钮与Back退出方式已在1.3.8更正，以顶部的新说明为准。**
 
 自动或手动巡检每测完一条线路，就更新对应频道的质量与进度；停止后已有结果继续保留，未完成的线路可续测。全屏列表和侧栏底部均有“回到桌面”，播放全屏按Back打开列表、再按Back退出。
 
