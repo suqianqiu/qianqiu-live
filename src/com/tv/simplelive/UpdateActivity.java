@@ -7,8 +7,6 @@ import android.os.*;
 import android.provider.Settings;
 import android.view.*;
 import android.widget.*;
-import android.content.res.ColorStateList;
-import android.graphics.drawable.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -24,9 +22,7 @@ public final class UpdateActivity extends Activity {
     private TextView text(String value,int size){TextView t=new TextView(this);t.setText(value);t.setTextSize(size);t.setTextColor(0xFFE7E6F3);return t;}
     private Button button(String value,Runnable action){
         Button b=new Button(this);b.setId(View.generateViewId());b.setText(value);b.setTextSize(18);b.setAllCaps(false);
-        StateListDrawable states=new StateListDrawable();
-        for(int[] state:new int[][]{new int[]{android.R.attr.state_focused},new int[]{android.R.attr.state_pressed},new int[]{}}){GradientDrawable d=new GradientDrawable();d.setColor(state.length>0?0xFF7760A9:0xFF30334A);d.setCornerRadius(dp(7));d.setStroke(dp(2),state.length>0?0xFFF0DB90:0xFF565971);states.addState(state,d);}
-        b.setBackground(states);b.setTextColor(new ColorStateList(new int[][]{new int[]{-android.R.attr.state_enabled},new int[]{}},new int[]{0xFF888898,0xFFFFFFFF}));b.setOnClickListener(v->action.run());return b;
+        TvButtonStyle.apply(b);b.setOnClickListener(v->action.run());return b;
     }
     @Override public void onCreate(Bundle state){super.onCreate(state);getWindow().setFlags(1024,1024);awaitPermission=state!=null&&state.getBoolean("awaitPermission");update=AppUpdate.get(this);build();}
     private void build(){
@@ -48,11 +44,11 @@ public final class UpdateActivity extends Activity {
         permission.setText(update.canInstall()?"安装授权已开启":"首次安装更新时将引导开启安装授权。");
         primary.setText(s.phase==AppUpdate.Phase.DOWNLOADING?"暂停下载":s.busy()?"请稍候…":s.ready?"立即安装":s.newer?s.bytes>0?"继续下载":"下载更新":"检查更新");primary.setEnabled(!s.busy()||s.phase==AppUpdate.Phase.DOWNLOADING);refresh.setEnabled(!s.busy());if(s.newer)update.markPrompted();
     }
-    private void act(){AppUpdate.State s=update.state();if(s.phase==AppUpdate.Phase.DOWNLOADING){update.pause();return;}if(s.busy())return;if(s.ready){if(update.canInstall())update.install();else new AlertDialog.Builder(this).setTitle("允许安装更新").setMessage("在电视设置中允许此应用安装更新。开启后返回，将继续本次安装。").setPositiveButton("前往设置",(d,w)->openPermission()).setNegativeButton("稍后",null).show();}else if(s.newer)update.download();else update.check(true);}
+    private void act(){AppUpdate.State s=update.state();if(s.phase==AppUpdate.Phase.DOWNLOADING){update.pause();return;}if(s.busy())return;if(s.ready){if(update.canInstall())update.install();else TvButtonStyle.show(new AlertDialog.Builder(this).setTitle("允许安装更新").setMessage("在电视设置中允许此应用安装更新。开启后返回，将继续本次安装。").setPositiveButton("前往设置",(d,w)->openPermission()).setNegativeButton("稍后",null));}else if(s.newer)update.download();else update.check(true);}
     private void openPermission(){
         Intent scoped=new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,Uri.parse("package:"+getPackageName()));Intent[] routes=Build.VERSION.SDK_INT>=26?new Intent[]{scoped,new Intent(Settings.ACTION_SECURITY_SETTINGS),new Intent(Settings.ACTION_SETTINGS)}:new Intent[]{new Intent(Settings.ACTION_SECURITY_SETTINGS),new Intent(Settings.ACTION_SETTINGS)};
         for(Intent route:routes)try{awaitPermission=true;startActivityForResult(route,91);return;}catch(ActivityNotFoundException|SecurityException ignored){awaitPermission=false;}
-        new AlertDialog.Builder(this).setTitle("请在电视设置中允许安装").setMessage("此电视没有提供直接授权入口。请在安全或应用安装设置中允许第三方安装，再返回重试。").setPositiveButton("知道了",null).show();
+        TvButtonStyle.show(new AlertDialog.Builder(this).setTitle("请在电视设置中允许安装").setMessage("此电视没有提供直接授权入口。请在安全或应用安装设置中允许第三方安装，再返回重试。").setPositiveButton("知道了",null));
     }
     boolean active(){return resumed&&!isFinishing();}
     void confirmInstall(Intent approval){try{startActivityForResult(approval,92);}catch(Exception e){update.cancelInstall("无法打开系统安装页面，请检查电视安装限制");}}

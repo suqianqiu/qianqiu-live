@@ -15,10 +15,10 @@ final class UpdatePrompt implements AppUpdate.Listener {
     public void changed(AppUpdate.State state){
         if(!active||activity.isFinishing()||!update.shouldPrompt())return;
         update.markPrompted();
-        dialog=new AlertDialog.Builder(activity).setTitle("发现新版本 "+state.release.version)
+        dialog=TvButtonStyle.show(new AlertDialog.Builder(activity).setTitle("发现新版本 "+state.release.version)
             .setMessage(state.release.notes+"\n\n可以现在查看更新，也可稍后从版本更新入口升级。")
             .setPositiveButton("查看更新",(d,w)->activity.startActivity(new Intent(activity,UpdateActivity.class)))
-            .setNegativeButton("稍后",null).show();
+            .setNegativeButton("稍后",null));
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).requestFocus();
     }
 }

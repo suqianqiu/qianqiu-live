@@ -1,6 +1,6 @@
 param([switch]$Install, [string]$Device='', [int]$AdbPort=5037, [string]$ManifestPath='AndroidManifest.xml', [string]$OutputApk='', [switch]$IncludeX86ForTests)
 $ErrorActionPreference='Stop'
-if([string]::IsNullOrWhiteSpace($OutputApk)){$OutputApk='dist/QianqiuLive-1.3.8.apk'}
+if([string]::IsNullOrWhiteSpace($OutputApk)){$OutputApk='dist/QianqiuLive-1.3.9.apk'}
 Set-Location $PSScriptRoot
 $sdk=Join-Path $env:LOCALAPPDATA 'Android/Sdk'
 $bt=Join-Path $sdk 'build-tools/35.0.0'

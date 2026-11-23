@@ -6,9 +6,20 @@
 >
 > 第三方列表、视频内容和网络条件随时变化，不保证频道身份、画面实时性、持续流畅、长期可用或全部设备兼容。本声明不免除依法应承担的责任。权利或安全问题请在本仓库 Issues 提供具体链接，以便核查处理。
 
-当前版本 **1.3.8（versionCode 21）**，安装名称 **千秋电视**，包名 `com.tv.simplelive`，支持 Android 5.0 / API 21 及以上，包含 arm64-v8a、armeabi-v7a。使用 LibVLC 3.6.5；不设账号、会员或应用付费解锁。第三方内容的授权及可用性仍由各来源决定。
+当前版本 **1.3.9（versionCode 22）**，安装名称 **千秋电视**，包名 `com.tv.simplelive`，支持 Android 5.0 / API 21 及以上，包含 arm64-v8a、armeabi-v7a。使用 LibVLC 3.6.5；不设账号、会员或应用付费解锁。第三方内容的授权及可用性仍由各来源决定。
 
-[下载 1.3.8 APK 与源码](https://github.com/suqianqiu/qianqiu-live/releases/tag/v1.3.8) · [安装指南](INSTALL.md) · [完整巡检与有效性规则](docs/SOURCE_RULES.md) · [本版验证记录](docs/VERIFICATION-1.3.8.md) · [第三方许可](THIRD_PARTY.txt)
+[下载 1.3.9 APK 与源码](https://github.com/suqianqiu/qianqiu-live/releases/tag/v1.3.9) · [安装指南](INSTALL.md) · [完整巡检与有效性规则](docs/SOURCE_RULES.md) · [本版验证记录](docs/VERIFICATION-1.3.9.md) · [第三方许可](THIRD_PARTY.txt)
+
+## 1.3.9 更新：按钮焦点高亮
+
+遥控器选中的按钮改为亮青色实心背景、深色加粗文字和3dp白色描边；未选中按钮保持深色背景。按下时进一步提亮，禁用按钮使用灰暗状态。按钮尺寸不变，不依靠缩放或页面位移表达焦点。
+
+主界面的设置、全屏、巡检源、回到桌面，版本更新页按钮，以及应用内确认/取消按钮统一使用同一套原生状态样式。华为智慧屏已覆盖安装并检查遥控器焦点与实际截图。
+
+[腾讯云下载1.3.9](https://www.dajinsuan.com/tvapp/qianqiu-live/v1.3.9/QianqiuLive-1.3.9.apk) · [GitHub备用](https://github.com/suqianqiu/qianqiu-live/releases/tag/v1.3.9) · [验证范围](docs/VERIFICATION-1.3.9.md)
+
+![回到桌面获得焦点](docs/screenshots/live139-huawei-home-focus.png)
+![设置按钮获得焦点，其余按钮保持深色](docs/screenshots/live139-huawei-settings-focus.png)
 
 ## 1.3.8 更新：分类抽屉与返回键修正
 

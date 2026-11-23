@@ -151,7 +151,7 @@ public final class MainActivity extends Activity {
         heading = label("千秋电视", 21, 0xFF81E2CB); heading.setTypeface(null, Typeface.BOLD);
         heading.setSingleLine(true); heading.setEllipsize(android.text.TextUtils.TruncateAt.END);
         top.addView(heading,new LinearLayout.LayoutParams(0,-2,1));
-        homeButton=new Button(this);homeButton.setId(View.generateViewId());homeButton.setText("回到桌面");homeButton.setTextSize(16);homeButton.setAllCaps(false);
+        homeButton=new Button(this);homeButton.setId(View.generateViewId());homeButton.setText("回到桌面");homeButton.setTextSize(16);homeButton.setAllCaps(false);TvButtonStyle.apply(homeButton);
         homeButton.setOnClickListener(new View.OnClickListener(){public void onClick(View v){returnToDesktop();}});
         top.addView(homeButton,new LinearLayout.LayoutParams(dp(120),dp(48)));panel.addView(top,new LinearLayout.LayoutParams(-1,dp(48)));
         TextView guide = label("确定展开 / 选台 · 左键收起分类\n返回开关侧栏 · 分类后为已测频道数", 14, 0xFFAFBFCD);
@@ -203,7 +203,7 @@ public final class MainActivity extends Activity {
         list.requestFocus();
     }
     private void addButton(LinearLayout row, String text, final Runnable action) {
-        Button button = new Button(this);button.setId(View.generateViewId());toolbarButtons.add(button); button.setText(text); button.setTextSize(16);
+        Button button = new Button(this);button.setId(View.generateViewId());toolbarButtons.add(button); button.setText(text); button.setTextSize(16);TvButtonStyle.apply(button);
         button.setOnClickListener(new View.OnClickListener() { public void onClick(View v) { action.run(); } });
         row.addView(button, new LinearLayout.LayoutParams(0, -1, 1));
     }
@@ -515,8 +515,8 @@ public final class MainActivity extends Activity {
     private void startInspection(boolean manual) {
         if(exiting||destroyed||!inspectionForeground||channels.isEmpty())return;
         if(inspector!=null){
-            if(manual)new AlertDialog.Builder(this).setTitle("直播源巡检中").setMessage(inspectionStatus.getText()+"\n仅在应用前台检测，不打断当前播放。")
-                .setPositiveButton("继续巡检",null).setNegativeButton("停止巡检",new DialogInterface.OnClickListener(){public void onClick(DialogInterface d,int which){cancelInspection();}}).show();
+            if(manual)TvButtonStyle.show(new AlertDialog.Builder(this).setTitle("直播源巡检中").setMessage(inspectionStatus.getText()+"\n仅在应用前台检测，不打断当前播放。")
+                .setPositiveButton("继续巡检",null).setNegativeButton("停止巡检",new DialogInterface.OnClickListener(){public void onClick(DialogInterface d,int which){cancelInspection();}}));
             return;
         }
         final ArrayList<Playlist.Channel> original=new ArrayList<Playlist.Channel>(channels),cached=new ArrayList<Playlist.Channel>();
@@ -600,7 +600,7 @@ public final class MainActivity extends Activity {
         // Do not restart player, alter index, open the panel, or steal focus here.
     }
     private void showSettings() {
-        new AlertDialog.Builder(this).setTitle("播放器设置")
+        TvButtonStyle.show(new AlertDialog.Builder(this).setTitle("播放器设置")
             .setItems(new String[]{"导入网络 M3U / TXT 列表", "导入本地播放列表", "直接播放 HTTP/HTTPS 视频地址", "解码方式：" + MODES[mode], "恢复随包频道列表", "重新加载当前列表", "播放演示片", "关于与许可证", "立即巡检并更新直播源", "进入时检查12小时到期项："+(prefs.getBoolean("autoInspect",true)?"开启":"关闭"), "版本更新"}, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface d, int which) {
                     switch (which) {
@@ -618,23 +618,23 @@ public final class MainActivity extends Activity {
                             disposePlayer(); channels.clear(); channels.add(new Playlist.Channel("演示片 · Big Buck Bunny（非直播）", DEMO, "测试"));
                             index = -1; updateList(); play(0, false); showPanel(false); break;
                         case 7:
-                            new AlertDialog.Builder(MainActivity.this).setTitle("千秋电视 1.3.4")
+                            TvButtonStyle.show(new AlertDialog.Builder(MainActivity.this).setTitle("千秋电视 1.3.4")
                                 .setMessage("学习用途与免责声明：仅用于技术学习和交流，请仅访问有权使用的内容，遵守法律、源站条款及第三方许可；公开地址和检测通过不代表传播授权。不托管视频，不保证长期可用。\n\n面向 Android 5.0+ 的轻量播放器。\n\n解码内核：VideoLAN LibVLC 3.6.5（LGPL 2.1）。\n源码与许可证随 APK 一同提供。\nhttps://code.videolan.org/videolan/libvlcjni\n\n公开候选：iptv-org、YueChan及本版新增的六个公开项目，详情见GitHub仓库。频道可用性由源站及网络决定。请仅导入你有权访问的播放地址。\n\n软解可能受电视CPU性能限制，不能保证4K流畅。")
-                                .setPositiveButton("知道了", null).show(); break;
+                                .setPositiveButton("知道了", null)); break;
                         case 10: startActivity(new Intent(MainActivity.this,UpdateActivity.class));break;
                         case 8: startInspection(true);break;
                         case 9: boolean enabled=!prefs.getBoolean("autoInspect",true);prefs.edit().putBoolean("autoInspect",enabled).apply();if(enabled)startInspection(false);else cancelInspection();break;
                     }
                 }
-            }).setNegativeButton("返回", null).show();
+            }).setNegativeButton("返回", null));
     }
     private void chooseMode() {
-        new AlertDialog.Builder(this).setTitle("解码方式").setSingleChoiceItems(MODES, mode, new DialogInterface.OnClickListener() {
+        TvButtonStyle.show(new AlertDialog.Builder(this).setTitle("解码方式").setSingleChoiceItems(MODES, mode, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface d, int which) {
                 mode = which; prefs.edit().putInt("mode", mode).apply(); d.dismiss();
                 if (index >= 0) play(index, false); else setState("已切换解码方式");
             }
-        }).setNegativeButton("取消", null).show();
+        }).setNegativeButton("取消", null));
     }
     private void inputUrl(final boolean direct) {
         final EditText input = new EditText(this); input.setSingleLine(true);
@@ -658,7 +658,7 @@ public final class MainActivity extends Activity {
                     }
                 });
             }
-        }); dialog.show();
+        }); dialog.show();TvButtonStyle.apply(dialog);
     }
     private void loadNetwork(final String address) {
         cancelInspection();
